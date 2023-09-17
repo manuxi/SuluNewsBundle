@@ -62,8 +62,6 @@
             <tag name="sulu.content.type" alias="news_selection"/>
         </service>
 
-        <service id="sulu_news.country_code_select" class="Manuxi\SuluNewsBundle\Service\CountryCodeSelect" public="true"/>
-
         <service id="Manuxi\SuluNewsBundle\Routing\NewsRouteDefaultsProvider">
             <argument type="service" id="sulu_news.repository.news"/>
 
@@ -117,7 +115,7 @@
 
         <service id="sulu_news.object_provider" public="true" class="Manuxi\SuluNewsBundle\Preview\NewsObjectProvider">
             <argument type="service" id="sulu_news.repository.news"/>
-            <tag name="sulu_preview.object_provider" provider-key="newslist"/>
+            <tag name="sulu_preview.object_provider" provider-key="news"/>
         </service>
 
         <service id="sulu_news.routing_provider" public="true" class="Manuxi\SuluNewsBundle\Routing\NewsRouteDefaultsProvider">

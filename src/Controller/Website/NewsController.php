@@ -42,27 +42,27 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @param News $entity
+     * @param News $news
      * @param string $view
      * @param bool $preview
      * @param bool $partial
      * @return Response
      * @throws \Exception
      */
-    public function indexAction(News $entity, string $view = 'pages/news', bool $preview = false, bool $partial = false): Response
+    public function indexAction(News $news, string $view = 'pages/news', bool $preview = false, bool $partial = false): Response
     {
         $viewTemplate = $this->getViewTemplate($view, $this->request, $preview);
 
         $parameters = $this->templateAttributeResolver->resolve([
-            'news'   => $entity,
+            'news'   => $news,
             'content' => [
                 'title'    => $this->translator->trans('sulu_news.news'),
-                'subtitle' => $entity->getTitle(),
+                'subtitle' => $news->getTitle(),
             ],
-            'path'          => $entity->getRoutePath(),
-            'extension'     => $this->extractExtension($entity),
-            'localizations' => $this->getLocalizationsArrayForEntity($entity),
-            'created'       => $entity->getCreated(),
+            'path'          => $news->getRoutePath(),
+            'extension'     => $this->extractExtension($news),
+            'localizations' => $this->getLocalizationsArrayForEntity($news),
+            'created'       => $news->getCreated(),
         ]);
 
         return $this->prepareResponse($viewTemplate, $parameters, $preview, $partial);
@@ -71,12 +71,12 @@ class NewsController extends AbstractController
     /**
      * With the help of this method the corresponding localisations for the
      * current news are found e.g. to be linked in the language switcher.
-     * @param News $entity
+     * @param News $news
      * @return array<string, array>
      */
-    protected function getLocalizationsArrayForEntity(News $entity): array
+    protected function getLocalizationsArrayForEntity(News $news): array
     {
-        $routes = $this->routeRepository->findAllByEntity(News::class, (string)$entity->getId());
+        $routes = $this->routeRepository->findAllByEntity(News::class, (string)$news->getId());
 
         $localizations = [];
         foreach ($routes as $route) {
@@ -92,10 +92,10 @@ class NewsController extends AbstractController
         return $localizations;
     }
 
-    private function extractExtension(News $entity): array
+    private function extractExtension(News $news): array
     {
         $serializer = SerializerBuilder::create()->build();
-        return $serializer->toArray($entity->getExt());
+        return $serializer->toArray($news->getExt());
     }
 
     /**

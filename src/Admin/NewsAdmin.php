@@ -136,7 +136,7 @@ class NewsAdmin extends Admin
                 new ToolbarAction('sulu_admin.delete'),
                 new TogglerToolbarAction(
                     'sulu_news.publish_news',
-                    'published',
+                    'enabled',
                     'enable',
                     'disable'
                 ),

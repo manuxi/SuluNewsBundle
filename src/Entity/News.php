@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -381,7 +382,7 @@ class News implements AuditableTranslatableInterface
     /**
      * @Serializer\VirtualProperty(name="published_at")
      */
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): ?DateTimeImmutable
     {
         $translation = $this->getTranslation($this->locale);
         if(!$translation) {
@@ -390,7 +391,7 @@ class News implements AuditableTranslatableInterface
         return $translation->getPublishedAt();
     }
 
-    public function setPublishedAt(?\DateTimeImmutable $date): self
+    public function setPublishedAt(?DateTimeImmutable $date): self
     {
         $translation = $this->getTranslation($this->locale);
         if(!$translation) {

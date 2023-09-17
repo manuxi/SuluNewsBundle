@@ -39,7 +39,7 @@ class NewsSeo implements SeoInterface, SeoTranslatableInterface
      *
      * @Serializer\Exclude
      */
-    private ArrayCollection $translations;
+    private Collection $translations;
 
     public function __construct()
     {

@@ -66,11 +66,10 @@ class News implements AuditableTranslatableInterface
     private ?array $images = null;
 
     /**
-     * @var ArrayCollection<string, NewsTranslation>
      * @ORM\OneToMany(targetEntity="NewsTranslation", mappedBy="news", cascade={"ALL"}, indexBy="locale", fetch="EXTRA_LAZY")
      * @Serializer\Exclude
      */
-    private ArrayCollection $translations;
+    private Collection $translations;
 
     private string $locale = 'en';
 

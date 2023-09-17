@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
-use JetBrains\PhpStorm\Pure;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\ExcerptInterface;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\ExcerptTranslatableInterface;
@@ -38,7 +37,7 @@ class NewsExcerpt implements ExcerptInterface, ExcerptTranslatableInterface
      *
      * @Serializer\Exclude
      */
-    private ArrayCollection $translations;
+    private Collection $translations;
 
     public function __construct()
     {

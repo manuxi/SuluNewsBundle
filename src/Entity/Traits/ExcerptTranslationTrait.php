@@ -49,7 +49,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
      *      )
      */
-    private ?ArrayCollection $categories = null;
+    private ?Collection $categories = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\TagBundle\Tag\TagInterface")
@@ -58,12 +58,12 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      *      )
      */
-    private ?ArrayCollection $tags = null;
+    private ?Collection $tags = null;
 
     /**
      * @TODO
      */
-    private ?ArrayCollection $segments = null;
+    private ?Collection $segments = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\MediaBundle\Entity\MediaInterface")
@@ -72,7 +72,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="icon_id", referencedColumnName="id")}
      *      )
      */
-    private ?ArrayCollection $icons = null;
+    private ?Collection $icons = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\MediaBundle\Entity\MediaInterface")
@@ -81,7 +81,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
      *      )
      */
-    private ?ArrayCollection $images = null;
+    private ?Collection $images = null;
 
     private function initExcerptTranslationTrait(): void
     {

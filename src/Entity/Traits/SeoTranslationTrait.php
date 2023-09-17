@@ -18,27 +18,27 @@ trait SeoTranslationTrait
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private string $locale;
+    private ?string $locale = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private string $canonicalUrl;
+    private ?string $canonicalUrl = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private string $keywords;
+    private ?string $keywords = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private string $description;
+    private ?string $description = null;
 
     public function getId(): ?int
     {

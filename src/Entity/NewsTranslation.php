@@ -65,7 +65,7 @@ class NewsTranslation implements AuditableInterface
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private ?DateTimeImmutable $publishedAt;
+    private ?DateTimeImmutable $publishedAt = null;
 
     public function __construct(News $news, string $locale)
     {
@@ -159,8 +159,9 @@ class NewsTranslation implements AuditableInterface
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(?DateTimeImmutable $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+        return $this;
     }
 }

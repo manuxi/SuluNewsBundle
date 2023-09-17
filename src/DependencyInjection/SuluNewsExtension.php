@@ -103,7 +103,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                     'resources' => [
                         'news' => [
                             'routes' => [
-                                'list' => 'sulu_news.get_newslist',
+                                'list' => 'sulu_news.get_news',
                                 'detail' => 'sulu_news.get_news',
                             ],
                         ],

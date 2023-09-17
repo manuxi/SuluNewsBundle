@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
+use DateTime;
 use JMS\Serializer\Annotation as Serializer;
 
 trait TimestampableTranslatableTrait
@@ -14,7 +15,7 @@ trait TimestampableTranslatableTrait
     /**
      * @Serializer\VirtualProperty(name="created")
      */
-    public function getCreated(): ?\DateTime
+    public function getCreated(): ?DateTime
     {
         $translation = $this->getTranslation($this->getLocale());
         if (!$translation) {
@@ -27,7 +28,7 @@ trait TimestampableTranslatableTrait
     /**
      * @Serializer\VirtualProperty(name="changed")
      */
-    public function getChanged(): ?\DateTime
+    public function getChanged(): ?DateTime
     {
         $translation = $this->getTranslation($this->getLocale());
         if (!$translation) {

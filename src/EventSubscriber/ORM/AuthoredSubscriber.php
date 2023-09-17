@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\EventSubscriber\ORM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthoredInterface;
@@ -27,7 +28,7 @@ class AuthoredSubscriber implements EventSubscriber
      * Load the class data, mapping the created and changed fields
      * to datetime fields.
      * @param LoadClassMetadataEventArgs $news
-     * @throws \Doctrine\ORM\Mapping\MappingException
+     * @throws MappingException
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $news)
     {

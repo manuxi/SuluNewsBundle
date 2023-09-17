@@ -88,7 +88,7 @@ class AuthorSubscriber implements EventSubscriber
 
     private function handleAuthor(OnFlushEventArgs $news, UserInterface $user, bool $insertions)
     {
-        $manager = $news->getEntityManager();
+        $manager = $news->getManager();
         $unitOfWork = $manager->getUnitOfWork();
 
         $entities = $insertions ? $unitOfWork->getScheduledEntityInsertions() :
@@ -123,7 +123,7 @@ class AuthorSubscriber implements EventSubscriber
      * @param TokenInterface $token
      * @return UserInterface|null
      */
-    private function getUser(TokenInterface $token)
+    private function getUser(TokenInterface $token): ?UserInterface
     {
         $user = $token->getUser();
 

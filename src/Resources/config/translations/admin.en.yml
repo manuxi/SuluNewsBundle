@@ -12,9 +12,8 @@ sulu_news:
     website: "Website"
     gallery: "Image-Gallery"
     header:
-        main: "Date, Time"
-        text: "Invitation"
-        additional: "Optional Information"
+        text: "Text"
+        additional: "Further Information"
     news_selection_label: "{count} {count, plural, =1 {news} other {news}} selected"
     select_news: "Select news"
     select_newslist: "Select news"

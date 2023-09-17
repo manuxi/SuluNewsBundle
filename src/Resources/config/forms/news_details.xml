@@ -26,25 +26,6 @@
             </params>
         </property>
 
-        <section name="mainInfo">
-            <meta>
-                <title>sulu_news.header.main</title>
-            </meta>
-            <properties>
-                <property name="url" type="url" colspan="6">
-                    <meta>
-                        <title>sulu_news.website</title>
-                    </meta>
-                    <params>
-                        <param name="schemes" type="collection">
-                            <param name="https://"/>
-                            <param name="http://"/>
-                        </param>
-                    </params>
-                </property>
-            </properties>
-        </section>
-
         <section name="text">
             <meta>
                 <title>sulu_news.header.text</title>
@@ -74,6 +55,17 @@
                     </meta>
                     <params>
                         <param name="types" value="image"/>
+                    </params>
+                </property>
+                <property name="url" type="url" colspan="6">
+                    <meta>
+                        <title>sulu_news.link</title>
+                    </meta>
+                    <params>
+                        <param name="schemes" type="collection">
+                            <param name="https://"/>
+                            <param name="http://"/>
+                        </param>
                     </params>
                 </property>
                 <property name="images" type="media_selection">

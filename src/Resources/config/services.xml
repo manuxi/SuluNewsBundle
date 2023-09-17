@@ -159,7 +159,7 @@
 
         <!--Link-->
         <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">
-            <argument type="service" id="news.news_repository"/>
+            <argument type="service" id="sulu_news.repository.news"/>
             <argument type="service" id="translator.default"/>
             <tag name="sulu.link.provider" alias="actus"/>
         </service>

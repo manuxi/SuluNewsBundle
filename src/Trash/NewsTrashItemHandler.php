@@ -9,7 +9,6 @@ use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsRestoredEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
-use Sulu\Bundle\CategoryBundle\Entity\CategoryInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\RouteBundle\Entity\Route;
 use Sulu\Bundle\TrashBundle\Application\DoctrineRestoreHelper\DoctrineRestoreHelperInterface;

@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\Link;
 
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
+use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfiguration;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderInterface;
@@ -25,7 +26,7 @@ class NewsLinkProvider implements LinkProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration(): LinkConfigurationBuilder
+    public function getConfiguration(): LinkConfiguration
     {
         return LinkConfigurationBuilder::create()
             ->setTitle($this->translator->trans('news'))

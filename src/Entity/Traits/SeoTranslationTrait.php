@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Manuxi\SuluNewsBundle\Entity\Traits;
+
+use Doctrine\ORM\Mapping as ORM;
+
+trait SeoTranslationTrait
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private int $id;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private string $locale;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private string $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private string $canonicalUrl;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private string $keywords;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private string $description;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): self
+    {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getCanonicalUrl(): ?string
+    {
+        return $this->canonicalUrl;
+    }
+
+    public function setCanonicalUrl(?string $canonicalUrl): self
+    {
+        $this->canonicalUrl = $canonicalUrl;
+        return $this;
+    }
+
+    public function getKeywords(): ?string
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?string $keywords): self
+    {
+        $this->keywords = $keywords;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+}

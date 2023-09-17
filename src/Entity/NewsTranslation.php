@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 
@@ -58,7 +59,6 @@ class NewsTranslation implements AuditableInterface
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
      */
     private ?bool $published = null;
 

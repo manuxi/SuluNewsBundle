@@ -26,6 +26,8 @@ class AuthoredSubscriber implements EventSubscriber
     /**
      * Load the class data, mapping the created and changed fields
      * to datetime fields.
+     * @param LoadClassMetadataEventArgs $news
+     * @throws \Doctrine\ORM\Mapping\MappingException
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $news)
     {
@@ -45,6 +47,7 @@ class AuthoredSubscriber implements EventSubscriber
 
     /**
      * Set the timestamps before update.
+     * @param LifecycleEventArgs $news
      */
     public function preUpdate(LifecycleEventArgs $news)
     {
@@ -53,6 +56,7 @@ class AuthoredSubscriber implements EventSubscriber
 
     /**
      * Set the timestamps before creation.
+     * @param LifecycleEventArgs $news
      */
     public function prePersist(LifecycleEventArgs $news)
     {
@@ -62,6 +66,7 @@ class AuthoredSubscriber implements EventSubscriber
     /**
      * Set the timestamps. If created is NULL then set it. Always
      * set the changed field.
+     * @param LifecycleEventArgs $news
      */
     private function handleTimestamp(LifecycleEventArgs $news)
     {

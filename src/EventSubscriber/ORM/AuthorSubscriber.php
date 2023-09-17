@@ -10,7 +10,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthorInterface;
 use Sulu\Component\Security\Authentication\UserInterface;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -37,6 +37,7 @@ class AuthorSubscriber implements EventSubscriber
 
     /**
      * Map creator and changer fields to User objects.
+     * @param LoadClassMetadataEventArgs $news
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $news)
     {
@@ -70,7 +71,7 @@ class AuthorSubscriber implements EventSubscriber
         $token = $this->tokenStorage->getToken();
 
         // if no token, do nothing
-        if (null === $token || $token instanceof AnonymousToken) {
+        if (null === $token || $token instanceof NullToken) {
             return;
         }
 
@@ -119,6 +120,7 @@ class AuthorSubscriber implements EventSubscriber
     /**
      * Return the user from the token.
      *
+     * @param TokenInterface $token
      * @return UserInterface|null
      */
     private function getUser(TokenInterface $token)

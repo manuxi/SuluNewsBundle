@@ -30,7 +30,7 @@ class NewsSeo implements SeoInterface, SeoTranslatableInterface
      *
      * @Serializer\Exclude
      */
-    private News $news;
+    private ?News $news = null;
 
     /**
      * @var Collection<string, NewsTranslation>

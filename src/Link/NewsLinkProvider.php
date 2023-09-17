@@ -32,8 +32,8 @@ class NewsLinkProvider implements LinkProviderInterface
             ->setResourceKey(News::RESOURCE_KEY) // the resourceKey of the entity that should be loaded
             ->setListAdapter('table')
             ->setDisplayProperties(['title'])
-            ->setOverlayTitle($this->translator->trans('news'))
-            ->setEmptyText($this->translator->trans('news.emptyNews'))
+            ->setOverlayTitle($this->translator->trans('sulu_news.news'))
+            ->setEmptyText($this->translator->trans('sulu_news.empty_newslist'))
             ->setIcon('su-newspaper')
             ->getLinkConfiguration();
     }

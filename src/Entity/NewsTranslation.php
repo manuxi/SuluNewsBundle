@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
@@ -59,12 +60,12 @@ class NewsTranslation implements AuditableInterface
      * @ORM\Column(type="boolean", nullable=true)
      * @Serializer\Expose()
      */
-    private ?bool $published;
+    private ?bool $published = null;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private ?\DateTimeImmutable $publishedAt;
+    private ?DateTimeImmutable $publishedAt;
 
     public function __construct(News $news, string $locale)
     {
@@ -146,19 +147,19 @@ class NewsTranslation implements AuditableInterface
     {
         $this->published = $published;
         if($published === true){
-            $this->setPublishedAt(new \DateTimeImmutable());
+            $this->setPublishedAt(new DateTimeImmutable());
         } else {
             $this->setPublishedAt(null);
         }
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): ?DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?\DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(?DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }

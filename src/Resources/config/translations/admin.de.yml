@@ -28,4 +28,5 @@ sulu_news:
     shadow_news: "Shadow News"
     enable_shadow_news: "Shadow News aktivieren"
     search_name: "News"
+    empty_newslist: "Keine News vorhanden"
     news: "News"

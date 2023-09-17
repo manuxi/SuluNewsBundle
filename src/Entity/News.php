@@ -58,12 +58,12 @@ class News implements AuditableTranslatableInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $url = '';
+    private ?string $url = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private array $images = [];
+    private ?array $images = null;
 
     /**
      * @var ArrayCollection<string, NewsTranslation>

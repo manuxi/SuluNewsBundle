@@ -19,19 +19,19 @@ class NewsTranslationTest extends SuluTestCase
     /**
      * @var News|ObjectProphecy
      */
-    private $event;
+    private $news;
     private $translation;
     private $testString = "Lorem ipsum dolor sit amet, ...";
 
     protected function setUp(): void
     {
-        $this->event       = $this->prophesize(News::class);
-        $this->translation = new NewsTranslation($this->event->reveal(), 'de');
+        $this->news       = $this->prophesize(News::class);
+        $this->translation = new NewsTranslation($this->news->reveal(), 'de');
     }
 
     public function testEvent(): void
     {
-        $this->assertSame($this->event->reveal(), $this->translation->getEvent());
+        $this->assertSame($this->news->reveal(), $this->translation->getEvent());
     }
 
     public function testLocale(): void
@@ -62,7 +62,7 @@ class NewsTranslationTest extends SuluTestCase
 
     public function testRoutePath(): void
     {
-        $testRoutePath = 'events/event-100';
+        $testRoutePath = 'news/news-100';
         $this->assertEmpty($this->translation->getRoutePath());
         $this->assertSame($this->translation, $this->translation->setRoutePath($testRoutePath));
         $this->assertSame($testRoutePath, $this->translation->getRoutePath());

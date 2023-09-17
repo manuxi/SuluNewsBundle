@@ -33,11 +33,11 @@ class NewsSeoModel implements NewsSeoModelInterface
      */
     public function updateNewsSeo(NewsSeo $newsSeo, Request $request): NewsSeo
     {
-        $newsSeo = $this->mapDataToEventSeo($newsSeo, $request->request->all()['ext']['seo']);
+        $newsSeo = $this->mapDataToNewsSeo($newsSeo, $request->request->all()['ext']['seo']);
         return $this->newsSeoRepository->save($newsSeo);
     }
 
-    private function mapDataToEventSeo(NewsSeo $newsSeo, array $data): NewsSeo
+    private function mapDataToNewsSeo(NewsSeo $newsSeo, array $data): NewsSeo
     {
         $locale = $this->getProperty($data, 'locale');
         if ($locale) {

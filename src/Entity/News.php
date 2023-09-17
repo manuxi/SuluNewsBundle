@@ -377,4 +377,48 @@ class News implements AuditableTranslatableInterface
         $this->images = $images;
     }
 
+    /**
+     * @Serializer\VirtualProperty(name="published")
+     */
+    public function isPublished(): ?bool
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+        return $translation->isPublished();
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+        $translation->setPublished($published);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="published_at")
+     */
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        $translation = $this->getTranslation($this->locale);
+        if(!$translation) {
+            return null;
+        }
+        return $translation->getPublishedAt();
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $date): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if(!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+        $translation->setPublishedAt($date);
+        return $this;
+    }
+
 }

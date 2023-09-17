@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <massive-search-mapping xmlns="http://massiveart.com/schema/dic/massive-search-mapping">
-    <mapping class="Manuxi\SuluNewsBundle\Entity\Event">
-        <index value="event"/>
+    <mapping class="Manuxi\SuluNewsBundle\Entity\News">
+        <index value="news"/>
         <id property="id"/>
         <title expr="object.getTitle()"/>
+        <teaser expr="object.getTeaser()"/>
         <description expr="object.getDescription()"/>
         <url expr="object.getRoutePath()" />
         <locale property="locale"/>

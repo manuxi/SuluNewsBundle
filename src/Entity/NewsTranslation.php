@@ -55,6 +55,17 @@ class NewsTranslation implements AuditableInterface
      */
     private string $routePath;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Expose()
+     */
+    private ?bool $published;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private ?\DateTimeImmutable $publishedAt;
+
     public function __construct(News $news, string $locale)
     {
         $this->news  = $news;
@@ -124,5 +135,31 @@ class NewsTranslation implements AuditableInterface
     {
         $this->routePath = $routePath;
         return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->isPublished ?? false;
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
+        if($published === true){
+            $this->setPublishedAt(new \DateTimeImmutable());
+        } else {
+            $this->setPublishedAt(null);
+        }
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): void
+    {
+        $this->publishedAt = $publishedAt;
     }
 }

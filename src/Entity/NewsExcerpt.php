@@ -46,12 +46,12 @@ class NewsExcerpt implements ExcerptInterface, ExcerptTranslatableInterface
         $this->translations = new ArrayCollection();
     }
 
-    public function getEvent(): ?News
+    public function getNews(): ?News
     {
         return $this->news;
     }
 
-    public function setEvent(News $news): self
+    public function setNews(News $news): self
     {
         $this->news = $news;
         return $this;

@@ -31,7 +31,7 @@ class NewsExcerptTranslation implements ExcerptTranslationInterface
         $this->initExcerptTranslationTrait();
     }
 
-    public function getEventExcerpt(): NewsExcerpt
+    public function getNewsExcerpt(): NewsExcerpt
     {
         return $this->newsExcerpt;
     }

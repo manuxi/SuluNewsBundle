@@ -47,8 +47,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
 
     public function store(object $resource, array $options = []): TrashItemInterface
     {
-        $cover = $resource->getCover();
-        $category = $resource->getCategory();
+        $image = $resource->getImage();
 
         $data = [
             "title" => $resource->getTitle(),
@@ -57,8 +56,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "slug" => $resource->getRoutePath(),
             "enabled" => $resource->isEnabled(),
             "seo" => $resource->getSeo(),
-            "coverId" => $cover ? $cover->getId() : null,
-            "categoryId" => $category ? $category->getId() : null,
+            "excerpt" => $resource->getExcerpt(),
+            "imageId" => $image ? $image->getId() : null,
             "publishedAt" => $resource->getPublishedAt()
         ];
         return $this->trashItemRepository->create(
@@ -77,28 +76,32 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
     public function restore(TrashItemInterface $trashItem, array $restoreFormData = []): object
     {
         $data = $trashItem->getRestoreData();
-        $actuId = (int)$trashItem->getResourceId();
-        $actu = new News();
-        $actu->setTitle($data['title']);
-        $actu->setRoutePath($data['slug']);
-        $actu->setIsPublished($data['isPublished']);
-        $actu->setSeo($data['seo']);
-        $actu->setContent($data['content']);
-        if($data['coverId']){
-            $actu->setCover($this->entityManager->find(MediaInterface::class, $data['coverId']));
+        $newsId = (int)$trashItem->getResourceId();
+        $news = new News();
+        $news->setTitle($data['title']);
+        $news->setTeaser($data['teaser']);
+        $news->setDescription($data['description']);
+
+        $news->setRoutePath($data['slug']);
+        $news->setEnabled($data['enabled']);
+        $news->setSeo($data['seo']);
+        $news->setExcerpt($data['excerpt']);
+
+        if($data['imageId']){
+            $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
         }
-        $actu->setCategory($this->entityManager->find(CategoryInterface::class, $data['categoryId']));
+
         if(isset($data['publishedAt'])){
-            $actu->setPublishedAt(new \DateTimeImmutable($data['publishedAt']['date']));
+            $news->setPublishedAt(new \DateTimeImmutable($data['publishedAt']['date']));
         }
         $this->domainEventCollector->collect(
-            new NewsRestoredEvent($actu, $data)
+            new NewsRestoredEvent($news, $data)
         );
 
-        $this->doctrineRestoreHelper->persistAndFlushWithId($actu, $actuId);
-        $this->createRoute($this->entityManager, $actuId, $actu->getRoutePath(), News::class);
+        $this->doctrineRestoreHelper->persistAndFlushWithId($news, $newsId);
+        $this->createRoute($this->entityManager, $newsId, $news->getRoutePath(), News::class);
         $this->entityManager->flush();
-        return $actu;
+        return $news;
     }
 
     private function createRoute(EntityManagerInterface $manager, int $id, string $slug, string $class)

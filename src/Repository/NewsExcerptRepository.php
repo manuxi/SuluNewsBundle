@@ -28,10 +28,10 @@ class NewsExcerptRepository extends ServiceEntityRepository
 
     public function create(string $locale): NewsExcerpt
     {
-        $eventExcerpt = new NewsExcerpt();
-        $eventExcerpt->setLocale($locale);
+        $newsExcerpt = new NewsExcerpt();
+        $newsExcerpt->setLocale($locale);
 
-        return $eventExcerpt;
+        return $newsExcerpt;
     }
 
     /**
@@ -40,37 +40,37 @@ class NewsExcerptRepository extends ServiceEntityRepository
      */
     public function remove(int $id): void
     {
-        /** @var object $eventExcerpt */
-        $eventExcerpt = $this->getEntityManager()->getReference(
+        /** @var object $newsExcerpt */
+        $newsExcerpt = $this->getEntityManager()->getReference(
             $this->getClassName(),
             $id
         );
 
-        $this->getEntityManager()->remove($eventExcerpt);
+        $this->getEntityManager()->remove($newsExcerpt);
         $this->getEntityManager()->flush();
     }
 
     /**
-     * @param NewsExcerpt $eventExcerpt
+     * @param NewsExcerpt $newsExcerpt
      * @return NewsExcerpt
      */
-    public function save(NewsExcerpt $eventExcerpt): NewsExcerpt
+    public function save(NewsExcerpt $newsExcerpt): NewsExcerpt
     {
-        $this->getEntityManager()->persist($eventExcerpt);
+        $this->getEntityManager()->persist($newsExcerpt);
         $this->getEntityManager()->flush();
-        return $eventExcerpt;
+        return $newsExcerpt;
     }
 
     public function findById(int $id, string $locale): ?NewsExcerpt
     {
-        $eventExcerpt = $this->find($id);
-        if (!$eventExcerpt) {
+        $newsExcerpt = $this->find($id);
+        if (!$newsExcerpt) {
             return null;
         }
 
-        $eventExcerpt->setLocale($locale);
+        $newsExcerpt->setLocale($locale);
 
-        return $eventExcerpt;
+        return $newsExcerpt;
     }
 
 }

@@ -37,10 +37,10 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public function create(string $locale): News
     {
-        $event = new News();
-        $event->setLocale($locale);
+        $entity = new News();
+        $entity->setLocale($locale);
 
-        return $event;
+        return $entity;
     }
 
     /**
@@ -49,13 +49,13 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
      */
     public function remove(int $id): void
     {
-        /** @var object $event */
-        $event = $this->getEntityManager()->getReference(
+        /** @var object $entity */
+        $entity = $this->getEntityManager()->getReference(
             $this->getClassName(),
             $id
         );
 
-        $this->getEntityManager()->remove($event);
+        $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
 
@@ -72,15 +72,15 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public function findById(int $id, string $locale): ?News
     {
-        $event = $this->find($id);
+        $entity = $this->find($id);
 
-        if (!$event) {
+        if (!$entity) {
             return null;
         }
 
-        $event->setLocale($locale);
+        $entity->setLocale($locale);
 
-        return $event;
+        return $entity;
     }
 
     public function findAllForSitemap(int $page, int $limit): array

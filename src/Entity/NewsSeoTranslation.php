@@ -29,7 +29,7 @@ class NewsSeoTranslation implements SeoTranslationInterface
         $this->setLocale($locale);
     }
 
-    public function getEventSeo(): NewsSeo
+    public function getNewsSeo(): NewsSeo
     {
         return $this->newsSeo;
     }

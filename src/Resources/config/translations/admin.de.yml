@@ -20,6 +20,7 @@ sulu_news:
     select_newslist: "News auswählen"
     no_news_selected: "Keine News ausgewählt"
     enable_news: "News aktivieren"
+    publish_news: "News veröffentlichen"
     webspace_settings: "Webspace Einstellungen"
     customize_webspace_settings: "Webspace Einstellungen anpassen"
     main_webspace: "Haupt Webspace"

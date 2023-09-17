@@ -1,8 +1,8 @@
-app_events_api:
+app_news_api:
     type: rest
     prefix: /admin/api
     resource: Manuxi\SuluNewsBundle\Controller\Admin\NewsController
-    name_prefix: sulu_event.
+    name_prefix: sulu_news.
     options:
         expose: true
 

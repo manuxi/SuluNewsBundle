@@ -70,7 +70,7 @@ class NewsController extends AbstractController
 
     /**
      * With the help of this method the corresponding localisations for the
-     * current event are found e.g. to be linked in the language switcher.
+     * current news are found e.g. to be linked in the language switcher.
      * @param News $entity
      * @return array<string, array>
      */

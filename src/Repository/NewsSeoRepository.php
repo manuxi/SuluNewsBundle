@@ -28,10 +28,10 @@ class NewsSeoRepository extends ServiceEntityRepository
 
     public function create(string $locale): NewsSeo
     {
-        $eventSeo = new NewsSeo();
-        $eventSeo->setLocale($locale);
+        $newsSeo = new NewsSeo();
+        $newsSeo->setLocale($locale);
 
-        return $eventSeo;
+        return $newsSeo;
     }
 
     /**
@@ -40,13 +40,13 @@ class NewsSeoRepository extends ServiceEntityRepository
      */
     public function remove(int $id): void
     {
-        /** @var object $eventSeo */
-        $eventSeo = $this->getEntityManager()->getReference(
+        /** @var object $newsSeo */
+        $newsSeo = $this->getEntityManager()->getReference(
             $this->getClassName(),
             $id
         );
 
-        $this->getEntityManager()->remove($eventSeo);
+        $this->getEntityManager()->remove($newsSeo);
         $this->getEntityManager()->flush();
     }
 

@@ -20,7 +20,7 @@ trait ExcerptTranslationTrait
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=5)
@@ -30,17 +30,17 @@ trait ExcerptTranslationTrait
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $more;
+    private ?string $more = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private string $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\CategoryBundle\Entity\Category")
@@ -49,7 +49,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $categories;
+    private ?ArrayCollection $categories = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\TagBundle\Tag\TagInterface")
@@ -58,12 +58,12 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $tags;
+    private ?ArrayCollection $tags = null;
 
     /**
      * @TODO
      */
-    private ArrayCollection $segments;
+    private ?ArrayCollection $segments = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\MediaBundle\Entity\MediaInterface")
@@ -72,7 +72,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="icon_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $icons;
+    private ?ArrayCollection $icons = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="Sulu\Bundle\MediaBundle\Entity\MediaInterface")
@@ -81,7 +81,7 @@ trait ExcerptTranslationTrait
      *      inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $images;
+    private ?ArrayCollection $images = null;
 
     private function initExcerptTranslationTrait(): void
     {

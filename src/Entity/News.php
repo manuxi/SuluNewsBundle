@@ -53,27 +53,17 @@ class News implements AuditableTranslatableInterface
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private bool $enabled;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private ?\DateTimeImmutable $startDate = null;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private ?\DateTimeImmutable $endDate = null;
+    private bool $enabled = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $url = null;
+    private string $url = '';
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private ?array $images = null;
+    private array $images = [];
 
     /**
      * @var ArrayCollection<string, NewsTranslation>
@@ -345,36 +335,26 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @param ?string $url
-     */
-    public function setUrl(?string $url): void
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
+        return $this;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getImages(): ?array
+    public function getImages(): array
     {
         return $this->images;
     }
 
-    /**
-     * @param array|null $images
-     */
-    public function setImages(?array $images): void
+    public function setImages(array $images): self
     {
         $this->images = $images;
+        return $this;
     }
 
     /**

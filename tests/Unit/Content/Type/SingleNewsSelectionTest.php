@@ -9,13 +9,14 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Component\Content\Compat\PropertyInterface;
 
 class SingleNewsSelectionTest extends TestCase
 {
     private SingleNewsSelection $singleNewsSelection;
 
-    private ObjectRepository $newsRepository;
+    private ObjectProphecy $newsRepository;
 
     protected function setUp(): void
     {

@@ -15,7 +15,7 @@ use Sulu\Component\Content\Compat\PropertyInterface;
 class NewsSelectionTest extends TestCase
 {
     private NewsSelection $newsSelection;
-    private ObjectRepository $newsRepository;
+    private ObjectProphecy $newsRepository;
 
     protected function setUp(): void
     {

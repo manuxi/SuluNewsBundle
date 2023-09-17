@@ -29,9 +29,9 @@ class NewsTranslationTest extends SuluTestCase
         $this->translation = new NewsTranslation($this->news->reveal(), 'de');
     }
 
-    public function testEvent(): void
+    public function testNews(): void
     {
-        $this->assertSame($this->news->reveal(), $this->translation->getEvent());
+        $this->assertSame($this->news->reveal(), $this->translation->getNews());
     }
 
     public function testLocale(): void

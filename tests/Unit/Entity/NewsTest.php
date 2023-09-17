@@ -99,26 +99,26 @@ class NewsTest extends SuluTestCase
         $this->assertSame('en', $this->entity->getLocale());
     }
 
-    public function testEventSeo(): void
+    public function testNewsSeo(): void
     {
         $entitySeo = $this->prophesize(NewsSeo::class);
         $entitySeo->getId()->willReturn(42);
 
-        $this->assertInstanceOf(NewsSeo::class, $this->entity->getEventSeo());
-        $this->assertNull($this->entity->getEventSeo()->getId());
-        $this->assertSame($this->entity, $this->entity->setEventSeo($entitySeo->reveal()));
-        $this->assertSame($entitySeo->reveal(), $this->entity->getEventSeo());
+        $this->assertInstanceOf(NewsSeo::class, $this->entity->getNewsSeo());
+        $this->assertNull($this->entity->getNewsSeo()->getId());
+        $this->assertSame($this->entity, $this->entity->setNewsSeo($entitySeo->reveal()));
+        $this->assertSame($entitySeo->reveal(), $this->entity->getNewsSeo());
     }
 
-    public function testEventExcerpt(): void
+    public function testNewsExcerpt(): void
     {
         $entityExcerpt = $this->prophesize(NewsExcerpt::class);
         $entityExcerpt->getId()->willReturn(42);
 
-        $this->assertInstanceOf(NewsExcerpt::class, $this->entity->getEventExcerpt());
-        $this->assertNull($this->entity->getEventExcerpt()->getId());
-        $this->assertSame($this->entity, $this->entity->setEventExcerpt($entityExcerpt->reveal()));
-        $this->assertSame($entityExcerpt->reveal(), $this->entity->getEventExcerpt());
+        $this->assertInstanceOf(NewsExcerpt::class, $this->entity->getNewsExcerpt());
+        $this->assertNull($this->entity->getNewsExcerpt()->getId());
+        $this->assertSame($this->entity, $this->entity->setNewsExcerpt($entityExcerpt->reveal()));
+        $this->assertSame($entityExcerpt->reveal(), $this->entity->getNewsExcerpt());
     }
 
     public function testExt(): void

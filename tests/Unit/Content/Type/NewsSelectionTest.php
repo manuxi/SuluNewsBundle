@@ -14,20 +14,16 @@ use Sulu\Component\Content\Compat\PropertyInterface;
 
 class NewsSelectionTest extends TestCase
 {
-    private $eventSelection;
-
-    /**
-     * @var ObjectProphecy<ObjectRepository<News>>
-     */
-    private $eventRepository;
+    private NewsSelection $newsSelection;
+    private ObjectRepository $newsRepository;
 
     protected function setUp(): void
     {
-        $this->eventRepository = $this->prophesize(ObjectRepository::class);
+        $this->newsRepository = $this->prophesize(ObjectRepository::class);
         $entityManager         = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getRepository(News::class)->willReturn($this->eventRepository->reveal());
+        $entityManager->getRepository(News::class)->willReturn($this->newsRepository->reveal());
 
-        $this->eventSelection = new NewsSelection($entityManager->reveal());
+        $this->newsSelection = new NewsSelection($entityManager->reveal());
     }
 
     public function testNullValue(): void
@@ -35,8 +31,8 @@ class NewsSelectionTest extends TestCase
         $property = $this->prophesize(PropertyInterface::class);
         $property->getValue()->willReturn(null);
 
-        $this->assertSame([], $this->eventSelection->getContentData($property->reveal()));
-        $this->assertSame(['ids' => null], $this->eventSelection->getViewData($property->reveal()));
+        $this->assertSame([], $this->newsSelection->getContentData($property->reveal()));
+        $this->assertSame(['ids' => null], $this->newsSelection->getViewData($property->reveal()));
     }
 
     public function testEmptyArrayValue(): void
@@ -44,8 +40,8 @@ class NewsSelectionTest extends TestCase
         $property = $this->prophesize(PropertyInterface::class);
         $property->getValue()->willReturn([]);
 
-        $this->assertSame([], $this->eventSelection->getContentData($property->reveal()));
-        $this->assertSame(['ids' => []], $this->eventSelection->getViewData($property->reveal()));
+        $this->assertSame([], $this->newsSelection->getContentData($property->reveal()));
+        $this->assertSame(['ids' => []], $this->newsSelection->getViewData($property->reveal()));
     }
 
     public function testValidValue(): void
@@ -53,24 +49,24 @@ class NewsSelectionTest extends TestCase
         $property = $this->prophesize(PropertyInterface::class);
         $property->getValue()->willReturn([45, 22]);
 
-        $event22 = $this->prophesize(News::class);
-        $event22->getId()->willReturn(22);
+        $news22 = $this->prophesize(News::class);
+        $news22->getId()->willReturn(22);
 
-        $event45 = $this->prophesize(News::class);
-        $event45->getId()->willReturn(45);
+        $news45 = $this->prophesize(News::class);
+        $news45->getId()->willReturn(45);
 
-        $this->eventRepository->findBy(['id' => [45, 22]])->willReturn([
-            $event22->reveal(),
-            $event45->reveal(),
+        $this->newsRepository->findBy(['id' => [45, 22]])->willReturn([
+            $news22->reveal(),
+            $news45->reveal(),
         ]);
 
         $this->assertSame(
             [
-                $event45->reveal(),
-                $event22->reveal(),
+                $news45->reveal(),
+                $news22->reveal(),
             ],
-            $this->eventSelection->getContentData($property->reveal())
+            $this->newsSelection->getContentData($property->reveal())
         );
-        $this->assertSame(['ids' => [45, 22]], $this->eventSelection->getViewData($property->reveal()));
+        $this->assertSame(['ids' => [45, 22]], $this->newsSelection->getViewData($property->reveal()));
     }
 }

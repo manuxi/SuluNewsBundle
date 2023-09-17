@@ -9,25 +9,21 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Component\Content\Compat\PropertyInterface;
 
 class SingleNewsSelectionTest extends TestCase
 {
-    private $singleEventSelection;
+    private SingleNewsSelection $singleNewsSelection;
 
-    /**
-     * @var ObjectProphecy<ObjectRepository<News>>
-     */
-    private $eventRepository;
+    private ObjectRepository $newsRepository;
 
     protected function setUp(): void
     {
-        $this->eventRepository = $this->prophesize(ObjectRepository::class);
+        $this->newsRepository = $this->prophesize(ObjectRepository::class);
         $entityManager         = $this->prophesize(EntityManagerInterface::class);
-        $entityManager->getRepository(News::class)->willReturn($this->eventRepository->reveal());
+        $entityManager->getRepository(News::class)->willReturn($this->newsRepository->reveal());
 
-        $this->singleEventSelection = new SingleNewsSelection($entityManager->reveal());
+        $this->singleNewsSelection = new SingleNewsSelection($entityManager->reveal());
     }
 
     public function testNullValue(): void
@@ -35,8 +31,8 @@ class SingleNewsSelectionTest extends TestCase
         $property = $this->prophesize(PropertyInterface::class);
         $property->getValue()->willReturn(null);
 
-        $this->assertNull($this->singleEventSelection->getContentData($property->reveal()));
-        $this->assertSame(['id' => null], $this->singleEventSelection->getViewData($property->reveal()));
+        $this->assertNull($this->singleNewsSelection->getContentData($property->reveal()));
+        $this->assertSame(['id' => null], $this->singleNewsSelection->getViewData($property->reveal()));
     }
 
     public function testValidValue(): void
@@ -44,11 +40,11 @@ class SingleNewsSelectionTest extends TestCase
         $property = $this->prophesize(PropertyInterface::class);
         $property->getValue()->willReturn(45);
 
-        $event45 = $this->prophesize(News::class);
+        $news45 = $this->prophesize(News::class);
 
-        $this->eventRepository->find(45)->willReturn($event45->reveal());
+        $this->newsRepository->find(45)->willReturn($news45->reveal());
 
-        $this->assertSame($event45->reveal(), $this->singleEventSelection->getContentData($property->reveal()));
-        $this->assertSame(['id' => 45], $this->singleEventSelection->getViewData($property->reveal()));
+        $this->assertSame($news45->reveal(), $this->singleNewsSelection->getContentData($property->reveal()));
+        $this->assertSame(['id' => 45], $this->singleNewsSelection->getViewData($property->reveal()));
     }
 }

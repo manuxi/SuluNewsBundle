@@ -13,7 +13,7 @@
 </div>
 
 
-I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch. Sadly it's still not fixed :( 
+I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch. Sadly it's still not fixed in the SuluArticleBundle :( 
 The news and their meta information is translatable. Please feel comfortable submitting feature requests. 
 This bundle is still in development. Use at own risk 🤞🏻
 
@@ -39,19 +39,25 @@ SuluNewsBundle:
 ```
 Last but not least the schema of the database needs to be updated.  
 
-Some tables will be created (prefixed):  
-location, news, news_seo, news_excerpt
+Some tables will be created (prefixed with app_):  
+news, news_seo, news_excerpt
 (plus some ManyToMany relation tables).  
 
-See the needed queries with `php bin/console doctrine:schema:update --dump-sql`.  
-Update the schema by executing `php bin/console doctrine:schema:update --force`.  
+See the needed queries with
+```
+php bin/console doctrine:schema:update --dump-sql
+```  
+Update the schema by executing 
+```
+php bin/console doctrine:schema:update --force
+```  
 
 Make sure you only process the bundles schema updates!
 
 ## 🎣 Usage
 First: Grant permissions for news. 
 After page reload you should see the news item in the navigation. 
-Start to create locations, then news.
+Start to create news.
 Use smart_content property type to show a list of news, e.g.:
 ```xml
 <property name="newslist" type="smart_content">
@@ -74,10 +80,7 @@ Example of the corresponding twig template for the news list:
             {{ news.title }}
         </h2>
         <p>
-            {{ news.startDate|format_datetime('full', 'none', locale=app.request.getLocale()) }}
-            {% if endDate and startDate != endDate %}
-                 - {{ news.endDate|format_datetime('full', 'none', locale=app.request.getLocale()) }}
-            {% endif %}
+            {{ news.created|format_datetime('full', 'none', locale=app.request.getLocale()) }}
         </p>
         <p>
             {{ news.teaser|raw }}

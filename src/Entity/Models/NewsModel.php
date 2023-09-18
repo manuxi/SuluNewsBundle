@@ -37,8 +37,6 @@ class NewsModel implements NewsModelInterface
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function createNews(Request $request): News
     {
@@ -52,8 +50,6 @@ class NewsModel implements NewsModelInterface
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function updateNews(int $id, Request $request): News
     {
@@ -68,8 +64,6 @@ class NewsModel implements NewsModelInterface
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function enableNews(int $id, Request $request): News
     {
@@ -83,8 +77,6 @@ class NewsModel implements NewsModelInterface
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function disableNews(int $id, Request $request): News
     {
@@ -125,7 +117,6 @@ class NewsModel implements NewsModelInterface
     /**
      * @param int $id
      * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function deleteNews(int $id): void
     {
@@ -179,6 +170,11 @@ class NewsModel implements NewsModelInterface
             $entity->setTitle($title);
         }
 
+        $type = $this->getProperty($data, 'type');
+        if ($type) {
+            $entity->setType($type);
+        }
+
         $routePath = $this->getProperty($data, 'routePath');
         if ($routePath) {
             $entity->setRoutePath($routePath);
@@ -192,16 +188,6 @@ class NewsModel implements NewsModelInterface
         $description = $this->getProperty($data, 'description');
         if ($description) {
             $entity->setDescription($description);
-        }
-
-        $startDate = $this->getProperty($data, 'startDate');
-        if ($startDate) {
-            $entity->setStartDate(new \DateTimeImmutable($startDate));
-        }
-
-        $endDate = $this->getProperty($data, 'endDate');
-        if ($endDate) {
-            $entity->setEndDate(new \DateTimeImmutable($endDate));
         }
 
         $imageId = $this->getPropertyMulti($data, ['image', 'id']);
@@ -225,16 +211,6 @@ class NewsModel implements NewsModelInterface
         $url = $this->getProperty($data, 'url');
         if ($url) {
             $entity->setUrl($url);
-        }
-
-        $phoneNumber = $this->getProperty($data, 'phoneNumber');
-        if ($phoneNumber) {
-            $entity->setPhoneNumber($phoneNumber);
-        }
-
-        $email = $this->getProperty($data, 'email');
-        if ($email) {
-            $entity->setEmail($email);
         }
 
         $images = $this->getProperty($data, 'images');

@@ -38,7 +38,24 @@
             <entity-name>%sulu.model.news.class%</entity-name>
         </property>
 
-        <property name="title" visibility="always" searchability="yes" translation="sulu_admin.title">
+        <property name="type" visibility="always" translation="sulu_news.news_type">
+            <field-name>type</field-name>
+            <entity-name>%sulu.model.news.class%</entity-name>
+            <filter type="select">
+                <params>
+                    <param name="options" type="collection">
+                        <param name="article" value="sulu_news.type.article" />
+                        <param name="blog" value="sulu_news.type.blog" />
+                        <param name="faq" value="sulu_news.type.faq" />
+                        <param name="notice" value="sulu_news.type.notice" />
+                        <param name="announcement" value="sulu_news.type.announcement" />
+                        <param name="rating" value="sulu_news.type.rating" />
+                    </param>
+                </params>
+            </filter>
+        </property>
+
+        <property name="title" visibility="always" searchability="yes" translation="sulu_news.title">
             <field-name>title</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 
@@ -51,7 +68,7 @@
             <joins>
                 <join>
                     <entity-name>SuluMediaBundle:Media</entity-name>
-                    <field-name>%sulu.model.news.class%.image</field-name>
+                    <field-name>%sulu.model.news_translation.class%.image</field-name>
                 </join>
             </joins>
 
@@ -75,6 +92,7 @@
         <property name="enabled" visibility="yes" translation="sulu_news.enabled" type="bool">
             <field-name>enabled</field-name>
             <entity-name>%sulu.model.news.class%</entity-name>
+
         </property>
 
         <property name="created" translation="sulu_admin.created" type="datetime" visibility="yes">

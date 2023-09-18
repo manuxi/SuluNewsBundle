@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\UrlTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +21,9 @@ use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 class NewsTranslation implements AuditableInterface
 {
     use AuditableTrait;
+    use ImageTrait;
+    use UrlTrait;
+    use PdfTrait;
 
     /**
      * @ORM\Id()

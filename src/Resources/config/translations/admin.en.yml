@@ -11,6 +11,14 @@ sulu_news:
     pdf: "PDF"
     website: "Website"
     gallery: "Image-Gallery"
+    news_type: "News-Type"
+    type:
+        article: "Article"
+        blog: "Blog-Entry"
+        faq: "F.A.Q."
+        notice: "Notice"
+        announcement: "Announcement"
+        rating: "Rating"
     header:
         text: "Text"
         additional: "Further Information"

@@ -6,50 +6,47 @@
     <key>news_details</key>
 
     <properties>
-        <property name="title" type="text_line" mandatory="true">
+        <section name="mandatory">
             <meta>
-                <title>sulu_news.title</title>
-            </meta>
-            <params>
-                <param name="headline" value="true"/>
-            </params>
-            <tag name="sulu.rlp.part"/>
-        </property>
-
-        <property name="routePath" type="route" mandatory="true">
-            <meta>
-                <title>sulu_admin.url</title>
-            </meta>
-            <!--https://github.com/sulu/sulu/pull/5933-->
-            <params>
-                <param name="mode" value="leaf"/>
-            </params>
-        </property>
-
-        <section name="text">
-            <meta>
-                <title>sulu_news.header.text</title>
+                <title>sulu_news.header.mandatory</title>
             </meta>
             <properties>
-                <property name="teaser" type="text_area">
+                <property name="title" type="text_line" mandatory="true">
                     <meta>
-                        <title>sulu_news.teaser</title>
+                        <title>sulu_news.title</title>
                     </meta>
+                    <params>
+                        <param name="headline" value="true"/>
+                    </params>
+                    <tag name="sulu.rlp.part"/>
                 </property>
-                <property name="description" type="text_editor">
-                    <meta>
-                        <title>sulu_admin.description</title>
-                    </meta>
-                </property>
-            </properties>
-        </section>
 
-        <section name="additional">
-            <meta>
-                <title>sulu_news.header.additional</title>
-            </meta>
-            <properties>
-                <property name="image" type="single_media_selection" colspan="6">
+                <property name="routePath" type="route" mandatory="true">
+                    <meta>
+                        <title>sulu_admin.url</title>
+                    </meta>
+                    <!--https://github.com/sulu/sulu/pull/5933-->
+                    <params>
+                        <param name="mode" value="leaf"/>
+                    </params>
+                </property>
+
+                <property name="type" type="single_select" mandatory="true" colspan="6">
+                    <meta>
+                        <title>sulu_news.news_type</title>
+                    </meta>
+                    <params>
+                        <param name="default_value"
+                               type="expression"
+                               value="service('sulu_news.type_selection').getDefaultValue()"
+                        />
+                        <param name="values"
+                               type="expression"
+                               value="service('sulu_news.type_selection').getValues()"
+                        />
+                    </params>
+                </property>
+                <property name="image" type="single_media_selection" mandatory="true" colspan="6">
                     <meta>
                         <title>sulu_news.mainimage</title>
                     </meta>
@@ -57,6 +54,25 @@
                         <param name="types" value="image"/>
                     </params>
                 </property>
+
+                <property name="teaser" type="text_area" mandatory="true">
+                    <meta>
+                        <title>sulu_news.teaser</title>
+                    </meta>
+                </property>
+                <property name="description" type="text_editor" mandatory="true">
+                    <meta>
+                        <title>sulu_admin.description</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="optional">
+            <meta>
+                <title>sulu_news.header.optional</title>
+            </meta>
+            <properties>
                 <property name="url" type="url" colspan="6">
                     <meta>
                         <title>sulu_news.link</title>
@@ -66,6 +82,14 @@
                             <param name="https://"/>
                             <param name="http://"/>
                         </param>
+                    </params>
+                </property>
+                <property name="pdf" type="single_media_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.pdf</title>
+                    </meta>
+                    <params>
+                        <param name="types" value="document"/>
                     </params>
                 </property>
                 <property name="images" type="media_selection">

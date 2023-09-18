@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
+use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 /**
  * @ORM\Entity
@@ -21,9 +21,8 @@ use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
  */
 class News implements AuditableTranslatableInterface
 {
-    use ImageTrait;
-    use PdfTrait;
     use AuditableTranslatableTrait;
+    use TypeTrait;
 
     public const RESOURCE_KEY = 'news';
     public const FORM_KEY = 'news_details';
@@ -55,11 +54,6 @@ class News implements AuditableTranslatableInterface
      * @ORM\Column(type="boolean", nullable=false)
      */
     private bool $enabled = false;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $url = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -192,6 +186,94 @@ class News implements AuditableTranslatableInterface
         }
 
         $translation->setDescription($description);
+        return $this;
+    }
+
+
+    public function getImage(): ?MediaInterface
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getImage();
+    }
+
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("image")
+     */
+    public function getImageData(): ?array
+    {
+        $translation = $this->getTranslation($this->locale);
+
+        if ($image = $translation->getImage()) {
+            return [
+                'id' => $image->getId(),
+            ];
+        }
+
+        return null;
+
+    }
+
+    public function setImage(?MediaInterface $image): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setImage($image);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="url")
+     */
+    public function getUrl(): ?string
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getUrl();
+    }
+
+    public function setUrl(string $url): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setUrl($url);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="pdf")
+     */
+    public function getPdf(): ?MediaInterface
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getPdf();
+    }
+
+    public function setPdf(?MediaInterface $pdf): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setPdf($pdf);
         return $this;
     }
 
@@ -332,17 +414,6 @@ class News implements AuditableTranslatableInterface
 
            $this->setLocale($locale);
         }
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
         return $this;
     }
 

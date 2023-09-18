@@ -1,2 +1,9 @@
 sulu_news:
     news: News
+    type:
+        article: "Artikel"
+        blog: "Blog-Eintrag"
+        faq: "F.A.Q."
+        notice: "Mitteilung"
+        announcement: "Ankündigung"
+        rating: "Bewertung"

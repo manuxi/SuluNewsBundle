@@ -10,7 +10,6 @@ trait ImageTrait
 {
     /**
      * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @Serializer\Exclude()
      */
     private ?MediaInterface $image = null;
 
@@ -20,8 +19,6 @@ trait ImageTrait
     }
 
     /**
-     * @return array<string, mixed>|null
-     *
      * @Serializer\VirtualProperty
      * @Serializer\SerializedName("image")
      */

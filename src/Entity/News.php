@@ -208,6 +208,9 @@ class News implements AuditableTranslatableInterface
     {
         $translation = $this->getTranslation($this->locale);
 
+        if (!$translation) {
+            return null;
+        }
         if ($image = $translation->getImage()) {
             return [
                 'id' => $image->getId(),

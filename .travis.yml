@@ -14,11 +14,11 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 8.0
+        - php: 8.1
           env: SYMFONY_PHPUNIT_VERSION=9.4
 
         # Latest commit to master
-        - php: 8.0
+        - php: 8.1
           env: STABILITY="dev"
 
     allow_failures:

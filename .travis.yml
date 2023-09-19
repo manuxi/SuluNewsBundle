@@ -41,3 +41,4 @@ install:
 script:
     - composer validate --strict --no-check-lock
     - composer test
+

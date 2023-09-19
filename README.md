@@ -1,17 +1,15 @@
 # SuluNewsBundle!
-<div>
-    <a href="https://www.travis-ci.com/manuxi/SuluNewsBundle" target="_blank">
-        <img src="https://www.travis-ci.com/manuxi/SuluNewsBundle.svg?branch=main" alt="Travis status">
-    </a>
-    <a href="https://github.com/manuxi/SuluNewsBundle/blob/main/LICENSE" target="_blank">
-        <img src="https://img.shields.io/github/license/manuxi/SuluNewsBundle" alt="GitHub license">
-    </a>
-    <a href="https://github.com/manuxi/SuluNewsBundle/tags" target="_blank">
-        <img src="https://img.shields.io/github/v/tag/manuxi/SuluNewsBundle" alt="GitHub license">
-    </a>
-
-</div>
-
+![php workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/php.yml/badge.svg)
+![symfony workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/symfony.yml/badge.svg)
+<a href="https://app.travis-ci.com/manuxi/SuluNewsBundle" target="_blank">
+<img src="https://app.travis-ci.com/manuxi/SuluNewsBundle.svg?branch=main" alt="Travis status">
+</a>
+<a href="https://github.com/manuxi/SuluNewsBundle/blob/main/LICENSE" target="_blank">
+<img src="https://img.shields.io/github/license/manuxi/SuluNewsBundle" alt="GitHub license">
+</a>
+<a href="https://github.com/manuxi/SuluNewsBundle/tags" target="_blank">
+<img src="https://img.shields.io/github/v/tag/manuxi/SuluNewsBundle" alt="GitHub license">
+</a>
 
 I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch. Sadly it's still not fixed in the SuluArticleBundle :( 
 The news and their meta information is translatable. Please feel comfortable submitting feature requests. 

@@ -26,7 +26,7 @@ matrix:
         - env: STABILITY="dev"
 before_install:
     - phpenv config-rm xdebug.ini || true
-    - composer global require --no-progress --no-scripts --no-plugins symfony/flex
+    - composer require --no-progress --no-scripts --no-plugins symfony/flex
 
 install:
     - |
@@ -40,4 +40,4 @@ install:
 
 script:
     - composer validate --strict --no-check-lock
-    - ./vendor/bin/simple-phpunit $PHPUNIT_FLAGS
+    - composer test

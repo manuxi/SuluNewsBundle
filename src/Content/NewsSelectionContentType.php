@@ -32,7 +32,7 @@ class NewsSelectionContentType extends SimpleContentType
         $newslist = [];
         foreach ($ids ?: [] as $id) {
             $news = $this->newsRepository->findById((int) $id, $locale);
-            if ($news && $news->isEnabled()) {
+            if ($news && $news->isPublished()) {
                 $newslist[] = $news;
             }
         }

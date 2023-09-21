@@ -17,8 +17,6 @@ use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Bundle\AutomationBundle\Admin\AutomationAdmin;
 use Sulu\Bundle\AutomationBundle\Admin\View\AutomationViewBuilderFactoryInterface;
 use Sulu\Bundle\PageBundle\Document\BasePageDocument;
-use Sulu\Component\Localization\Localization;
-use Sulu\Component\Localization\Manager\LocalizationManagerInterface;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
@@ -48,7 +46,6 @@ class NewsAdmin extends Admin
     private ViewBuilderFactoryInterface $viewBuilderFactory;
     private SecurityCheckerInterface $securityChecker;
     private WebspaceManagerInterface $webspaceManager;
-    private LocalizationManagerInterface $localizationManager;
     private NewsTypeSelect $newsTypeSelect;
 
     private ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory;
@@ -59,14 +56,12 @@ class NewsAdmin extends Admin
         ViewBuilderFactoryInterface $viewBuilderFactory,
         SecurityCheckerInterface $securityChecker,
         WebspaceManagerInterface $webspaceManager,
-        LocalizationManagerInterface $localizationManager,
         NewsTypeSelect $newsTypeSelect,
         ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory = null
     ) {
         $this->viewBuilderFactory = $viewBuilderFactory;
         $this->securityChecker    = $securityChecker;
         $this->webspaceManager    = $webspaceManager;
-        $this->localizationManager = $localizationManager;
         $this->newsTypeSelect = $newsTypeSelect;
         $this->automationViewBuilderFactory = $automationViewBuilderFactory;
     }
@@ -97,16 +92,6 @@ class NewsAdmin extends Admin
             return;
         }
 
-        $locales = \array_values(
-            \array_map(
-                function(Localization $localization) {
-                    return $localization->getLocale();
-                },
-                $this->localizationManager->getLocalizations()
-            )
-        );
-
-
         $formToolbarActions = [];
         $listToolbarActions = [];
 
@@ -129,25 +114,6 @@ class NewsAdmin extends Admin
 
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
             $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
-        }
-
-
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
-            $editDropdownToolbarActions = [
-                new ToolbarAction('sulu_admin.delete_draft'),
-                new ToolbarAction('sulu_admin.set_unpublished'),
-                new ToolbarAction('sulu_admin.copy'),
-            ];
-
-            if (\count($locales) > 1) {
-                $editDropdownToolbarActions[] = new ToolbarAction('sulu_admin.copy_locale');
-            }
-
-            $formToolbarActions[] = new DropdownToolbarAction(
-                'sulu_admin.edit',
-                'su-pen',
-                $editDropdownToolbarActions
-            );
         }
 
 
@@ -188,22 +154,40 @@ class NewsAdmin extends Admin
                 ->createResourceTabViewBuilder(static::EDIT_FORM_VIEW, '/news/:locale/:id')
                 ->setResourceKey(News::RESOURCE_KEY)
                 ->setBackView(static::LIST_VIEW)
-                ->addLocales($locales)
                 ->setTitleProperty('title')
                 ->addLocales($locales);
             $viewCollection->add($editFormView);
 
-            //enable/disable toolbar actions
+            //publish/unpublish toolbar actions
             $formToolbarActions = [
                 new ToolbarAction('sulu_admin.save'),
                 new ToolbarAction('sulu_admin.delete'),
                 new TogglerToolbarAction(
                     'sulu_news.publish_news',
-                    'enabled',
-                    'enable',
-                    'disable'
+                    'published',
+                    'publish',
+                    'unpublish'
                 ),
             ];
+/*
+            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+                $editDropdownToolbarActions = [
+                    new ToolbarAction('sulu_admin.delete_draft'),
+                    new ToolbarAction('sulu_admin.set_unpublished'),
+                    new ToolbarAction('sulu_admin.copy'),
+                ];
+
+                if (\count($locales) > 1) {
+                    $editDropdownToolbarActions[] = new ToolbarAction('sulu_admin.copy_locale');
+                }
+
+                $formToolbarActions[] = new DropdownToolbarAction(
+                    'sulu_admin.edit',
+                    'su-cog',
+                    $editDropdownToolbarActions
+                );
+            }
+*/
 
             $editDetailsFormView = $this->viewBuilderFactory
                 ->createPreviewFormViewBuilder(static::EDIT_FORM_DETAILS_VIEW, '/details')
@@ -219,8 +203,7 @@ class NewsAdmin extends Admin
             $formToolbarActionsWithoutType = [];
             $previewCondition              = 'nodeType == 1';
 
-            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)
-                && $this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
+            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
                 $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
             }
 

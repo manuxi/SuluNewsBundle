@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Trash;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsRestoredEvent;
@@ -49,14 +50,15 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $image = $resource->getImage();
 
         $data = [
+            "type" => $resource->getType(),
             "title" => $resource->getTitle(),
             "teaser" => $resource->getTeaser(),
             "description" => $resource->getDescription(),
             "slug" => $resource->getRoutePath(),
-            "enabled" => $resource->isEnabled(),
             "seo" => $resource->getSeo(),
             "excerpt" => $resource->getExcerpt(),
             "imageId" => $image ? $image->getId() : null,
+            "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt()
         ];
         return $this->trashItemRepository->create(
@@ -77,12 +79,14 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $data = $trashItem->getRestoreData();
         $newsId = (int)$trashItem->getResourceId();
         $news = new News();
+        $news->setType($data['type']);
         $news->setTitle($data['title']);
         $news->setTeaser($data['teaser']);
         $news->setDescription($data['description']);
+        $news->setPublished($data['published']);
 
         $news->setRoutePath($data['slug']);
-        $news->setEnabled($data['enabled']);
+
         $news->setSeo($data['seo']);
         $news->setExcerpt($data['excerpt']);
 
@@ -91,7 +95,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         }
 
         if(isset($data['publishedAt'])){
-            $news->setPublishedAt(new \DateTimeImmutable($data['publishedAt']['date']));
+            $news->setPublishedAt(new DateTime($data['publishedAt']['date']));
         }
         $this->domainEventCollector->collect(
             new NewsRestoredEvent($news, $data)
@@ -111,8 +115,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $route->setEntityClass($class);
         $route->setEntityId($id);
         $route->setHistory(0);
-        $route->setCreated(new \DateTime());
-        $route->setChanged(new \DateTime());
+        $route->setCreated(new DateTime());
+        $route->setChanged(new DateTime());
         $manager->persist($route);
     }
 

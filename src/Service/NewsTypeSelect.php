@@ -20,7 +20,7 @@ class NewsTypeSelect
         'announcement'  => 'sulu_news.type.announcement',
         'rating'        => 'sulu_news.type.rating',
     ];
-    private string $defaultValue = 'article';
+    private string $defaultValue = 'default';
 
     public function __construct(TranslatorInterface $translator)
     {

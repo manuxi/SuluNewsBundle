@@ -87,7 +87,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
     {
         $offset = ($page * $limit) - $limit;
         $criteria = [
-            'enabled' => true,
+            'published' => true,
         ];
         return $this->findBy($criteria, [], $limit, $offset);
     }
@@ -101,8 +101,9 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public static function createEnabledCriteria(): Criteria
     {
+        dd('asd');
         return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('enabled', true))
+            ->andWhere(Criteria::expr()->eq('published', true))
             ;
     }
 
@@ -161,7 +162,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
      */
     protected function append(QueryBuilder $queryBuilder, string $alias, string $locale, $options = []): array
     {
-        $queryBuilder->andWhere($alias . '.enabled = true');
+        $queryBuilder->andWhere($alias . '.published = true');
 
         return [];
     }

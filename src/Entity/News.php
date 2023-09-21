@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,13 +21,13 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
  */
 class News implements AuditableTranslatableInterface
 {
-    use AuditableTranslatableTrait;
-    use TypeTrait;
-
     public const RESOURCE_KEY = 'news';
     public const FORM_KEY = 'news_details';
     public const LIST_KEY = 'news';
     public const SECURITY_CONTEXT = 'sulu.news.news';
+
+    use AuditableTranslatableTrait;
+    use TypeTrait;
 
     /**
      * @ORM\Id()
@@ -38,22 +38,15 @@ class News implements AuditableTranslatableInterface
 
     /**
      * @ORM\OneToOne(targetEntity="NewsSeo", mappedBy="news", cascade={"persist", "remove"})
-     *
      * @Serializer\Exclude
      */
     private ?NewsSeo $newsSeo = null;
 
     /**
      * @ORM\OneToOne(targetEntity="NewsExcerpt", mappedBy="news", cascade={"persist", "remove"})
-     *
      * @Serializer\Exclude
      */
     private ?NewsExcerpt $newsExcerpt = null;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private bool $enabled = false;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -72,7 +65,6 @@ class News implements AuditableTranslatableInterface
 
     public function __construct()
     {
-        $this->enabled      = false;
         $this->translations = new ArrayCollection();
         $this->initExt();
     }
@@ -80,17 +72,6 @@ class News implements AuditableTranslatableInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(bool $enabled): self
-    {
-        $this->enabled = $enabled;
-        return $this;
     }
 
     /**
@@ -408,6 +389,15 @@ class News implements AuditableTranslatableInterface
         return \array_values($this->translations->getKeys());
     }
 
+    /**
+     * @todo implement opject cloning/copy
+     * @return $this|null
+     */
+    public function copy(): ?static
+    {
+        return null;
+    }
+
     public function copyToLocale(string $locale): self
     {
         if ($currentTranslation = $this->getTranslation($this->getLocale())) {
@@ -437,8 +427,13 @@ class News implements AuditableTranslatableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty(name="published")
+     * @Serializer\VirtualProperty("published")
      */
+    public function getPublished(): ?bool
+    {
+        return $this->isPublished();
+    }
+
     public function isPublished(): ?bool
     {
         $translation = $this->getTranslation($this->locale);
@@ -461,7 +456,7 @@ class News implements AuditableTranslatableInterface
     /**
      * @Serializer\VirtualProperty(name="published_at")
      */
-    public function getPublishedAt(): ?DateTimeImmutable
+    public function getPublishedAt(): ?DateTime
     {
         $translation = $this->getTranslation($this->locale);
         if(!$translation) {
@@ -470,7 +465,7 @@ class News implements AuditableTranslatableInterface
         return $translation->getPublishedAt();
     }
 
-    public function setPublishedAt(?DateTimeImmutable $date): self
+    public function setPublishedAt(?DateTime $date): self
     {
         $translation = $this->getTranslation($this->locale);
         if(!$translation) {

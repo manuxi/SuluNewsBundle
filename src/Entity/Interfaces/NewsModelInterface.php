@@ -11,6 +11,7 @@ interface NewsModelInterface
 {
     public function createNews(Request $request): News;
     public function updateNews(int $id, Request $request): News;
-    public function enableNews(int $id, Request $request): News;
+    public function publishNews(int $id, Request $request): News;
+    public function unpublishNews(int $id, Request $request): News;
 
 }

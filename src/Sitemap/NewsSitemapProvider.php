@@ -79,7 +79,7 @@ class NewsSitemapProvider implements SitemapProviderInterface
     private function findNews($limit = null, $offset = null): News
     {
         $criteria = [
-            'enabled' => true,
+            'published' => true,
         ];
 
         return $this->repository->findBy($criteria, [], $limit, $offset);

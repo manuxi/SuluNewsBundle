@@ -19,6 +19,7 @@ use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
 use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
+use Sulu\Component\Rest\Exception\MissingParameterException;
 use Sulu\Component\Rest\Exception\RestException;
 use Sulu\Component\Rest\RequestParametersTrait;
 use Sulu\Component\Security\Authorization\PermissionTypes;
@@ -95,8 +96,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
      * @param Request $request
      * @return Response
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function postAction(Request $request): Response
     {
@@ -112,24 +111,25 @@ class NewsController extends AbstractRestController implements ClassResourceInte
      * @param int $id
      * @param Request $request
      * @return Response
-     * @throws ORMException
-     * @throws OptimisticLockException
-     * @throws \Sulu\Component\Rest\Exception\MissingParameterException
+     * @throws MissingParameterException
      */
     public function postTriggerAction(int $id, Request $request): Response
     {
         $action = $this->getRequestParameter($request, 'action', true);
-        $locale = $this->getRequestParameter($request, 'locale', true);
 
         try {
             switch ($action) {
-                case 'enable':
-                    $entity = $this->newsModel->enableNews($id, $request);
+                case 'publish':
+                    $entity = $this->newsModel->publishNews($id, $request);
                     break;
-                case 'disable':
-                    $entity = $this->newsModel->disableNews($id, $request);
+                case 'unpublish':
+                    $entity = $this->newsModel->unpublishNews($id, $request);
+                    break;
+                case 'copy':
+                    $entity = $this->newsModel->copy($id, $request);
                     break;
                 case 'copy-locale':
+                    $locale = $this->getRequestParameter($request, 'locale', true);
                     $srcLocale = $this->getRequestParameter($request, 'src', false, $locale);
                     $destLocales = $this->getRequestParameter($request, 'dest', true);
                     $destLocales = explode(',', $destLocales);

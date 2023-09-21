@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
@@ -12,11 +12,12 @@ use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\UrlTrait;
+use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="app_news_translation")
- * @ORM\Entity(repositoryClass="NewsTranslationRepository")
+ * @ORM\Entity(repositoryClass=NewsTranslationRepository::class)
  */
 class NewsTranslation implements AuditableInterface
 {
@@ -69,9 +70,9 @@ class NewsTranslation implements AuditableInterface
     private ?bool $published = null;
 
     /**
-     * @ORM\Column(type="date_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTimeImmutable $publishedAt = null;
+    private ?DateTime $publishedAt = null;
 
     public function __construct(News $news, string $locale)
     {
@@ -144,28 +145,28 @@ class NewsTranslation implements AuditableInterface
         return $this;
     }
 
-    public function isPublished(): bool
+    public function isPublished(): ?bool
     {
-        return $this->isPublished ?? false;
+        return $this->published ?? false;
     }
 
     public function setPublished(bool $published): self
     {
         $this->published = $published;
         if($published === true){
-            $this->setPublishedAt(new DateTimeImmutable());
+            $this->setPublishedAt(new DateTime());
         } else {
             $this->setPublishedAt(null);
         }
         return $this;
     }
 
-    public function getPublishedAt(): ?DateTimeImmutable
+    public function getPublishedAt(): ?DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?DateTimeImmutable $publishedAt): self
+    public function setPublishedAt(?DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
         return $this;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity\Models;
 
+use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Manuxi\SuluNewsBundle\Entity\News;
@@ -65,10 +66,10 @@ class NewsModel implements NewsModelInterface
      * @return News
      * @throws EntityNotFoundException
      */
-    public function enableNews(int $id, Request $request): News
+    public function publishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $entity->setEnabled(true);
+        $entity->setPublished(true);
         return $this->newsRepository->save($entity);
     }
 
@@ -78,11 +79,19 @@ class NewsModel implements NewsModelInterface
      * @return News
      * @throws EntityNotFoundException
      */
-    public function disableNews(int $id, Request $request): News
+    public function unpublishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $entity->setEnabled(false);
+        $entity->setPublished(false);
         return $this->newsRepository->save($entity);
+    }
+
+    public function copy(int $id, Request $request): News
+    {
+        $entity = $this->findNewsById($id);
+        $copy = $entity->copy();
+
+        return $this->newsRepository->save($copy);
     }
 
     public function copyLanguage(int $id, Request $request, string $srcLocale, array $destLocales): News
@@ -162,9 +171,15 @@ class NewsModel implements NewsModelInterface
      * @param array $data
      * @return News
      * @throws EntityNotFoundException
+     * @throws \Exception
      */
     private function mapDataToNews(News $entity, array $data): News
     {
+        $published = $this->getProperty($data, 'published');
+        if ($published) {
+            $entity->setPublished($published);
+        }
+
         $title = $this->getProperty($data, 'title');
         if ($title) {
             $entity->setTitle($title);
@@ -241,7 +256,7 @@ class NewsModel implements NewsModelInterface
 
         $authored = $this->getProperty($data, 'authored');
         if ($authored) {
-            $entity->setAuthored(new \DateTime($authored));
+            $entity->setAuthored(new DateTime($authored));
         }
         return $entity;
     }

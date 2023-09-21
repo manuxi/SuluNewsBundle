@@ -89,9 +89,15 @@
             <joins ref="translation"/>
         </property>
 
-        <property name="enabled" visibility="yes" translation="sulu_news.enabled" type="bool">
-            <field-name>enabled</field-name>
-            <entity-name>%sulu.model.news.class%</entity-name>
+        <property name="published" visibility="yes" translation="sulu_news.published" type="bool">
+            <field-name>published</field-name>
+            <entity-name>%sulu.model.news_translation.class%</entity-name>
+
+        </property>
+
+        <property name="publishedAt" visibility="yes" translation="sulu_news.publishedAt" type="datetime">
+            <field-name>publishedAt</field-name>
+            <entity-name>%sulu.model.news_translation.class%</entity-name>
 
         </property>
 

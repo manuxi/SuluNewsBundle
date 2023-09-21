@@ -12,6 +12,7 @@ class NewsTypeSelect
 
     private TranslatorInterface $translator;
     private array $typesMap = [
+        'default'       => 'sulu_news.type.default',
         'article'       => 'sulu_news.type.article',
         'blog'          => 'sulu_news.type.blog',
         'faq'           => 'sulu_news.type.faq',

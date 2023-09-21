@@ -154,6 +154,11 @@ class News implements AuditableTranslatableInterface
         return $translation->getRoutePath();
     }
 
+    public function getRoute(): ?string
+    {
+        return $this->getRoutePath();
+    }
+
     public function setRoutePath(string $routePath): self
     {
         $translation = $this->getTranslation($this->locale);

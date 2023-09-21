@@ -33,6 +33,18 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.xml');
         $loader->load('controller.xml');
 
+        if ($container->hasParameter('kernel.bundles')) {
+            // TODO FIXME add test here
+            // @codeCoverageIgnoreStart
+            /** @var string[] $bundles */
+            $bundles = $container->getParameter('kernel.bundles');
+
+            if (\array_key_exists('SuluAutomationBundle', $bundles)) {
+                $loader->load('automation.xml');
+            }
+            // @codeCoverageIgnoreEnd
+        }
+
         $this->configurePersistence($config['objects'], $container);
     }
 

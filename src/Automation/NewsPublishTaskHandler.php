@@ -52,5 +52,6 @@ class NewsPublishTaskHandler implements AutomationTaskHandlerInterface
     public function getConfiguration(): TaskHandlerConfiguration
     {
         return TaskHandlerConfiguration::create($this->translator->trans("news.publish"));
+        //return TaskHandlerConfiguration::create($this->translator->trans('sulu_content.task_handler.publish', [], 'admin'));
     }
 }

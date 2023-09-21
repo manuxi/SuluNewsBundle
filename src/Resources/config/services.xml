@@ -8,6 +8,9 @@
             <argument type="service" id="sulu_admin.view_builder_factory"/>
             <argument type="service" id="sulu_security.security_checker"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu.core.localization_manager"/>
+            <argument type="service" id="sulu_news.type_selection"/>
+            <argument type="service" id="sulu_automation.automation_view_builder_factory"/>
 
             <tag name="sulu.admin"/>
             <tag name="sulu.context" context="admin"/>
@@ -147,7 +150,7 @@
         </service>
 
         <!--Automation-->
-        <service id="sulu_news.news_publish_task_handler" class="Manuxi\SuluNewsBundle\Automation\NewsPublishTaskHandler">
+        <!--<service id="sulu_news.news_publish_task_handler" class="Manuxi\SuluNewsBundle\Automation\NewsPublishTaskHandler">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="service" id="translator.default"/>
             <tag name="task.handler"/>
@@ -158,6 +161,12 @@
             <argument type="service" id="translator.default"/>
             <tag name="task.handler"/>
         </service>
+
+        <service id="sulu_news.automation.navigation" class="Manuxi\SuluNewsBundle\Automation\NewsAutomationNavigationProvider">
+            <tag name="sulu_admin.navigation"/>
+            <tag name="sulu_admin.content_navigation" alias="news"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>-->
 
         <!--Link-->
         <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">

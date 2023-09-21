@@ -44,6 +44,7 @@
             <filter type="select">
                 <params>
                     <param name="options" type="collection">
+                        <param name="default" value="sulu_news.type.default" />
                         <param name="article" value="sulu_news.type.article" />
                         <param name="blog" value="sulu_news.type.blog" />
                         <param name="faq" value="sulu_news.type.faq" />
@@ -95,7 +96,7 @@
 
         </property>
 
-        <property name="publishedAt" visibility="yes" translation="sulu_news.publishedAt" type="datetime">
+        <property name="publishedAt" visibility="yes" translation="sulu_news.published_date" type="datetime">
             <field-name>publishedAt</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 

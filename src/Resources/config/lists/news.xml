@@ -44,13 +44,13 @@
             <filter type="select">
                 <params>
                     <param name="options" type="collection">
-                        <param name="default" value="sulu_news.type.default" />
-                        <param name="article" value="sulu_news.type.article" />
-                        <param name="blog" value="sulu_news.type.blog" />
-                        <param name="faq" value="sulu_news.type.faq" />
-                        <param name="notice" value="sulu_news.type.notice" />
-                        <param name="announcement" value="sulu_news.type.announcement" />
-                        <param name="rating" value="sulu_news.type.rating" />
+                        <param name="default" value="sulu_news.types.default" />
+                        <param name="article" value="sulu_news.types.article" />
+                        <param name="blog" value="sulu_news.types.blog" />
+                        <param name="faq" value="sulu_news.types.faq" />
+                        <param name="notice" value="sulu_news.types.notice" />
+                        <param name="announcement" value="sulu_news.types.announcement" />
+                        <param name="rating" value="sulu_news.types.rating" />
                     </param>
                 </params>
             </filter>
@@ -76,15 +76,15 @@
             <transformer type="thumbnails"/>
         </property>
 
-        <property name="teaser" visibility="no" searchability="yes" translation="sulu_news.teaser">
-            <field-name>teaser</field-name>
+        <property name="summary" visibility="no" searchability="yes" translation="sulu_news.summary">
+            <field-name>summary</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 
             <joins ref="translation"/>
         </property>
 
-        <property name="description" visibility="no" searchability="yes" translation="sulu_news.description">
-            <field-name>description</field-name>
+        <property name="text" visibility="no" searchability="yes" translation="sulu_news.text">
+            <field-name>text</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 
             <joins ref="translation"/>

@@ -48,26 +48,26 @@ class NewsTest extends SuluTestCase
         $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getTitle());
     }
 
-    public function testTeaser(): void
+    public function testSummary(): void
     {
-        $this->assertNull($this->entity->getTeaser());
-        $this->assertSame($this->entity, $this->entity->setTeaser($this->testString));
-        $this->assertSame($this->testString, $this->entity->getTeaser());
+        $this->assertNull($this->entity->getSummary());
+        $this->assertSame($this->entity, $this->entity->setSummary($this->testString));
+        $this->assertSame($this->testString, $this->entity->getSummary());
 
         $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
         $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
-        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getTeaser());
+        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getSummary());
     }
 
-    public function testDescription(): void
+    public function testText(): void
     {
-        $this->assertNull($this->entity->getDescription());
-        $this->assertSame($this->entity, $this->entity->setDescription($this->testString));
-        $this->assertSame($this->testString, $this->entity->getDescription());
+        $this->assertNull($this->entity->getText());
+        $this->assertSame($this->entity, $this->entity->setText($this->testString));
+        $this->assertSame($this->testString, $this->entity->getText());
 
         $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
         $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
-        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getDescription());
+        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getText());
     }
 
     public function testRoutePath(): void
@@ -174,17 +174,17 @@ class NewsTest extends SuluTestCase
     public function testTranslations(): void
     {
         $this->assertSame($this->entity->getTranslations(), []);
-        $this->entity->setDescription($this->testString);
+        $this->entity->setText($this->testString);
         $this->assertNotSame($this->entity->getTranslations(), []);
         $this->assertArrayHasKey('de', $this->entity->getTranslations());
         $this->assertArrayNotHasKey('en', $this->entity->getTranslations());
-        $this->assertSame($this->entity->getDescription(), $this->testString);
+        $this->assertSame($this->entity->getText(), $this->testString);
 
         $this->entity->setLocale('en');
-        $this->entity->setDescription($this->testString);
+        $this->entity->setText($this->testString);
         $this->assertArrayHasKey('de', $this->entity->getTranslations());
         $this->assertArrayHasKey('en', $this->entity->getTranslations());
-        $this->assertSame($this->entity->getDescription(), $this->testString);
+        $this->assertSame($this->entity->getText(), $this->testString);
         //No need to test more, it's s already done...
     }
 }

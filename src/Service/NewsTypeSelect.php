@@ -12,13 +12,13 @@ class NewsTypeSelect
 
     private TranslatorInterface $translator;
     private array $typesMap = [
-        'default'       => 'sulu_news.type.default',
-        'article'       => 'sulu_news.type.article',
-        'blog'          => 'sulu_news.type.blog',
-        'faq'           => 'sulu_news.type.faq',
-        'notice'        => 'sulu_news.type.notice',
-        'announcement'  => 'sulu_news.type.announcement',
-        'rating'        => 'sulu_news.type.rating',
+        'default'       => 'sulu_news.types.default',
+        'article'       => 'sulu_news.types.article',
+        'blog'          => 'sulu_news.types.blog',
+        'faq'           => 'sulu_news.types.faq',
+        'notice'        => 'sulu_news.types.notice',
+        'announcement'  => 'sulu_news.types.announcement',
+        'rating'        => 'sulu_news.types.rating',
     ];
     private string $defaultValue = 'default';
 
@@ -34,7 +34,7 @@ class NewsTypeSelect
         foreach ($this->typesMap as $code => $toTrans) {
             $values[] = [
                 'name' => $code,
-                'title' => $this->translator->trans($toTrans),
+                'title' => $this->translator->trans($toTrans, [], 'admin'),
             ];
         }
 

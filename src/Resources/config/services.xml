@@ -17,6 +17,7 @@
 
         <service id="sulu_news.doctrine_list_representation_factory" class="Manuxi\SuluNewsBundle\Common\DoctrineListRepresentationFactory">
             <argument type="service" id="sulu_core.rest_helper"/>
+            <argument type="service" id="sulu_core.list_rest_helper"/>
             <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
             <argument type="service" id="sulu_core.list_builder.field_descriptor_factory"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
@@ -31,16 +32,16 @@
         </service>
 
         <!-- Repositories -->
-        <service id="sulu_news.repository.news" class="Manuxi\SuluNewsBundle\Repository\NewsRepository"
-                 public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-        </service>
-
-        <!-- needed for massive search -->
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
+        <service id="sulu_news.repository.news" class="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
             <argument type="service" id="doctrine"/>
             <tag name="doctrine.repository_service"/>
         </service>
+
+        <!-- needed for massive search -->
+        <!--<service id="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>-->
 
         <service id="sulu_news.repository.news_translation" class="Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository" lazy="true">
             <argument type="service" id="doctrine"/>
@@ -68,21 +69,23 @@
             <tag name="sulu.content.type" alias="news_selection"/>
         </service>
 
-        <service id="Manuxi\SuluNewsBundle\Routing\NewsRouteDefaultsProvider">
-            <argument type="service" id="sulu_news.repository.news"/>
-
-            <tag name="sulu_route.defaults_provider"/>
-        </service>
-
         <service id="Manuxi\SuluNewsBundle\Content\NewsSelectionContentType">
             <argument type="service" id="sulu_news.repository.news"/>
 
             <tag name="sulu.content.type" alias="news_selection"/>
         </service>
 
+        <service id="Manuxi\SuluNewsBundle\Routing\NewsRouteDefaultsProvider">
+            <argument type="service" id="sulu_news.repository.news"/>
+
+            <tag name="sulu_route.defaults_provider"/>
+        </service>
+
         <service id="sulu_news.news_data_provider" class="Manuxi\SuluNewsBundle\Content\NewsDataProvider">
             <argument type="service" id="sulu_news.repository.news"/>
             <argument type="service" id="sulu_core.array_serializer"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="doctrine.orm.entity_manager" />
 
             <tag name="sulu.smart_content.data_provider" alias="newslist"/>
         </service>
@@ -147,25 +150,6 @@
             <tag name="sulu_trash.restore_trash_item_handler"/>
             <tag name="sulu_trash.restore_configuration_provider"/>
         </service>
-
-        <!--Automation-->
-        <!--<service id="sulu_news.news_publish_task_handler" class="Manuxi\SuluNewsBundle\Automation\NewsPublishTaskHandler">
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="service" id="translator.default"/>
-            <tag name="task.handler"/>
-        </service>
-
-        <service id="sulu_news.news_unpublish_task_handler" class="Manuxi\SuluNewsBundle\Automation\NewsUnpublishTaskHandler">
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="service" id="translator.default"/>
-            <tag name="task.handler"/>
-        </service>
-
-        <service id="sulu_news.automation.navigation" class="Manuxi\SuluNewsBundle\Automation\NewsAutomationNavigationProvider">
-            <tag name="sulu_admin.navigation"/>
-            <tag name="sulu_admin.content_navigation" alias="news"/>
-            <tag name="sulu.context" context="admin"/>
-        </service>-->
 
         <!--Link-->
         <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">

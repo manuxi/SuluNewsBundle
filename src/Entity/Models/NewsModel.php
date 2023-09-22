@@ -186,6 +186,21 @@ class NewsModel implements NewsModelInterface
             $entity->setTitle($title);
         }
 
+        $subtitle = $this->getProperty($data, 'subtitle');
+        if ($subtitle) {
+            $entity->setSubtitle($subtitle);
+        }
+
+        $summary = $this->getProperty($data, 'summary');
+        if ($summary) {
+            $entity->setSummary($summary);
+        }
+
+        $text = $this->getProperty($data, 'text');
+        if ($text) {
+            $entity->setText($text);
+        }
+
         $type = $this->getProperty($data, 'type');
         if ($type) {
             $entity->setType($type);
@@ -196,15 +211,7 @@ class NewsModel implements NewsModelInterface
             $entity->setRoutePath($routePath);
         }
 
-        $teaser = $this->getProperty($data, 'teaser');
-        if ($teaser) {
-            $entity->setTeaser($teaser);
-        }
 
-        $description = $this->getProperty($data, 'description');
-        if ($description) {
-            $entity->setDescription($description);
-        }
 
         $imageId = $this->getPropertyMulti($data, ['image', 'id']);
         if ($imageId) {

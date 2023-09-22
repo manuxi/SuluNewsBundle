@@ -99,26 +99,98 @@ class News implements AuditableTranslatableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty(name="teaser")
+     * @Serializer\VirtualProperty(name="subtitle")
      */
-    public function getTeaser(): ?string
+    public function getSubtitle(): ?string
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {
             return null;
         }
 
-        return $translation->getTeaser();
+        return $translation->getSubtitle();
     }
 
-    public function setTeaser(string $teaser): self
+    public function setSubtitle(string $subtitle): self
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {
             $translation = $this->createTranslation($this->locale);
         }
 
-        $translation->setTeaser($teaser);
+        $translation->setSubtitle($subtitle);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="summary")
+     */
+    public function getSummary(): ?string
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getSummary();
+    }
+
+    public function setSummary(string $summary): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setSummary($summary);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="text")
+     */
+    public function getText(): ?string
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getText();
+    }
+
+    public function setText(string $text): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setText($text);
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty(name="footer")
+     */
+    public function getFooter(): ?string
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return null;
+        }
+
+        return $translation->getFooter();
+    }
+
+    public function setFooter(string $footer): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setFooter($footer);
         return $this;
     }
 
@@ -150,31 +222,6 @@ class News implements AuditableTranslatableInterface
         $translation->setRoutePath($routePath);
         return $this;
     }
-
-    /**
-     * @Serializer\VirtualProperty(name="description")
-     */
-    public function getDescription(): ?string
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-
-        return $translation->getDescription();
-    }
-
-    public function setDescription(string $description): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-
-        $translation->setDescription($description);
-        return $this;
-    }
-
 
     public function getImage(): ?MediaInterface
     {

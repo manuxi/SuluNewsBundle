@@ -77,11 +77,14 @@ Example of the corresponding twig template for the news list:
         <h2>
             {{ news.title }}
         </h2>
+        <h3>
+            {{ news.subtitle }}
+        </h3>
         <p>
             {{ news.created|format_datetime('full', 'none', locale=app.request.getLocale()) }}
         </p>
         <p>
-            {{ news.teaser|raw }}
+            {{ news.summary|raw }}
         </p>
         <p>
             <a class="btn btn-primary" href="{{ news.routePath }}" role="button">

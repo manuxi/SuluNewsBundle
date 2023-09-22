@@ -8,6 +8,7 @@ use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactory;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineFieldDescriptor;
+use Sulu\Component\Rest\ListBuilder\ListRestHelperInterface;
 use Sulu\Component\Rest\ListBuilder\Metadata\FieldDescriptorFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\PaginatedRepresentation;
 use Sulu\Component\Rest\RestHelperInterface;
@@ -16,6 +17,7 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 class DoctrineListRepresentationFactory
 {
     private RestHelperInterface $restHelper;
+    private ListRestHelperInterface $listRestHelper;
     private DoctrineListBuilderFactory $listBuilderFactory;
     private FieldDescriptorFactoryInterface $fieldDescriptorFactory;
     private WebspaceManagerInterface $webspaceManager;
@@ -24,30 +26,27 @@ class DoctrineListRepresentationFactory
 
     public function __construct(
         RestHelperInterface $restHelper,
+        ListRestHelperInterface $listRestHelper,
         DoctrineListBuilderFactory $listBuilderFactory,
         FieldDescriptorFactoryInterface $fieldDescriptorFactory,
         WebspaceManagerInterface $webspaceManager,
         NewsTranslationRepository $newsTranslationRepository,
         MediaManagerInterface $mediaManager
     ) {
-        $this->restHelper                   = $restHelper;
-        $this->listBuilderFactory           = $listBuilderFactory;
-        $this->fieldDescriptorFactory       = $fieldDescriptorFactory;
-        $this->webspaceManager              = $webspaceManager;
-        $this->newsTranslationRepository   = $newsTranslationRepository;
-        $this->mediaManager                 = $mediaManager;
+        $this->restHelper = $restHelper;
+        $this->listRestHelper = $listRestHelper;
+        $this->listBuilderFactory = $listBuilderFactory;
+        $this->fieldDescriptorFactory = $fieldDescriptorFactory;
+        $this->webspaceManager = $webspaceManager;
+        $this->newsTranslationRepository = $newsTranslationRepository;
+        $this->mediaManager = $mediaManager;
     }
 
-    /**
-     * @param string $resourceKey
-     * @param mixed[] $filters
-     * @param mixed[] $parameters
-     * @return PaginatedRepresentation
-     */
     public function createDoctrineListRepresentation(
         string $resourceKey,
         array $filters = [],
-        array $parameters = []
+        array $parameters = [],
+        array  $includedFields = []
     ): PaginatedRepresentation
     {
         /** @var DoctrineFieldDescriptor[] $fieldDescriptors */
@@ -64,7 +63,21 @@ class DoctrineListRepresentationFactory
             $listBuilder->where($fieldDescriptors[$key], $value);
         }
 
+        foreach ($includedFields as $field) {
+            $listBuilder->addSelectField($fieldDescriptors[$field]);
+        }
+
         $list = $listBuilder->execute();
+
+        // sort the items to reflect the order of the given ids if the list was requested to include specific ids
+        $requestedIds = $this->listRestHelper->getIds();
+        if (null !== $requestedIds) {
+            $idPositions = array_flip($requestedIds);
+
+            usort($items, function ($a, $b) use ($idPositions) {
+                return $idPositions[$a['id']] - $idPositions[$b['id']];
+            });
+        }
 
         $list = $this->addGhostLocaleToListElements($list, $parameters['locale'] ?? null);
         $list = $this->addImagesToListElements($list, $parameters['locale'] ?? null);

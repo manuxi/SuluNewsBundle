@@ -29,12 +29,12 @@ class NewsLinkProvider implements LinkProviderInterface
     public function getConfiguration(): LinkConfiguration
     {
         return LinkConfigurationBuilder::create()
-            ->setTitle($this->translator->trans('news'))
+            ->setTitle($this->translator->trans('sulu_news.news',[],'admin'))
             ->setResourceKey(News::RESOURCE_KEY) // the resourceKey of the entity that should be loaded
             ->setListAdapter('table')
             ->setDisplayProperties(['title'])
-            ->setOverlayTitle($this->translator->trans('sulu_news.news'))
-            ->setEmptyText($this->translator->trans('sulu_news.empty_newslist'))
+            ->setOverlayTitle($this->translator->trans('sulu_news.news',[],'admin'))
+            ->setEmptyText($this->translator->trans('sulu_news.empty_newslist',[],'admin'))
             ->setIcon('su-newspaper')
             ->getLinkConfiguration();
     }

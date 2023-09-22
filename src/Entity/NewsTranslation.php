@@ -50,14 +50,24 @@ class NewsTranslation implements AuditableInterface
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $teaser = null;
+    private ?string $subtitle = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $description = null;
+    private ?string $summary = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $text = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $footer = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -112,25 +122,47 @@ class NewsTranslation implements AuditableInterface
         return $this;
     }
 
-    public function getTeaser(): ?string
+    public function getSubtitle(): ?string
     {
-        return $this->teaser;
+        return $this->subtitle;
     }
 
-    public function setTeaser(?string $teaser): self
+    public function setSubtitle(?string $subtitle): self
     {
-        $this->teaser = $teaser;
+        $this->subtitle = $subtitle;
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getSummary(): ?string
     {
-        return $this->description;
+        return $this->summary;
     }
 
-    public function setDescription(?string $description): self
+    public function setSummary(?string $summary): self
     {
-        $this->description = $description;
+        $this->summary = $summary;
+        return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(?string $text): self
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    public function getFooter(): ?string
+    {
+        return $this->footer;
+    }
+
+    public function setFooter(?string $footer): self
+    {
+        $this->text = $footer;
         return $this;
     }
 
@@ -171,4 +203,6 @@ class NewsTranslation implements AuditableInterface
         $this->publishedAt = $publishedAt;
         return $this;
     }
+
+
 }

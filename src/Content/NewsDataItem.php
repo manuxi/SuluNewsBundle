@@ -40,9 +40,9 @@ class NewsDataItem implements ItemInterface
     /**
      * @Serializer\VirtualProperty
      */
-    public function getTeaser(): string
+    public function getSummary(): string
     {
-        return (string) $this->entity->getTeaser();
+        return (string) $this->entity->getSummary();
     }
 
     /**

@@ -52,8 +52,10 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $data = [
             "type" => $resource->getType(),
             "title" => $resource->getTitle(),
-            "teaser" => $resource->getTeaser(),
-            "description" => $resource->getDescription(),
+            "subtitle" => $resource->getSubtitle(),
+            "summary" => $resource->getSummary(),
+            "text" => $resource->getText(),
+            "footer" => $resource->getFooter(),
             "slug" => $resource->getRoutePath(),
             "ext" => $resource->getExt(),
             "imageId" => $image ? $image->getId() : null,
@@ -79,9 +81,13 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $newsId = (int)$trashItem->getResourceId();
         $news = new News();
         $news->setType($data['type']);
+
         $news->setTitle($data['title']);
-        $news->setTeaser($data['teaser']);
-        $news->setDescription($data['description']);
+        $news->setSubtitle($data['subtitle']);
+        $news->setSummary($data['summary']);
+        $news->setText($data['text']);
+        $news->setFooter($data['footer']);
+
         $news->setPublished($data['published']);
 
         $news->setRoutePath($data['slug']);

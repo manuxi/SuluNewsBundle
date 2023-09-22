@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Tests\Unit\Entity;
 
+use DateTime;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\NewsTranslation;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -11,17 +12,14 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class NewsTranslationTest extends SuluTestCase
 {
+    private ObjectProphecy $news;
+    private NewsTranslation $translation;
+    private string $testString = "Lorem ipsum dolor sit amet, ...";
+
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
     }
-
-    /**
-     * @var News|ObjectProphecy
-     */
-    private $news;
-    private $translation;
-    private $testString = "Lorem ipsum dolor sit amet, ...";
 
     protected function setUp(): void
     {
@@ -46,18 +44,18 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertSame($this->testString, $this->translation->getTitle());
     }
 
-    public function testTeaser(): void
+    public function testSummary(): void
     {
-        $this->assertNull($this->translation->getTeaser());
-        $this->assertSame($this->translation, $this->translation->setTeaser($this->testString));
-        $this->assertSame($this->testString, $this->translation->getTeaser());
+        $this->assertNull($this->translation->getSummary());
+        $this->assertSame($this->translation, $this->translation->setSummary($this->testString));
+        $this->assertSame($this->testString, $this->translation->getSummary());
     }
 
-    public function testDescription(): void
+    public function testText(): void
     {
-        $this->assertNull($this->translation->getDescription());
-        $this->assertSame($this->translation, $this->translation->setDescription($this->testString));
-        $this->assertSame($this->testString, $this->translation->getDescription());
+        $this->assertNull($this->translation->getText());
+        $this->assertSame($this->translation, $this->translation->setText($this->testString));
+        $this->assertSame($this->testString, $this->translation->getText());
     }
 
     public function testRoutePath(): void
@@ -75,6 +73,16 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertTrue($this->translation->isPublished());
         $this->assertSame($this->translation, $this->translation->setPublished(false));
         $this->assertFalse($this->translation->isPublished());
+    }
+
+    public function testPublishedAt(): void
+    {
+        $this->assertNull($this->translation->getPublishedAt());
+        $this->assertSame($this->translation, $this->translation->setPublished(true));
+        $this->assertNotNull($this->translation->getPublishedAt());
+        $this->assertSame(DateTime::class, get_class($this->translation->getPublishedAt()));
+        $this->assertSame($this->translation, $this->translation->setPublished(false));
+        $this->assertNull($this->translation->getPublishedAt());
     }
 
 }

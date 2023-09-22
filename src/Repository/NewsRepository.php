@@ -7,8 +7,6 @@ namespace Manuxi\SuluNewsBundle\Repository;
 use Doctrine\Common\Collections\Criteria;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,10 +41,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         return $entity;
     }
 
-    /**
-     * @param int $id
-     * @throws \Doctrine\ORM\Exception\ORMException
-     */
     public function remove(int $id): void
     {
         /** @var object $entity */
@@ -59,10 +53,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @param News $entity
-     * @return News
-     */
     public function save(News $entity): News
     {
         $this->getEntityManager()->persist($entity);
@@ -101,7 +91,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public static function createEnabledCriteria(): Criteria
     {
-        dd('asd');
         return Criteria::create()
             ->andWhere(Criteria::expr()->eq('published', true))
             ;

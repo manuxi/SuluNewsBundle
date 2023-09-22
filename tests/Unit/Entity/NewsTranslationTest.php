@@ -68,5 +68,13 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertSame($testRoutePath, $this->translation->getRoutePath());
     }
 
+    public function testPublished(): void
+    {
+        $this->assertFalse($this->translation->isPublished());
+        $this->assertSame($this->translation, $this->translation->setPublished(true));
+        $this->assertTrue($this->translation->isPublished());
+        $this->assertSame($this->translation, $this->translation->setPublished(false));
+        $this->assertFalse($this->translation->isPublished());
+    }
 
 }

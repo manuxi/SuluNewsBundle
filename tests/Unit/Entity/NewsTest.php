@@ -25,15 +25,6 @@ class NewsTest extends SuluTestCase
         $this->entity->setLocale('de');
     }
 
-    public function testEnabled(): void
-    {
-        $this->assertFalse($this->entity->isEnabled());
-        $this->assertSame($this->entity, $this->entity->setEnabled(true));
-        $this->assertTrue($this->entity->isEnabled());
-        $this->assertSame($this->entity, $this->entity->setEnabled(false));
-        $this->assertFalse($this->entity->isEnabled());
-    }
-
     public function testImage(): void
     {
         $image = $this->prophesize(MediaInterface::class);

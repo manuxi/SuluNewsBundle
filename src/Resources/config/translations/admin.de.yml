@@ -42,3 +42,11 @@ sulu_news:
     search_name: "News"
     empty_newslist: "Keine News vorhanden"
     news: "News"
+
+sulu_activity:
+    resource:
+        news: "News"
+    description:
+        news:
+            removed: "News gelöscht"
+            restored: "News wieder hergestellt"

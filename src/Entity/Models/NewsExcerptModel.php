@@ -42,8 +42,6 @@ class NewsExcerptModel implements NewsExcerptModelInterface
      * @param Request $request
      * @return NewsExcerpt
      * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function updateNewsExcerpt(NewsExcerpt $newsExcerpt, Request $request): NewsExcerpt
     {

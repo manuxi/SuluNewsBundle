@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Controller\Admin;
 
 use Manuxi\SuluNewsBundle\Common\DoctrineListRepresentationFactory;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsModifiedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsRemovedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsExcerptModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsModel;
@@ -15,8 +18,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
 use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
+use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Sulu\Component\Rest\Exception\MissingParameterException;
@@ -45,6 +50,8 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     private RouteManagerInterface $routeManager;
     private RouteRepositoryInterface $routeRepository;
     private SecurityCheckerInterface $securityChecker;
+    private TrashManagerInterface $trashManager;
+    private DomainEventCollectorInterface $domainEventCollector;
 
     public function __construct(
         NewsModel $newsModel,
@@ -55,6 +62,8 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         SecurityCheckerInterface $securityChecker,
         ViewHandlerInterface $viewHandler,
+        TrashManagerInterface $trashManager,
+        DomainEventCollectorInterface $domainEventCollector,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         parent::__construct($viewHandler, $tokenStorage);
@@ -65,6 +74,8 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $this->routeManager                      = $routeManager;
         $this->routeRepository                   = $routeRepository;
         $this->securityChecker                   = $securityChecker;
+        $this->trashManager = $trashManager;
+        $this->domainEventCollector = $domainEventCollector;
     }
 
     public function cgetAction(Request $request): Response
@@ -101,6 +112,10 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     {
         $entity = $this->newsModel->createNews($request);
         $this->updateRoutesForEntity($entity);
+
+        $this->domainEventCollector->collect(
+            new NewsCreatedEvent($entity, $request->request->all())
+        );
 
         return $this->handleView($this->view($entity, 201));
     }
@@ -170,17 +185,27 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
         $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
 
+        $this->domainEventCollector->collect(
+            new NewsModifiedEvent($entity, $request->request->all())
+        );
+
         return $this->handleView($this->view($entity));
     }
 
     /**
      * @throws EntityNotFoundException
      * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function deleteAction(int $id): Response
     {
         $entity = $this->newsModel->getNews($id);
+
+        $this->trashManager->store(News::RESOURCE_KEY, $entity);
+
+        $this->domainEventCollector->collect(
+            new NewsRemovedEvent($id, $entity->getTitle())
+        );
+
         $this->removeRoutesForEntity($entity);
 
         $this->newsModel->deleteNews($id);

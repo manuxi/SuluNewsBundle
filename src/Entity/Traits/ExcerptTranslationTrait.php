@@ -254,7 +254,7 @@ trait ExcerptTranslationTrait
         return $this;
     }
 
-    public function getIcons(): ?ArrayCollection
+    public function getIcons(): ?Collection
     {
         return $this->icons;
     }
@@ -303,7 +303,7 @@ trait ExcerptTranslationTrait
         return $this;
     }
 
-    public function getImages(): ?ArrayCollection
+    public function getImages(): ?Collection
     {
         return $this->images;
     }

@@ -11,6 +11,7 @@ sulu_news:
     published: "published"
     published_date: "Publish Date"
     pdf: "PDF"
+    link: "Verlinkung"
     website: "Website"
     gallery: "Image-Gallery"
     news_type: "News-Type"
@@ -25,6 +26,8 @@ sulu_news:
     header:
         text: "Text"
         additional: "Further Information"
+        mandatory: "Mandatory Fields"
+        optional: "Optional Fields"
     news_selection_label: "{count} {count, plural, =1 {news} other {news}} selected"
     select_news: "Select news"
     select_newslist: "Select news"
@@ -40,3 +43,11 @@ sulu_news:
     search_name: "News"
     empty_newslist: "No News available"
     news: "News"
+
+sulu_activity:
+    resource:
+        news: "News"
+    description:
+        news:
+            removed: "News deleted"
+            restored: "News restored"

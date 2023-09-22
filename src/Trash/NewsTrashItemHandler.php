@@ -55,8 +55,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "teaser" => $resource->getTeaser(),
             "description" => $resource->getDescription(),
             "slug" => $resource->getRoutePath(),
-            "seo" => $resource->getSeo(),
-            "excerpt" => $resource->getExcerpt(),
+            "ext" => $resource->getExt(),
             "imageId" => $image ? $image->getId() : null,
             "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt()
@@ -87,8 +86,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
 
         $news->setRoutePath($data['slug']);
 
-        $news->setSeo($data['seo']);
-        $news->setExcerpt($data['excerpt']);
+        $news->setExt($data['ext']);
 
         if($data['imageId']){
             $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));

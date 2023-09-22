@@ -101,7 +101,7 @@ class NewsAdmin extends Admin
             $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
         }
 
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
+        if (false && $this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.save_with_publishing');
         } else {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
@@ -207,7 +207,7 @@ class NewsAdmin extends Admin
                 $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
             }
 
-            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
+            if (false && $this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
                 $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save_with_publishing');
             } else {
                 $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save');
@@ -285,6 +285,7 @@ class NewsAdmin extends Admin
                         PermissionTypes::ADD,
                         PermissionTypes::EDIT,
                         PermissionTypes::DELETE,
+                        PermissionTypes::LIVE,
                     ],
                 ],
             ],

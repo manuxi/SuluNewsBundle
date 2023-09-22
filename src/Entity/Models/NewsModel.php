@@ -7,10 +7,17 @@ namespace Manuxi\SuluNewsBundle\Entity\Models;
 use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsCopiedLanguageEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsModifiedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsPublishedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsRemovedEvent;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsUnpublishedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsModelInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
+use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaRepositoryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
@@ -23,15 +30,18 @@ class NewsModel implements NewsModelInterface
     private NewsRepository $newsRepository;
     private MediaRepositoryInterface $mediaRepository;
     private UserRepository $userRepository;
+    private DomainEventCollectorInterface $domainEventCollector;
 
     public function __construct(
         NewsRepository $newsRepository,
         MediaRepositoryInterface $mediaRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        DomainEventCollectorInterface $domainEventCollector
     ) {
         $this->mediaRepository = $mediaRepository;
         $this->newsRepository = $newsRepository;
         $this->userRepository = $userRepository;
+        $this->domainEventCollector = $domainEventCollector;
     }
 
     /**
@@ -43,6 +53,10 @@ class NewsModel implements NewsModelInterface
     {
         $entity = $this->newsRepository->create((string) $this->getLocaleFromRequest($request));
         $entity = $this->mapDataToNews($entity, $request->request->all());
+
+        $this->domainEventCollector->collect(
+            new NewsCreatedEvent($entity, $request->request->all())
+        );
 
         return $this->newsRepository->save($entity);
     }
@@ -58,6 +72,11 @@ class NewsModel implements NewsModelInterface
         $entity = $this->findNewsByIdAndLocale($id, $request);
         $entity = $this->mapDataToNews($entity, $request->request->all());
         $entity = $this->mapSettingsToNews($entity, $request->request->all());
+
+        $this->domainEventCollector->collect(
+            new NewsModifiedEvent($entity, $request->request->all())
+        );
+
         return $this->newsRepository->save($entity);
     }
 
@@ -71,6 +90,11 @@ class NewsModel implements NewsModelInterface
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
         $entity->setPublished(true);
+
+        $this->domainEventCollector->collect(
+            new NewsPublishedEvent($entity, $request->request->all())
+        );
+
         return $this->newsRepository->save($entity);
     }
 
@@ -84,6 +108,11 @@ class NewsModel implements NewsModelInterface
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
         $entity->setPublished(false);
+
+        $this->domainEventCollector->collect(
+            new NewsUnpublishedEvent($entity, $request->request->all())
+        );
+
         return $this->newsRepository->save($entity);
     }
 
@@ -107,6 +136,10 @@ class NewsModel implements NewsModelInterface
         //@todo: test with more than one different locale
         $entity->setLocale($this->getLocaleFromRequest($request));
 
+        $this->domainEventCollector->collect(
+            new NewsCopiedLanguageEvent($entity, $request->request->all())
+        );
+
         return $this->newsRepository->save($entity);
     }
 
@@ -128,8 +161,11 @@ class NewsModel implements NewsModelInterface
      * @param int $id
      * @throws ORMException
      */
-    public function deleteNews(int $id): void
+    public function deleteNews(int $id, string $title): void
     {
+        $this->domainEventCollector->collect(
+            new NewsRemovedEvent($id, $title)
+        );
         $this->newsRepository->remove($id);
     }
 

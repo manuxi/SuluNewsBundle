@@ -113,9 +113,9 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $entity = $this->newsModel->createNews($request);
         $this->updateRoutesForEntity($entity);
 
-        $this->domainEventCollector->collect(
-            new NewsCreatedEvent($entity, $request->request->all())
-        );
+
+
+
 
         return $this->handleView($this->view($entity, 201));
     }
@@ -185,10 +185,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
         $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
 
-        $this->domainEventCollector->collect(
-            new NewsModifiedEvent($entity, $request->request->all())
-        );
-
         return $this->handleView($this->view($entity));
     }
 
@@ -204,13 +200,9 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 
         $this->trashManager->store(News::RESOURCE_KEY, $entity);
 
-        $this->domainEventCollector->collect(
-            new NewsRemovedEvent($id, $entity->getTitle())
-        );
-
         $this->removeRoutesForEntity($entity);
 
-        $this->newsModel->deleteNews($id);
+        $this->newsModel->deleteNews($id, $entity->getTitle());
         return $this->handleView($this->view(null, 204));
     }
 

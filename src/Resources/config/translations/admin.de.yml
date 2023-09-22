@@ -54,4 +54,6 @@ sulu_activity:
             created: "{userFullName} hat die News \"{resourceTitle}\" erstellt."
             modified: "{userFullName} hat die News \"{resourceTitle}\" geändert."
             removed: "{userFullName} hat die News \"{resourceTitle}\" gelöscht."
-            restored: "{userFullName} hat die News \"{resourceTitle}\" wieder hergestellt"
+            restored: "{userFullName} hat die News \"{resourceTitle}\" wieder hergestellt."
+            published: "{userFullName} hat die News \"{resourceTitle}\" veröffentlicht."
+            unpublished: "{userFullName} hat die Veröffentlichung der News \"{resourceTitle}\" beendet."

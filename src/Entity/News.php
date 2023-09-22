@@ -111,7 +111,7 @@ class News implements AuditableTranslatableInterface
         return $translation->getSubtitle();
     }
 
-    public function setSubtitle(string $subtitle): self
+    public function setSubtitle(?string $subtitle): self
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {
@@ -135,7 +135,7 @@ class News implements AuditableTranslatableInterface
         return $translation->getSummary();
     }
 
-    public function setSummary(string $summary): self
+    public function setSummary(?string $summary): self
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {
@@ -183,7 +183,7 @@ class News implements AuditableTranslatableInterface
         return $translation->getFooter();
     }
 
-    public function setFooter(string $footer): self
+    public function setFooter(?string $footer): self
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {

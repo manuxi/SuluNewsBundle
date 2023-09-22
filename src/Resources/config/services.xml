@@ -109,6 +109,7 @@
             <argument type="service" id="sulu_news.repository.news"/>
             <argument type="service" id="sulu.repository.media"/>
             <argument type="service" id="sulu_security.user_repository"/>
+            <argument type="service" id="sulu_activity.domain_event_collector"/>
         </service>
 
         <service id="sulu_news.model.news_seo" class="Manuxi\SuluNewsBundle\Entity\Models\NewsSeoModel">

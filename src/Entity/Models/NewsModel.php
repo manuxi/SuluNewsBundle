@@ -43,6 +43,7 @@ class NewsModel implements NewsModelInterface
     {
         $entity = $this->newsRepository->create((string) $this->getLocaleFromRequest($request));
         $entity = $this->mapDataToNews($entity, $request->request->all());
+
         return $this->newsRepository->save($entity);
     }
 

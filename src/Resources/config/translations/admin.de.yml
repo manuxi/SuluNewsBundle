@@ -48,5 +48,7 @@ sulu_activity:
         news: "News"
     description:
         news:
-            removed: "News gelöscht"
-            restored: "News wieder hergestellt"
+            created: "{userFullName} hat die News \"{resourceTitle}\" erstellt."
+            modified: "{userFullName} hat die News \"{resourceTitle}\" geändert."
+            removed: "{userFullName} hat die News \"{resourceTitle}\" gelöscht."
+            restored: "{userFullName} hat die News \"{resourceTitle}\" wieder hergestellt"

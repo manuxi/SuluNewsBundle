@@ -12,11 +12,10 @@ class NewsModifiedEvent extends DomainEvent
     private News $news;
     private array $payload;
 
-    public function __construct(News $news, array $payload)
+    public function __construct(News $news)
     {
         parent::__construct();
         $this->news = $news;
-        $this->payload = $payload;
     }
 
     public function getNews(): News

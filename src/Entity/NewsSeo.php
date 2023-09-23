@@ -13,11 +13,12 @@ use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoInterface;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\SeoTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslatableTrait;
+use Manuxi\SuluNewsBundle\Repository\NewsSeoRepository;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="app_news_seo")
- * @ORM\Entity(repositoryClass="NewsSeoRepository")
+ * @ORM\Entity(repositoryClass=NewsSeoRepository::class)
  */
 class NewsSeo implements SeoInterface, SeoTranslatableInterface
 {
@@ -25,7 +26,7 @@ class NewsSeo implements SeoInterface, SeoTranslatableInterface
     use SeoTranslatableTrait;
 
     /**
-     * @ORM\OneToOne(targetEntity="News", inversedBy="newsSeo", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=News::class, inversedBy="newsSeo", cascade={"persist", "remove"})
      * @JoinColumn(name="news_id", referencedColumnName="id", nullable=false)
      *
      * @Serializer\Exclude
@@ -35,7 +36,7 @@ class NewsSeo implements SeoInterface, SeoTranslatableInterface
     /**
      * @var Collection<string, NewsTranslation>
      *
-     * @ORM\OneToMany(targetEntity="NewsSeoTranslation", mappedBy="newsSeo", cascade={"ALL"}, indexBy="locale")
+     * @ORM\OneToMany(targetEntity=NewsSeoTranslation::class, mappedBy="newsSeo", cascade={"ALL"}, indexBy="locale")
      *
      * @Serializer\Exclude
      */

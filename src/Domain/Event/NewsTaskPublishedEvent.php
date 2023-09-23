@@ -7,7 +7,7 @@ namespace Manuxi\SuluNewsBundle\Domain\Event;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 
-class NewsRestoredEvent extends DomainEvent
+class NewsTaskPublishedEvent extends DomainEvent
 {
     private News $news;
     private array $payload = [];
@@ -31,7 +31,7 @@ class NewsRestoredEvent extends DomainEvent
 
     public function getEventType(): string
     {
-        return 'restored';
+        return 'published';
     }
 
     public function getResourceKey(): string

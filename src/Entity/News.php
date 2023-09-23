@@ -12,12 +12,13 @@ use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
+use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="app_news")
- * @ORM\Entity(repositoryClass="NewsRepository")
+ * @ORM\Entity(repositoryClass=NewsRepository::class)
  */
 class News implements AuditableTranslatableInterface
 {
@@ -37,13 +38,13 @@ class News implements AuditableTranslatableInterface
     private ?int $id = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="NewsSeo", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=NewsSeo::class, mappedBy="news", cascade={"persist", "remove"})
      * @Serializer\Exclude
      */
     private ?NewsSeo $newsSeo = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="NewsExcerpt", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=NewsExcerpt::class, mappedBy="news", cascade={"persist", "remove"})
      * @Serializer\Exclude
      */
     private ?NewsExcerpt $newsExcerpt = null;
@@ -54,7 +55,7 @@ class News implements AuditableTranslatableInterface
     private ?array $images = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="NewsTranslation", mappedBy="news", cascade={"ALL"}, indexBy="locale", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=NewsTranslation::class, mappedBy="news", cascade={"ALL"}, indexBy="locale", fetch="EXTRA_LAZY")
      * @Serializer\Exclude
      */
     private Collection $translations;

@@ -15,7 +15,6 @@
             <argument type="service" id="sulu_security.security_checker"/>
             <argument type="service" id="fos_rest.view_handler.default"/>
             <argument type="service" id="sulu_trash.trash_manager"/>
-            <argument type="service" id="sulu_activity.domain_event_collector"/>
             <argument type="service" id="security.token_storage"/>
 
             <tag name="sulu.context" context="admin"/>

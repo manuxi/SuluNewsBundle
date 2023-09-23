@@ -37,25 +37,61 @@
             <tag name="doctrine.repository_service"/>
         </service>
 
-        <!-- needed for massive search -->
-        <!--<service id="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>-->
-
         <service id="sulu_news.repository.news_translation" class="Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository" lazy="true">
             <argument type="service" id="doctrine"/>
         </service>
 
-        <service id="sulu_news.repository.news_seo" class="Manuxi\SuluNewsBundle\Repository\NewsSeoRepository"
-                 public="true" lazy="true">
+        <service id="sulu_news.repository.news_seo" class="Manuxi\SuluNewsBundle\Repository\NewsSeoRepository" public="true" lazy="true">
             <argument type="service" id="doctrine"/>
         </service>
 
-        <service id="sulu_news.repository.news_excerpt" class="Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository"
-                 public="true" lazy="true">
+        <service id="sulu_news.repository.news_seo_translation" class="Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository" public="true" lazy="true">
             <argument type="service" id="doctrine"/>
         </service>
+
+        <service id="sulu_news.repository.news_excerpt" class="Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+        </service>
+
+        <service id="sulu_news.repository.news_excerpt_translation" class="Manuxi\SuluNewsBundle\Repository\NewsExcerptTranslationRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+        </service>
+
+
+        <!-- needed for massive search/automation bundle? -->
+        <!--
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsSeoRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Manuxi\SuluNewsBundle\Repository\NewsExcerptTranslationRepository" public="true" lazy="true">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        -->
+
+
 
         <service id="sulu_news.single_news_selection" class="Manuxi\SuluNewsBundle\Content\Type\SingleNewsSelection">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>

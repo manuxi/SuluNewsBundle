@@ -29,12 +29,18 @@ class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
     {
         return [
             '_controller' => NewsController::class . '::indexAction',
+            //'news' => $object ?: $this->repository->findById((int)$id, $locale),
             'news' => $this->repository->findById((int)$id, $locale),
         ];
     }
 
-    public function isPublished($entityClass, $id, $locale)
+    public function isPublished($entityClass, $id, $locale): bool
     {
+        /*$news = $this->repository->findById((int)$id, $locale);
+        if (!$this->supports($entityClass) || !$news instanceof News) {
+            return false;
+        }
+        return $news->isPublished();*/
         return true;
     }
 

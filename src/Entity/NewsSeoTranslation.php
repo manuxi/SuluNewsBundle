@@ -7,18 +7,19 @@ namespace Manuxi\SuluNewsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoTranslationInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslationTrait;
+use Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="app_news_seo_translation")
- * @ORM\Entity(repositoryClass="NewsSeoTranslationRepository")
+ * @ORM\Entity(repositoryClass=NewsSeoTranslationRepository::class)
  */
 class NewsSeoTranslation implements SeoTranslationInterface
 {
     use SeoTranslationTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="NewsSeo", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity=NewsSeo::class, inversedBy="translations")
      * @ORM\JoinColumn(nullable=false)
      */
     private NewsSeo $newsSeo;

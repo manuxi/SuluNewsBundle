@@ -10,6 +10,7 @@ sulu_news:
     image: "Bild"
     mainimage: "Hauptbild"
     publish: "veröffentlichen"
+    unpublish: "Veröffentlichen beenden"
     published: "veröffentlicht"
     published_date: "Veröffentlichungsdatum"
     published_at: "Veröffentlicht am"

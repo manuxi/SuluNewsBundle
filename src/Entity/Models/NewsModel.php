@@ -45,6 +45,32 @@ class NewsModel implements NewsModelInterface
     }
 
     /**
+     * @param int $id
+     * @param Request|null $request
+     * @return News
+     * @throws EntityNotFoundException
+     */
+    public function getNews(int $id, Request $request = null): News
+    {
+        if(null === $request) {
+            return $this->findNewsById($id);
+        }
+        return $this->findNewsByIdAndLocale($id, $request);
+    }
+
+    /**
+     * @param int $id
+     * @throws ORMException
+     */
+    public function deleteNews(int $id, string $title): void
+    {
+        $this->domainEventCollector->collect(
+            new NewsRemovedEvent($id, $title)
+        );
+        $this->newsRepository->remove($id);
+    }
+
+    /**
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
@@ -145,32 +171,6 @@ class NewsModel implements NewsModelInterface
 
     /**
      * @param int $id
-     * @param Request|null $request
-     * @return News
-     * @throws EntityNotFoundException
-     */
-    public function getNews(int $id, Request $request = null): News
-    {
-        if(null === $request) {
-            return $this->findNewsById($id);
-        }
-        return $this->findNewsByIdAndLocale($id, $request);
-    }
-
-    /**
-     * @param int $id
-     * @throws ORMException
-     */
-    public function deleteNews(int $id, string $title): void
-    {
-        $this->domainEventCollector->collect(
-            new NewsRemovedEvent($id, $title)
-        );
-        $this->newsRepository->remove($id);
-    }
-
-    /**
-     * @param int $id
      * @param Request $request
      * @return News
      * @throws EntityNotFoundException
@@ -246,8 +246,6 @@ class NewsModel implements NewsModelInterface
         if ($routePath) {
             $entity->setRoutePath($routePath);
         }
-
-
 
         $imageId = $this->getPropertyMulti($data, ['image', 'id']);
         if ($imageId) {

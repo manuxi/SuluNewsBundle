@@ -16,7 +16,6 @@ use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Bundle\AutomationBundle\Admin\AutomationAdmin;
 use Sulu\Bundle\AutomationBundle\Admin\View\AutomationViewBuilderFactoryInterface;
-use Sulu\Bundle\PageBundle\Document\BasePageDocument;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
@@ -264,7 +263,7 @@ class NewsAdmin extends Admin
             ) {
                 $viewCollection->add(
                     $this->automationViewBuilderFactory
-                        ->createTaskListViewBuilder(static::EDIT_FORM_VIEW_AUTOMATION,'/automation',BasePageDocument::class)
+                        ->createTaskListViewBuilder(static::EDIT_FORM_VIEW_AUTOMATION,'/automation',News::class)
                         ->setTabOrder(5120)
                         ->setParent(static::EDIT_FORM_VIEW)
                 );

@@ -10,7 +10,7 @@ use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 class NewsCreatedEvent extends DomainEvent
 {
     private News $news;
-    private array $payload;
+    private array $payload = [];
 
     public function __construct(News $news, array $payload)
     {

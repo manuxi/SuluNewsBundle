@@ -34,7 +34,7 @@ class NewsTranslation implements AuditableInterface
     private ?int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="News", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity=News::class, inversedBy="translations")
      * @ORM\JoinColumn(nullable=false)
      */
     private News $news;

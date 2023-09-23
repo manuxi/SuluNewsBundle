@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Controller\Admin;
 
 use Manuxi\SuluNewsBundle\Common\DoctrineListRepresentationFactory;
-use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
-use Manuxi\SuluNewsBundle\Domain\Event\NewsModifiedEvent;
-use Manuxi\SuluNewsBundle\Domain\Event\NewsRemovedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsExcerptModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsModel;
@@ -18,7 +15,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
-use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
 use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
@@ -51,7 +47,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     private RouteRepositoryInterface $routeRepository;
     private SecurityCheckerInterface $securityChecker;
     private TrashManagerInterface $trashManager;
-    private DomainEventCollectorInterface $domainEventCollector;
 
     public function __construct(
         NewsModel $newsModel,
@@ -63,7 +58,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         SecurityCheckerInterface $securityChecker,
         ViewHandlerInterface $viewHandler,
         TrashManagerInterface $trashManager,
-        DomainEventCollectorInterface $domainEventCollector,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         parent::__construct($viewHandler, $tokenStorage);
@@ -75,7 +69,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $this->routeRepository                   = $routeRepository;
         $this->securityChecker                   = $securityChecker;
         $this->trashManager = $trashManager;
-        $this->domainEventCollector = $domainEventCollector;
     }
 
     public function cgetAction(Request $request): Response
@@ -112,10 +105,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     {
         $entity = $this->newsModel->createNews($request);
         $this->updateRoutesForEntity($entity);
-
-
-
-
 
         return $this->handleView($this->view($entity, 201));
     }

@@ -10,7 +10,7 @@ use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 class NewsRemovedEvent extends DomainEvent
 {
     private int $id;
-    private string $title;
+    private string $title = '';
 
     public function __construct(int $id, string $title)
     {

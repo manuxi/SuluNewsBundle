@@ -10,6 +10,7 @@ sulu_news:
     image: "Image"
     mainimage: "Main Image"
     publish: "publish"
+    unpublish: "unpublish"
     published: "published"
     published_date: "Publish Date"
     published_at: "Published at"

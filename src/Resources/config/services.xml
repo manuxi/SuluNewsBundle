@@ -170,6 +170,13 @@
             <tag name="sulu_route.defaults_provider"/>
         </service>
 
+        <!--Link-->
+        <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">
+            <argument type="service" id="sulu_news.repository.news"/>
+            <argument type="service" id="translator.default"/>
+            <tag name="sulu.link.provider" alias="actus"/>
+        </service>
+
         <!--Sitemap-->
         <service id="sulu_news.sitemap_provider" public="true" class="Manuxi\SuluNewsBundle\Sitemap\NewsSitemapProvider">
             <argument type="service" id="sulu_news.repository.news"/>
@@ -189,11 +196,5 @@
             <tag name="sulu_trash.restore_configuration_provider"/>
         </service>
 
-        <!--Link-->
-        <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">
-            <argument type="service" id="sulu_news.repository.news"/>
-            <argument type="service" id="translator.default"/>
-            <tag name="sulu.link.provider" alias="actus"/>
-        </service>
     </services>
 </container>

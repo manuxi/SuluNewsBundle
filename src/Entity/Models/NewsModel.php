@@ -58,10 +58,6 @@ class NewsModel implements NewsModelInterface
         return $this->findNewsByIdAndLocale($id, $request);
     }
 
-    /**
-     * @param int $id
-     * @throws ORMException
-     */
     public function deleteNews(int $id, string $title): void
     {
         $this->domainEventCollector->collect(

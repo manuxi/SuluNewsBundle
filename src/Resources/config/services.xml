@@ -59,12 +59,13 @@
 
 
         <!-- needed for massive search/automation bundle? -->
-        <!--
+        <!-- Otherwise: "Make sure the service exists and is tagged with 'doctrine.repository_service'" -->
         <service id="Manuxi\SuluNewsBundle\Repository\NewsRepository" public="true" lazy="true">
             <argument type="service" id="doctrine"/>
             <tag name="doctrine.repository_service"/>
         </service>
 
+        <!--
         <service id="Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository" lazy="true">
             <argument type="service" id="doctrine"/>
             <tag name="doctrine.repository_service"/>

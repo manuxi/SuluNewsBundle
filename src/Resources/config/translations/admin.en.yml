@@ -53,5 +53,9 @@ sulu_activity:
         news: "News"
     description:
         news:
-            removed: "News deleted"
-            restored: "News restored"
+            created: "{userFullName} created the news \"{resourceTitle}\"."
+            modified: "{userFullName} modified the news \"{resourceTitle}\"."
+            removed: "{userFullName} deleted the news \"{resourceTitle}\"."
+            restored: "{userFullName} restored the news \"{resourceTitle}\"."
+            published: "{userFullName} published the news \"{resourceTitle}\"."
+            unpublished: "{userFullName} unpublished the news \"{resourceTitle}\"."

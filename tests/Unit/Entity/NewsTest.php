@@ -48,6 +48,17 @@ class NewsTest extends SuluTestCase
         $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getTitle());
     }
 
+    public function testSubtitle(): void
+    {
+        $this->assertNull($this->entity->getSubtitle());
+        $this->assertSame($this->entity, $this->entity->setSubtitle($this->testString));
+        $this->assertSame($this->testString, $this->entity->getSubtitle());
+
+        $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
+        $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
+        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getSubtitle());
+    }
+
     public function testSummary(): void
     {
         $this->assertNull($this->entity->getSummary());
@@ -68,6 +79,17 @@ class NewsTest extends SuluTestCase
         $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
         $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
         $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getText());
+    }
+
+    public function testFooter(): void
+    {
+        $this->assertNull($this->entity->getFooter());
+        $this->assertSame($this->entity, $this->entity->setFooter($this->testString));
+        $this->assertSame($this->testString, $this->entity->getFooter());
+
+        $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
+        $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
+        $this->assertSame($this->testString, $this->entity->getTranslations()['de']->getFooter());
     }
 
     public function testRoutePath(): void

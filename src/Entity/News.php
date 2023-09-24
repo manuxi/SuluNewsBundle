@@ -22,13 +22,13 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
  */
 class News implements AuditableTranslatableInterface
 {
+    use AuditableTranslatableTrait;
+    use TypeTrait;
+
     public const RESOURCE_KEY = 'news';
     public const FORM_KEY = 'news_details';
     public const LIST_KEY = 'news';
     public const SECURITY_CONTEXT = 'sulu.news.news';
-
-    use AuditableTranslatableTrait;
-    use TypeTrait;
 
     /**
      * @ORM\Id()

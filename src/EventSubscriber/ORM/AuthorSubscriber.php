@@ -86,9 +86,9 @@ class AuthorSubscriber implements EventSubscriber
         $this->handleAuthor($news, $user, false);
     }
 
-    private function handleAuthor(OnFlushEventArgs $news, UserInterface $user, bool $insertions)
+    private function handleAuthor(OnFlushEventArgs $event, UserInterface $user, bool $insertions)
     {
-        $manager = $news->getManager();
+        $manager = $event->getObjectManager();
         $unitOfWork = $manager->getUnitOfWork();
 
         $entities = $insertions ? $unitOfWork->getScheduledEntityInsertions() :

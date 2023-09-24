@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\Admin;
 
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Service\NewsTypeSelect;
+use Sulu\Bundle\ActivityBundle\Infrastructure\Sulu\Admin\ActivityAdmin;
 use Sulu\Bundle\AdminBundle\Admin\Admin;
 use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItem;
 use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItemCollection;
@@ -23,10 +24,6 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 class NewsAdmin extends Admin
 {
     public const NAV_ITEM = 'sulu_news.news';
-
-    public const STRUCTURE_TAG_TYPE = 'sulu_news.news.type';
-    public const ADD_FORM_VIEW_DETAILS = 'sulu_news.news.add_form.details';
-    public const EDIT_FORM_VIEW_DETAILS = 'sulu_news.news.edit_form.details';
 
     public const LIST_VIEW = 'sulu_news.news.list';
     public const ADD_FORM_VIEW = 'sulu_news.news.add_form';
@@ -56,7 +53,7 @@ class NewsAdmin extends Admin
         SecurityCheckerInterface $securityChecker,
         WebspaceManagerInterface $webspaceManager,
         NewsTypeSelect $newsTypeSelect,
-        ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory = null
+        ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory
     ) {
         $this->viewBuilderFactory = $viewBuilderFactory;
         $this->securityChecker    = $securityChecker;
@@ -100,9 +97,7 @@ class NewsAdmin extends Admin
             $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
         }
 
-        if (false && $this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
-            $formToolbarActions[] = new ToolbarAction('sulu_admin.save_with_publishing');
-        } else {
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
         }
 
@@ -115,10 +110,10 @@ class NewsAdmin extends Admin
             $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
         }
 
-
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             // Configure News List View
-            $listView = $this->viewBuilderFactory->createListViewBuilder(static::LIST_VIEW, '/news/:locale')
+            $listView = $this->viewBuilderFactory
+                ->createListViewBuilder(static::LIST_VIEW, '/news/:locale')
                 ->setResourceKey(News::RESOURCE_KEY)
                 ->setListKey(News::LIST_KEY)
                 ->setTitle('sulu_news.news')
@@ -206,11 +201,7 @@ class NewsAdmin extends Admin
                 $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
             }
 
-            if (false && $this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
-                $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save_with_publishing');
-            } else {
-                $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save');
-            }
+            $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save');
 
             $viewCollection->add(
                 $this->viewBuilderFactory
@@ -268,6 +259,45 @@ class NewsAdmin extends Admin
                         ->setParent(static::EDIT_FORM_VIEW)
                 );
             }
+
+            /*
+            if ($this->securityChecker->hasPermission(ActivityAdmin::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
+                $viewCollection->add(
+                    $this->viewBuilderFactory
+                        ->createResourceTabViewBuilder(static::EDIT_FORM_VIEW_ACTIVITY, '/activity')
+                        ->setResourceKey(News::RESOURCE_KEY)
+                        ->setTabTitle('sulu_admin.activity')
+                        ->setTitleProperty('')
+                        ->setTabOrder(6144)
+                        ->addRouterAttributesToBlacklist(['active', 'filter', 'limit', 'page', 'search', 'sortColumn', 'sortOrder'])
+                        ->setParent(static::EDIT_FORM_VIEW)
+                );
+
+                $viewCollection->add(
+                    $this->viewBuilderFactory
+                        ->createListViewBuilder(static::EDIT_FORM_VIEW_ACTIVITY . '.activity', '/activity')
+                        ->setResourceKey(News::RESOURCE_KEY)
+                        ->setTabTitle('sulu_admin.activity')
+                        ->setTabOrder(6168)
+                        ->setListKey('activities')
+                        ->addListAdapters(['table'])
+                        ->addAdapterOptions([
+                            'table' => [
+                                'skin' => 'flat',
+                                'show_header' => false,
+                            ],
+                        ])
+                        ->disableTabGap()
+                        ->disableSearching()
+                        ->disableSelection()
+                        ->disableColumnOptions()
+                        ->disableFiltering()
+                        ->addResourceStorePropertiesToListRequest(['id' => 'resourceId'])
+                        ->addRequestParameters(['resourceKey' => News::RESOURCE_KEY])
+                        ->setParent(static::EDIT_FORM_VIEW_ACTIVITY)
+                );
+            }
+            */
         }
     }
 

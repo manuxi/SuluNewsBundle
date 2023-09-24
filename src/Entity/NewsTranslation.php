@@ -21,10 +21,10 @@ use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
  */
 class NewsTranslation implements AuditableInterface
 {
-    use AuditableTrait;
     use ImageTrait;
     use UrlTrait;
     use PdfTrait;
+    use AuditableTrait;
 
     /**
      * @ORM\Id()

@@ -133,13 +133,13 @@
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
         </service>
 
-        <service id="sulu_news.persistence.news_subscriber.orm.author" class="Manuxi\SuluNewsBundle\NewsSubscriber\ORM\AuthorSubscriber">
+        <service id="sulu_news.persistence.news_subscriber.orm.author" class="Manuxi\SuluNewsBundle\EventSubscriber\ORM\AuthorSubscriber">
             <argument>%sulu.model.user.class%</argument>
             <argument type="service" id="security.token_storage" on-invalid="null"/>
-            <tag name="doctrine.news_subscriber"/>
+            <tag name="doctrine.event_subscriber"/>
         </service>
-        <service id="sulu_news.persistence.news_subscriber.orm.authored" class="Manuxi\SuluNewsBundle\NewsSubscriber\ORM\AuthoredSubscriber">
-            <tag name="doctrine.news_subscriber"/>
+        <service id="sulu_news.persistence.news_subscriber.orm.authored" class="Manuxi\SuluNewsBundle\EventSubscriber\ORM\AuthoredSubscriber">
+            <tag name="doctrine.event_subscriber"/>
         </service>
 
         <service id="sulu_news.model.news" class="Manuxi\SuluNewsBundle\Entity\Models\NewsModel">

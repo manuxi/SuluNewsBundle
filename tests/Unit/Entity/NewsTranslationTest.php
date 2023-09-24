@@ -44,6 +44,13 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertSame($this->testString, $this->translation->getTitle());
     }
 
+    public function testSubtitle(): void
+    {
+        $this->assertNull($this->translation->getSubtitle());
+        $this->assertSame($this->translation, $this->translation->setSubtitle($this->testString));
+        $this->assertSame($this->testString, $this->translation->getSubtitle());
+    }
+
     public function testSummary(): void
     {
         $this->assertNull($this->translation->getSummary());
@@ -56,6 +63,13 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertNull($this->translation->getText());
         $this->assertSame($this->translation, $this->translation->setText($this->testString));
         $this->assertSame($this->testString, $this->translation->getText());
+    }
+
+    public function testFooter(): void
+    {
+        $this->assertNull($this->translation->getFooter());
+        $this->assertSame($this->translation, $this->translation->setFooter($this->testString));
+        $this->assertSame($this->testString, $this->translation->getFooter());
     }
 
     public function testRoutePath(): void

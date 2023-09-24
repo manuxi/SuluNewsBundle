@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity\Models;
 
 use DateTime;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCopiedLanguageEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsModifiedEvent;

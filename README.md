@@ -1,9 +1,6 @@
 # SuluNewsBundle!
 ![php workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/php.yml/badge.svg)
 ![symfony workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/symfony.yml/badge.svg)
-<a href="https://app.travis-ci.com/manuxi/SuluNewsBundle" target="_blank">
-<img src="https://app.travis-ci.com/manuxi/SuluNewsBundle.svg?branch=main" alt="Travis status">
-</a>
 <a href="https://github.com/manuxi/SuluNewsBundle/blob/main/LICENSE" target="_blank">
 <img src="https://img.shields.io/github/license/manuxi/SuluNewsBundle" alt="GitHub license">
 </a>

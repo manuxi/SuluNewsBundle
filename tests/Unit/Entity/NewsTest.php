@@ -94,7 +94,7 @@ class NewsTest extends SuluTestCase
 
     public function testRoutePath(): void
     {
-        $testRoutePath = 'entitys/entity-100';
+        $testRoutePath = 'entities/entity-100';
 
         $this->assertNull($this->entity->getRoutePath());
         $this->assertSame($this->entity, $this->entity->setRoutePath($testRoutePath));

@@ -162,7 +162,7 @@ class NewsTranslation implements AuditableInterface
 
     public function setFooter(?string $footer): self
     {
-        $this->text = $footer;
+        $this->footer = $footer;
         return $this;
     }
 

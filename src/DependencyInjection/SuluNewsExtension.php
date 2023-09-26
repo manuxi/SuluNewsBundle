@@ -57,7 +57,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                     'indexes' => [
                         'news' => [
                             'name' => 'sulu_news.search_name',
-                            'icon' => 'su-newspaper',
+                            'icon' => 'su-news',
                             'view' => [
                                 'name' => NewsAdmin::EDIT_FORM_VIEW,
                                 'result_to_view' => [
@@ -69,7 +69,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                         ],
 /*                        'website' => [
                             "name" => "news.search_name",
-                            'icon' => 'su-newspaper',
+                            'icon' => 'su-news',
                             "contexts" => [
                                 "news",
                             ],
@@ -138,7 +138,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                                         'display_properties' => [
                                             'title'
                                         ],
-                                        'icon' => 'su-newspaper',
+                                        'icon' => 'su-news',
                                         'label' => 'sulu_news.news_selection_label',
                                         'overlay_title' => 'sulu_news.select_news'
                                     ]
@@ -162,7 +162,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                                         'display_properties' => [
                                             'title'
                                         ],
-                                        'icon' => 'su-calendar',
+                                        'icon' => 'su-news',
                                         'empty_text' => 'sulu_news.no_news_selected',
                                         'overlay_title' => 'sulu_news.select_news'
                                     ],

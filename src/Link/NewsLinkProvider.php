@@ -35,7 +35,7 @@ class NewsLinkProvider implements LinkProviderInterface
             ->setDisplayProperties(['title'])
             ->setOverlayTitle($this->translator->trans('sulu_news.news',[],'admin'))
             ->setEmptyText($this->translator->trans('sulu_news.empty_newslist',[],'admin'))
-            ->setIcon('su-newspaper')
+            ->setIcon('su-news')
             ->getLinkConfiguration();
     }
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\RouteTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\UrlTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 
@@ -21,10 +21,12 @@ use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
  */
 class NewsTranslation implements AuditableInterface
 {
-    use ImageTrait;
+    use AuditableTrait;
+    use PublishedTrait;
+    use RouteTrait;
     use UrlTrait;
     use PdfTrait;
-    use AuditableTrait;
+    use ImageTrait;
 
     /**
      * @ORM\Id()
@@ -68,21 +70,6 @@ class NewsTranslation implements AuditableInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $footer = null;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $routePath;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private ?bool $published = null;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private ?DateTime $publishedAt = null;
 
     public function __construct(News $news, string $locale)
     {
@@ -165,44 +152,5 @@ class NewsTranslation implements AuditableInterface
         $this->footer = $footer;
         return $this;
     }
-
-    public function getRoutePath(): string
-    {
-        return $this->routePath ?? '';
-    }
-
-    public function setRoutePath(string $routePath): self
-    {
-        $this->routePath = $routePath;
-        return $this;
-    }
-
-    public function isPublished(): ?bool
-    {
-        return $this->published ?? false;
-    }
-
-    public function setPublished(bool $published): self
-    {
-        $this->published = $published;
-        if($published === true){
-            $this->setPublishedAt(new DateTime());
-        } else {
-            $this->setPublishedAt(null);
-        }
-        return $this;
-    }
-
-    public function getPublishedAt(): ?DateTime
-    {
-        return $this->publishedAt;
-    }
-
-    public function setPublishedAt(?DateTime $publishedAt): self
-    {
-        $this->publishedAt = $publishedAt;
-        return $this;
-    }
-
 
 }

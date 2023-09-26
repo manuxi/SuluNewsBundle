@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\ImageTranslatableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PdfTranslatableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTranslatableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\RouteTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\UrlTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
-use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 /**
  * @ORM\Entity
@@ -22,13 +25,18 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
  */
 class News implements AuditableTranslatableInterface
 {
-    use AuditableTranslatableTrait;
-    use TypeTrait;
-
     public const RESOURCE_KEY = 'news';
     public const FORM_KEY = 'news_details';
     public const LIST_KEY = 'news';
     public const SECURITY_CONTEXT = 'sulu.news.news';
+
+    use AuditableTranslatableTrait;
+    use PublishedTranslatableTrait;
+    use RouteTranslatableTrait;
+    use UrlTranslatableTrait;
+    use PdfTranslatableTrait;
+    use ImageTranslatableTrait;
+    use TypeTrait;
 
     /**
      * @ORM\Id()
@@ -195,125 +203,6 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="route_path")
-     */
-    public function getRoutePath(): ?string
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-
-        return $translation->getRoutePath();
-    }
-
-    public function getRoute(): ?string
-    {
-        return $this->getRoutePath();
-    }
-
-    public function setRoutePath(string $routePath): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-
-        $translation->setRoutePath($routePath);
-        return $this;
-    }
-
-    public function getImage(): ?MediaInterface
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-
-        return $translation->getImage();
-    }
-
-    /**
-     * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("image")
-     */
-    public function getImageData(): ?array
-    {
-        $translation = $this->getTranslation($this->locale);
-
-        if (!$translation) {
-            return null;
-        }
-        if ($image = $translation->getImage()) {
-            return [
-                'id' => $image->getId(),
-            ];
-        }
-
-        return null;
-
-    }
-
-    public function setImage(?MediaInterface $image): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-
-        $translation->setImage($image);
-        return $this;
-    }
-
-    /**
-     * @Serializer\VirtualProperty(name="url")
-     */
-    public function getUrl(): ?string
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-
-        return $translation->getUrl();
-    }
-
-    public function setUrl(string $url): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-
-        $translation->setUrl($url);
-        return $this;
-    }
-
-    /**
-     * @Serializer\VirtualProperty(name="pdf")
-     */
-    public function getPdf(): ?MediaInterface
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-
-        return $translation->getPdf();
-    }
-
-    public function setPdf(?MediaInterface $pdf): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-
-        $translation->setPdf($pdf);
-        return $this;
-    }
-
     public function getNewsSeo(): NewsSeo
     {
         if (!$this->newsSeo instanceof NewsSeo) {
@@ -471,55 +360,6 @@ class News implements AuditableTranslatableInterface
     public function setImages(array $images): self
     {
         $this->images = $images;
-        return $this;
-    }
-
-    /**
-     * @Serializer\VirtualProperty("published")
-     */
-    public function getPublished(): ?bool
-    {
-        return $this->isPublished();
-    }
-
-    public function isPublished(): ?bool
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            return null;
-        }
-        return $translation->isPublished();
-    }
-
-    public function setPublished(bool $published): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-        $translation->setPublished($published);
-        return $this;
-    }
-
-    /**
-     * @Serializer\VirtualProperty(name="published_at")
-     */
-    public function getPublishedAt(): ?DateTime
-    {
-        $translation = $this->getTranslation($this->locale);
-        if(!$translation) {
-            return null;
-        }
-        return $translation->getPublishedAt();
-    }
-
-    public function setPublishedAt(?DateTime $date): self
-    {
-        $translation = $this->getTranslation($this->locale);
-        if(!$translation) {
-            $translation = $this->createTranslation($this->locale);
-        }
-        $translation->setPublishedAt($date);
         return $this;
     }
 

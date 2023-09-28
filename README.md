@@ -35,7 +35,7 @@ SuluNewsBundle:
 Last but not least the schema of the database needs to be updated.  
 
 Some tables will be created (prefixed with app_):  
-news, news_seo, news_excerpt
+news, news_translation, news_seo, news_excerpt
 (plus some ManyToMany relation tables).  
 
 See the needed queries with
@@ -91,8 +91,7 @@ Example of the corresponding twig template for the news list:
     </div>
 {% endfor %}
 ```
-The template for the single news is located here
-`templates/pages/news.html.twig`.
+
 Since the seo and excerpt tabs are available in the news editor, 
 meta information can be provided like it's done as usual when rendering your pages. 
 

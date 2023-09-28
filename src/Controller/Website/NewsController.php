@@ -49,7 +49,7 @@ class NewsController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function indexAction(News $news, string $view = 'pages/news', bool $preview = false, bool $partial = false): Response
+    public function indexAction(News $news, string $view = '@SuluNews/news', bool $preview = false, bool $partial = false): Response
     {
         $viewTemplate = $this->getViewTemplate($view, $this->request, $preview);
 

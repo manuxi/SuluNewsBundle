@@ -1,0 +1,49 @@
+{% extends "body.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row news-{{ news.type }}">
+            <div class="col-12 pb-3">
+                <div class="title">
+                    <div class="overline mb-1">{{ news.publishedAt | format_datetime('full', 'none', locale=app.request.locale) }}</div>
+                    <h1 class="mb-2">{{ news.title }}</h1>
+                    {% if news.subtitle %}
+                        <h2 class="h3 mb-4">{{ news.subtitle }}</h2>
+                    {% endif %}
+                    {% if news.summary %}
+                        <p class="mb-4">{{ news.summary }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="content pb-3">
+                    {{ news.text|raw }}
+                </div>
+            </div>
+            <div class="col-12 py-3 bg-light text-dark">
+                <div class="footer mb-5">
+
+                    {% if news.footer %}
+                        {{ news.footer|raw }}
+                    {% endif %}
+
+                    {% set contact = sulu_resolve_contact(news.creator) %}
+                    {% set gender = contact.formOfAddress == 1 ? 'female' : 'male' %}
+                    {% set contactImage = 'build/website/images/misc/' ~ gender ~ '.png' %}
+                    {% if contact.avatar %}
+                        {% set media = sulu_resolve_media(contact.avatar, app.request.locale) %}
+                        {% set contactImage = media.thumbnails["sulu-100x100-inset"] %}
+                    {% endif %}
+
+                    <div class="d-flex">
+                        <img src="{{ asset(contactImage) }}" class="img-thumbnail rounded-circle me-3 shadow border border-1" style="width:4rem;height:4rem;" alt="{{ contact.fullName }}" title="{{ contact.fullName }}">
+                        <div>
+                            <small>{{ "text.by"|trans }}</small>
+                            <p class="mb-1">{{ contact.fullName }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

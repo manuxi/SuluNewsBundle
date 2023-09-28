@@ -231,6 +231,11 @@ class NewsModel implements NewsModelInterface
             $entity->setText($text);
         }
 
+        $footer = $this->getProperty($data, 'footer');
+        if ($footer) {
+            $entity->setFooter($footer);
+        }
+
         $type = $this->getProperty($data, 'type');
         if ($type) {
             $entity->setType($type);

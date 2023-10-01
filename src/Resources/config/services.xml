@@ -174,7 +174,7 @@
         <service id="sulu_news.news_link_provider" class="Manuxi\SuluNewsBundle\Link\NewsLinkProvider">
             <argument type="service" id="sulu_news.repository.news"/>
             <argument type="service" id="translator.default"/>
-            <tag name="sulu.link.provider" alias="actus"/>
+            <tag name="sulu.link.provider" alias="news"/>
         </service>
 
         <!--Sitemap-->
@@ -194,6 +194,12 @@
             <tag name="sulu_trash.store_trash_item_handler"/>
             <tag name="sulu_trash.restore_trash_item_handler"/>
             <tag name="sulu_trash.restore_configuration_provider"/>
+        </service>
+
+        <!--Twig-->
+        <service id="sulu_news.twig_extension" class="Manuxi\SuluNewsBundle\Twig\NewsExtension">
+            <argument type="service" id="sulu_news.repository.news"/>
+            <tag name="twig.extension"/>
         </service>
 
     </services>

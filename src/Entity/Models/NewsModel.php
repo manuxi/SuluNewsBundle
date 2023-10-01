@@ -264,9 +264,9 @@ class NewsModel implements NewsModelInterface
             $entity->setPdf($pdf);
         }
 
-        $url = $this->getProperty($data, 'url');
-        if ($url) {
-            $entity->setUrl($url);
+        $link = $this->getProperty($data, 'link');
+        if ($link) {
+            $entity->setLink($link);
         }
 
         $images = $this->getProperty($data, 'images');

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Manuxi\SuluNewsBundle\Entity\Traits\LinkTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTranslatableTrait;
@@ -15,7 +16,6 @@ use Manuxi\SuluNewsBundle\Entity\Traits\PdfTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\RouteTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\UrlTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 
 /**
@@ -33,8 +33,8 @@ class News implements AuditableTranslatableInterface
     use AuditableTranslatableTrait;
     use PublishedTranslatableTrait;
     use RouteTranslatableTrait;
-    use UrlTranslatableTrait;
     use PdfTranslatableTrait;
+    use LinkTranslatableTrait;
     use ImageTranslatableTrait;
     use TypeTrait;
 

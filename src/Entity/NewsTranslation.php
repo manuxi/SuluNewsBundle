@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Manuxi\SuluNewsBundle\Entity\Traits\LinkTrait;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\RouteTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\UrlTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 
 /**
@@ -24,7 +24,7 @@ class NewsTranslation implements AuditableInterface
     use AuditableTrait;
     use PublishedTrait;
     use RouteTrait;
-    use UrlTrait;
+    use LinkTrait;
     use PdfTrait;
     use ImageTrait;
 

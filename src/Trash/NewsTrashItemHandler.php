@@ -58,6 +58,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "footer" => $resource->getFooter(),
             "slug" => $resource->getRoutePath(),
             "ext" => $resource->getExt(),
+            "link" => $resource->getLink(),
             "imageId" => $image ? $image->getId() : null,
             "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt()
@@ -87,12 +88,10 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setSummary($data['summary']);
         $news->setText($data['text']);
         $news->setFooter($data['footer']);
-
         $news->setPublished($data['published']);
-
         $news->setRoutePath($data['slug']);
-
         $news->setExt($data['ext']);
+        $news->setLink($data['link']);
 
         if($data['imageId']){
             $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));

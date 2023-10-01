@@ -80,15 +80,14 @@
                 <title>sulu_news.header.additional</title>
             </meta>
             <properties>
-                <property name="url" type="url" colspan="6">
+                <property name="link" type="link" colspan="6">
                     <meta>
                         <title>sulu_news.link</title>
                     </meta>
+
                     <params>
-                        <param name="schemes" type="collection">
-                            <param name="https://"/>
-                            <param name="http://"/>
-                        </param>
+                        <param name="enable_anchor" value="false"/>
+                        <param name="enable_attributes" value="true"/>
                     </params>
                 </property>
                 <property name="pdf" type="single_media_selection" colspan="6">

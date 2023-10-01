@@ -25,6 +25,7 @@
                     {% if news.footer %}
                         {{ news.footer|raw }}
                     {% endif %}
+                    {% include '@SuluNews/link.html.twig' with {link: news.link} %}
 
                     {% set contact = sulu_resolve_contact(news.creator) %}
                     {% set gender = contact.formOfAddress == 1 ? 'female' : 'male' %}

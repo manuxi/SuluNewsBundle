@@ -6,7 +6,9 @@ namespace Manuxi\SuluNewsBundle\Content;
 
 use Countable;
 use Doctrine\ORM\EntityManagerInterface;
+use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Entity\News;
+use Manuxi\SuluNewsBundle\Service\NewsTypeSelect;
 use Sulu\Component\Serializer\ArraySerializerInterface;
 use Sulu\Component\SmartContent\Configuration\ProviderConfigurationInterface;
 use Sulu\Component\SmartContent\DataProviderResult;
@@ -20,13 +22,38 @@ class NewsDataProvider extends BaseDataProvider
 
     private RequestStack $requestStack;
     private EntityManagerInterface $entityManager;
+    private NewsTypeSelect $newsTypeSelect;
 
-    public function __construct(DataProviderRepositoryInterface $repository, ArraySerializerInterface $serializer, RequestStack $requestStack, EntityManagerInterface $entityManager)
+    public function __construct(DataProviderRepositoryInterface $repository, ArraySerializerInterface $serializer, RequestStack $requestStack, EntityManagerInterface $entityManager, NewsTypeSelect $newsTypeSelect)
     {
         parent::__construct($repository, $serializer);
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
+        $this->newsTypeSelect = $newsTypeSelect;
     }
+
+    private function getTypes(): array
+    {
+        $types = $this->newsTypeSelect->getValues();
+        $return = [];
+        foreach ($types as $key => $values) {
+            $temp = [];
+            $temp['type'] = $values['name'];
+            $temp['title'] = $values['title'];
+            $return[] = $temp;
+        }
+        return $return;
+    }
+
+    private function getSorting(): array
+    {
+        return [
+            ['column' => 'translation.title', 'title' => 'sulu_news.title'],
+            ['column' => 'translation.published', 'title' => 'sulu_news.published'],
+            ['column' => 'translation.publishedAt', 'title' => 'sulu_news.published_at']
+        ];
+    }
+
 
     public function getConfiguration(): ProviderConfigurationInterface
     {
@@ -36,11 +63,10 @@ class NewsDataProvider extends BaseDataProvider
                 ->enablePagination()
                 ->enablePresentAs()
                 ->enableCategories()
-                ->enableSorting([
-                        ['column' => 'translation.title', 'title' => 'news.title'],
-                        ['column' => 'translation.published_at', 'title' => 'news.published_at']
-                    ]
-                )
+                ->enableTags()
+                ->enableTypes($this->getTypes())
+                ->enableSorting($this->getSorting())
+                ->enableView(NewsAdmin::EDIT_FORM_VIEW, ['id' => 'id', 'properties/webspaceKey' => 'webspace'])
                 ->getConfiguration();
         }
 

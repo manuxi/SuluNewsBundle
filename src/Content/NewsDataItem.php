@@ -40,14 +40,6 @@ class NewsDataItem implements ItemInterface
     /**
      * @Serializer\VirtualProperty
      */
-    public function getSummary(): string
-    {
-        return (string) $this->entity->getSummary();
-    }
-
-    /**
-     * @Serializer\VirtualProperty
-     */
     public function getImage(): ?string
     {
         return null;

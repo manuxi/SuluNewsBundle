@@ -27,7 +27,7 @@ trait ImageTranslatableTrait
 
     /**
      * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("image")
+     * @Serializer\SerializedName("image_data")
      */
     public function getImageData(): ?array
     {

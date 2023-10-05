@@ -66,7 +66,7 @@ class NewsDataProvider extends BaseDataProvider
                 ->enableTags()
                 ->enableTypes($this->getTypes())
                 ->enableSorting($this->getSorting())
-                ->enableView(NewsAdmin::EDIT_FORM_VIEW, ['id' => 'id', 'properties/webspaceKey' => 'webspace'])
+                ->enableView(NewsAdmin::EDIT_FORM_VIEW, ['id' => 'id'])
                 ->getConfiguration();
         }
 

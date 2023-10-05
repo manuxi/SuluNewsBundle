@@ -90,13 +90,10 @@
                         <param name="enable_attributes" value="true"/>
                     </params>
                 </property>
-                <property name="pdf" type="single_media_selection" colspan="6">
+                <property name="show_author" type="checkbox" colspan="6">
                     <meta>
-                        <title>sulu_news.pdf</title>
+                        <title>sulu_news.show_author</title>
                     </meta>
-                    <params>
-                        <param name="types" value="document"/>
-                    </params>
                 </property>
                 <property name="images" type="media_selection">
                     <meta>

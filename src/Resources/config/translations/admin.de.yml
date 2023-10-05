@@ -14,6 +14,7 @@ sulu_news:
     published: "veröffentlicht"
     published_date: "Veröffentlichungsdatum"
     published_at: "Veröffentlicht am"
+    show_author: "Autor anzeigen"
     pdf: "PDF"
     link: "Verlinkung"
     website: "Webseite"

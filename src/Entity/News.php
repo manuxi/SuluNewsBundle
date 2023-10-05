@@ -12,6 +12,7 @@ use Manuxi\SuluNewsBundle\Entity\Traits\LinkTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTranslatableTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PdfTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\RouteTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ShowAuthorTranslatableTrait;
@@ -34,6 +35,7 @@ class News implements AuditableTranslatableInterface
     use PublishedTranslatableTrait;
     use RouteTranslatableTrait;
     use ShowAuthorTranslatableTrait;
+    use PdfTranslatableTrait;
     use LinkTranslatableTrait;
     use ImageTranslatableTrait;
     use TypeTrait;

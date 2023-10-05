@@ -9,6 +9,7 @@ use Manuxi\SuluNewsBundle\Entity\Traits\LinkTrait;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
+use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\RouteTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ShowAuthorTrait;
@@ -26,6 +27,7 @@ class NewsTranslation implements AuditableInterface
     use RouteTrait;
     use LinkTrait;
     use ShowAuthorTrait;
+    use PdfTrait;
     use ImageTrait;
 
     /**

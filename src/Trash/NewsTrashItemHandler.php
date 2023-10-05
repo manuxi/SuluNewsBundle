@@ -61,7 +61,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "link" => $resource->getLink(),
             "imageId" => $image ? $image->getId() : null,
             "published" => $resource->isPublished(),
-            "publishedAt" => $resource->getPublishedAt()
+            "publishedAt" => $resource->getPublishedAt(),
+            "showAuthor" => $resource->getShowAuthor()
         ];
         return $this->trashItemRepository->create(
             News::RESOURCE_KEY,
@@ -89,17 +90,19 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setText($data['text']);
         $news->setFooter($data['footer']);
         $news->setPublished($data['published']);
+        $news->setShowAuthor($data['showAuthor']);
         $news->setRoutePath($data['slug']);
         $news->setExt($data['ext']);
         $news->setLink($data['link']);
 
-        if($data['imageId']){
+        if($data['imageId']) {
             $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
         }
 
-        if(isset($data['publishedAt'])){
+        if(isset($data['publishedAt'])) {
             $news->setPublishedAt(new DateTime($data['publishedAt']['date']));
         }
+
         $this->domainEventCollector->collect(
             new NewsRestoredEvent($news, $data)
         );

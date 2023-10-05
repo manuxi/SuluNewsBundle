@@ -211,6 +211,11 @@ class NewsModel implements NewsModelInterface
             $entity->setPublished($published);
         }
 
+        $showAuthor = $this->getProperty($data, 'showAuthor');
+        if ($showAuthor) {
+            $entity->setShowAuthor($showAuthor);
+        }
+
         $title = $this->getProperty($data, 'title');
         if ($title) {
             $entity->setTitle($title);

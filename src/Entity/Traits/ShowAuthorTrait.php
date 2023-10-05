@@ -14,12 +14,12 @@ trait ShowAuthorTrait
      */
     private ?bool $showAuthor = null;
 
-    public function getShowAuthor(): ?bool
+    public function getShowAuthor(): bool
     {
-        return $this->showAuthor;
+        return $this->showAuthor ?? false;
     }
 
-    public function setShowAuthor(?bool $showAuthor): self
+    public function setShowAuthor(bool $showAuthor): self
     {
         $this->showAuthor = $showAuthor;
         return $this;

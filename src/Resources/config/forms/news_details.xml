@@ -99,7 +99,7 @@
                     </params>
                 </property>
 
-                <property name="show_author" type="checkbox" colspan="6">
+                <property name="showAuthor" type="checkbox" colspan="6">
                     <meta>
                         <title>sulu_news.show_author</title>
                     </meta>

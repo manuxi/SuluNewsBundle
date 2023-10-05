@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
 use JMS\Serializer\Annotation as Serializer;
-use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 trait ShowAuthorTranslatableTrait
 {
@@ -13,7 +12,7 @@ trait ShowAuthorTranslatableTrait
     abstract protected function getTranslation(string $locale);
 
     /**
-     * @Serializer\VirtualProperty(name="showAuthor")
+     * @Serializer\VirtualProperty(name="show_author")
      */
     public function getShowAuthor(): ?bool
     {
@@ -25,7 +24,7 @@ trait ShowAuthorTranslatableTrait
         return $translation->getShowAuthor();
     }
 
-    public function setShowAuthor(?bool $showAuthor): self
+    public function setShowAuthor(bool $showAuthor): self
     {
         $translation = $this->getTranslation($this->getLocale());
         if (!$translation) {

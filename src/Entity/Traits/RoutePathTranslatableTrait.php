@@ -6,32 +6,32 @@ namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
 use JMS\Serializer\Annotation as Serializer;
 
-trait RouteTranslatableTrait
+trait RoutePathTranslatableTrait
 {
     abstract public function getLocale();
     abstract protected function getTranslation(string $locale);
 
     /**
-     * @Serializer\VirtualProperty(name="route")
+     * @Serializer\VirtualProperty(name="route_path")
      */
-    public function getRoute(): ?string
+    public function getRoutePath(): ?string
     {
         $translation = $this->getTranslation($this->getLocale());
         if (!$translation) {
             return null;
         }
 
-        return $translation->getRoute();
+        return $translation->getRoutePath();
     }
 
-    public function setRoute(string $route): self
+    public function setRoutePath(string $routePath): self
     {
         $translation = $this->getTranslation($this->getLocale());
         if (!$translation) {
             $translation = $this->createTranslation($this->getLocale());
         }
 
-        $translation->setRoute($route);
+        $translation->setRoutePath($routePath);
         return $this;
     }
 }

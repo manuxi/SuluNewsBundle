@@ -83,8 +83,8 @@ class NewsDataProvider extends BaseDataProvider
         $limit = null,
         $page = 1,
         $pageSize = null
-    ) {
-
+    ): DataProviderResult
+    {
         $locale = $options['locale'];
         $request = $this->requestStack->getCurrentRequest();
         $options['page'] = $request->get('p');

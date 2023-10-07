@@ -51,6 +51,7 @@ class NewsController extends AbstractController
      */
     public function indexAction(News $news, string $view = '@SuluNews/news', bool $preview = false, bool $partial = false): Response
     {
+
         $viewTemplate = $this->getViewTemplate($view, $this->request, $preview);
 
         $parameters = $this->templateAttributeResolver->resolve([

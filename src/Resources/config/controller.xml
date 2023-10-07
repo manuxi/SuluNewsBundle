@@ -28,7 +28,6 @@
             <argument type="service" id="translator"/>
             <argument type="service" id="sulu_website.resolver.template_attribute"/>
             <argument type="service" id="sulu.repository.route"/>
-
             <tag name="controller.service_arguments"/>
             <tag name="sulu.context" context="website"/>
             <tag name="container.service_subscriber" />

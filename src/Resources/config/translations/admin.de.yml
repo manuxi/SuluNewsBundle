@@ -3,7 +3,7 @@ sulu_news:
     name: "Name"
     title: "Titel"
     subtitle: "Untertitel"
-    summary: "Zusammenfassende Einleitung"
+    summary: "Einleitung"
     text: "Text"
     footer: "Fußnoten, Quellennachweise..."
     notes: "Anmerkungen"

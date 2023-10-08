@@ -75,9 +75,9 @@ class NewsTranslationTest extends SuluTestCase
     public function testRoutePath(): void
     {
         $testRoutePath = 'news/news-100';
-        $this->assertEmpty($this->translation->getRoute());
+        $this->assertEmpty($this->translation->getRoutePath());
         $this->assertSame($this->translation, $this->translation->setRoutePath($testRoutePath));
-        $this->assertSame($testRoutePath, $this->translation->getRoute());
+        $this->assertSame($testRoutePath, $this->translation->getRoutePath());
     }
 
     public function testPublished(): void

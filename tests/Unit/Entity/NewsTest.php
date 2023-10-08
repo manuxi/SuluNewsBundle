@@ -102,7 +102,7 @@ class NewsTest extends SuluTestCase
 
         $this->assertInstanceOf(NewsTranslation::class, $this->entity->getTranslations()['de']);
         $this->assertSame('de', $this->entity->getTranslations()['de']->getLocale());
-        $this->assertSame($testRoutePath, $this->entity->getTranslations()['de']->getRoute());
+        $this->assertSame($testRoutePath, $this->entity->getTranslations()['de']->getRoutePath());
     }
 
     public function testLocale(): void

@@ -67,18 +67,10 @@ class NewsAdmin extends Admin
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             $rootNavigationItem = new NavigationItem(static::NAV_ITEM);
             $rootNavigationItem->setIcon('su-news');
-            $rootNavigationItem->setPosition(30);
+            $rootNavigationItem->setPosition(31);
             $rootNavigationItem->setView(static::LIST_VIEW);
 
-            // Configure a NavigationItem with a View
-            $navigationItem = new NavigationItem(static::NAV_ITEM);
-            $navigationItem->setPosition(10);
-            $navigationItem->setView(static::LIST_VIEW);
-
-            $rootNavigationItem->addChild($navigationItem);
-
             $navigationItemCollection->add($rootNavigationItem);
-
         }
     }
 

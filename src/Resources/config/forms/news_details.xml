@@ -25,7 +25,6 @@
                     <meta>
                         <title>sulu_news.subtitle</title>
                     </meta>
-                    <tag name="sulu.rlp.part"/>
                 </property>
 
                 <property name="routePath" type="route" mandatory="true">

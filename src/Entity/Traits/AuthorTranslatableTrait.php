@@ -25,7 +25,7 @@ trait AuthorTranslatableTrait
         return $translation->getAuthor() ? $translation->getAuthor()->getId() : null;
     }
 
-    public function setAuthor(ContactInterface $author): self
+    public function setAuthor(?ContactInterface $author): self
     {
         $translation = $this->getTranslation($this->locale);
         if (!$translation) {

@@ -54,7 +54,7 @@ class AuthorSubscriber implements EventSubscriber
                     'targetEntity' => $this->userClass,
                     'joinColumns' => [
                         [
-                            'name' => 'idUsersAuthor',
+                            'name' => 'author_contact_id',
                             'onDelete' => 'SET NULL',
                             'referencedColumnName' => 'id',
                             'nullable' => true,
@@ -91,7 +91,7 @@ class AuthorSubscriber implements EventSubscriber
         $this->handleAuthor($news, $contact, false);
     }
 
-    private function handleAuthor(OnFlushEventArgs $event, ContactInterface $user, bool $insertions)
+    private function handleAuthor(OnFlushEventArgs $event, ContactInterface $contact, bool $insertions)
     {
         $manager = $event->getObjectManager();
         $unitOfWork = $manager->getUnitOfWork();
@@ -112,7 +112,7 @@ class AuthorSubscriber implements EventSubscriber
             if ($insertions
                 && (!isset($changeset[self::AUTHOR_PROPERTY_NAME]) || null === $changeset[self::AUTHOR_PROPERTY_NAME][1])
             ) {
-                $meta->setFieldValue($authorEntity, self::AUTHOR_PROPERTY_NAME, $user);
+                $meta->setFieldValue($authorEntity, self::AUTHOR_PROPERTY_NAME, $contact);
                 $recompute = true;
             }
 

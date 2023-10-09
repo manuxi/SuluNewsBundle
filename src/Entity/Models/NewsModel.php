@@ -298,7 +298,7 @@ class NewsModel implements NewsModelInterface
         //settings (author, authored) changeable
         $authorId = $this->getProperty($data, 'author');
         if ($authorId) {
-            $author = $this->contactRepository->findContactWithAccountsById($authorId);
+            $author = $this->contactRepository->findById($authorId);
             if (!$author) {
                 throw new EntityNotFoundException($this->contactRepository->getClassName(), $authorId);
             }

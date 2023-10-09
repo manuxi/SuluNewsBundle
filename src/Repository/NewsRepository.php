@@ -96,46 +96,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
             ;
     }
 
-    /**
-     * Returns filtered entities.
-     * When pagination is active the result count is pageSize + 1 to determine has next page.
-     *
-     * @param array $filters array of filters: tags, tagOperator
-     * @param int $page
-     * @param int $pageSize
-     * @param int $limit
-     * @param string $locale
-     * @param mixed[] $options
-     * @param UserInterface|null $user
-     * @param null $entityClass
-     * @param null $entityAlias
-     * @param null $permission
-     * @return object[]
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection PhpMissingParamTypeInspection
-     */
-/*    public function findByFilters(
-        $filters,
-        $page,
-        $pageSize,
-        $limit,
-        $locale,
-        $options = [],
-        ?UserInterface $user = null,
-        $entityClass = null,
-        $entityAlias = null,
-        $permission = null
-    ) {
-        $entities = $this->parentFindByFilters($filters, $page, $pageSize, $limit, $locale, $options);
-
-        return \array_map(
-            function (News $entity) use ($locale) {
-                return $entity->setLocale($locale);
-            },
-            $entities
-        );
-    }*/
-
     protected function appendJoins(QueryBuilder $queryBuilder, $alias, $locale): void
     {
 

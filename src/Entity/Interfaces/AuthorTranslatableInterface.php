@@ -9,5 +9,5 @@ use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 interface AuthorTranslatableInterface
 {
     public function getAuthor(): ?int;
-    public function setAuthor(ContactInterface $author);
+    public function setAuthor(?ContactInterface $author);
 }

@@ -101,9 +101,9 @@
 <!--            </properties>-->
 <!--        </section>-->
 
-        <section name="changelog">
+        <section name="editInfo">
             <meta>
-                <title>sulu_page.editing_information</title>
+                <title>sulu_news.header.change_author</title>
             </meta>
             <properties>
                 <property name="authored" type="datetime" colspan="6">
@@ -116,11 +116,6 @@
                         <title>sulu_page.author</title>
                     </meta>
                 </property>
-                <property name="changelog" type="changelog_line">
-                    <meta>
-                        <title>sulu_page.changelog</title>
-                    </meta>
-                </property>
                 <property name="showDate" type="checkbox" colspan="2">
                     <meta>
                         <title>sulu_news.show_date</title>
@@ -131,6 +126,40 @@
                         <title>sulu_news.show_author</title>
                     </meta>
                 </property>
+            </properties>
+        </section>
+        <section name="changelog">
+            <meta>
+                <title>sulu_news.header.created_changed</title>
+            </meta>
+            <properties>
+                <property name="created" type="datetime" disabledCondition="true" colspan="6">
+                    <meta>
+                        <title>sulu_news.created_date</title>
+                    </meta>
+                </property>
+                <property name="creator" type="single_contact_selection" disabledCondition="true" colspan="6">
+                    <meta>
+                        <title>sulu_news.creator</title>
+                    </meta>
+                </property>
+
+                <property name="changed" type="datetime" disabledCondition="true" colspan="6">
+                    <meta>
+                        <title>sulu_news.changed_date</title>
+                    </meta>
+                </property>
+                <property name="changer" type="single_contact_selection" disabledCondition="true" colspan="6">
+                    <meta>
+                        <title>sulu_news.changer</title>
+                    </meta>
+                </property>
+
+                <!--
+                <property name="changelog" type="changelog_line">
+                </property>
+                -->
+
             </properties>
         </section>
     </properties>

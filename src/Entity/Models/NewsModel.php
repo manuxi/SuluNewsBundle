@@ -16,8 +16,8 @@ use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsModelInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Bundle\MediaBundle\Entity\MediaRepositoryInterface;
-use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,18 +27,18 @@ class NewsModel implements NewsModelInterface
 
     private NewsRepository $newsRepository;
     private MediaRepositoryInterface $mediaRepository;
-    private UserRepository $userRepository;
+    private ContactRepository $contactRepository;
     private DomainEventCollectorInterface $domainEventCollector;
 
     public function __construct(
         NewsRepository $newsRepository,
         MediaRepositoryInterface $mediaRepository,
-        UserRepository $userRepository,
+        ContactRepository $contactRepository,
         DomainEventCollectorInterface $domainEventCollector
     ) {
         $this->mediaRepository = $mediaRepository;
         $this->newsRepository = $newsRepository;
-        $this->userRepository = $userRepository;
+        $this->contactRepository = $contactRepository;
         $this->domainEventCollector = $domainEventCollector;
     }
 
@@ -216,6 +216,11 @@ class NewsModel implements NewsModelInterface
             $entity->setShowAuthor($showAuthor);
         }
 
+        $showDate = $this->getProperty($data, 'showDate');
+        if ($showDate) {
+            $entity->setShowDate($showDate);
+        }
+
         $title = $this->getProperty($data, 'title');
         if ($title) {
             $entity->setTitle($title);
@@ -293,9 +298,9 @@ class NewsModel implements NewsModelInterface
         //settings (author, authored) changeable
         $authorId = $this->getProperty($data, 'author');
         if ($authorId) {
-            $author = $this->userRepository->findUserById($authorId);
+            $author = $this->contactRepository->findContactWithAccountsById($authorId);
             if (!$author) {
-                throw new EntityNotFoundException($this->userRepository->getClassName(), $authorId);
+                throw new EntityNotFoundException($this->contactRepository->getClassName(), $authorId);
             }
             $entity->setAuthor($author);
         }

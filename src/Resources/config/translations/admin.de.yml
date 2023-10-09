@@ -8,13 +8,13 @@ sulu_news:
     footer: "Fußnoten, Quellennachweise..."
     notes: "Anmerkungen"
     image: "Bild"
-    mainimage: "Hero-Bild"
     publish: "veröffentlichen"
     unpublish: "Veröffentlichen beenden"
     published: "veröffentlicht"
     published_date: "Veröffentlichungsdatum"
     published_at: "Veröffentlicht am"
     show_author: "Autor anzeigen"
+    show_date: "Datum anzeigen"
     pdf: "PDF"
     link: "Verlinkung"
     website: "Webseite"
@@ -28,6 +28,8 @@ sulu_news:
         notice: "Mitteilung"
         announcement: "Ankündigung"
         rating: "Bewertung"
+    hero:
+        image: "Hero-Bild"
     header:
         content: "Inhalt"
         additional: "Weitere Informationen"

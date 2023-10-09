@@ -62,7 +62,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "imageId" => $image ? $image->getId() : null,
             "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt(),
-            "showAuthor" => $resource->getShowAuthor()
+            "showAuthor" => $resource->getShowAuthor(),
+            "showDate" => $resource->getShowDate()
         ];
         return $this->trashItemRepository->create(
             News::RESOURCE_KEY,
@@ -91,6 +92,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setFooter($data['footer']);
         $news->setPublished($data['published']);
         $news->setShowAuthor($data['showAuthor']);
+        $news->setShowDate($data['showDate']);
         $news->setRoutePath($data['slug']);
         $news->setExt($data['ext']);
         $news->setLink($data['link']);

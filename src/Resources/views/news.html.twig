@@ -5,7 +5,15 @@
         <div class="row news-{{ news.type }}">
             <div class="col-12 pb-3">
                 <div class="title">
-                    <div class="overline mb-1">{{ news.publishedAt | format_datetime('full', 'none', locale=app.request.locale) }}</div>
+                    {% if news.showDate %}
+                        <div class="overline mb-1">
+                            {{ news.publishedAt | format_datetime('full', 'none', locale=app.request.locale) }}
+                            {% if news.showAuthor %}
+                                {% set contact = sulu_resolve_contact(news.author) %}
+                                {{ "by"|trans }} {{ contact.fullName }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
                     <h1 class="mb-2">{{ news.title }}</h1>
                     {% if news.subtitle %}
                         <h2 class="h3 mb-4">{{ news.subtitle }}</h2>

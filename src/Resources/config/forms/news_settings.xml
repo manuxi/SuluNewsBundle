@@ -121,6 +121,16 @@
                         <title>sulu_page.changelog</title>
                     </meta>
                 </property>
+                <property name="showDate" type="checkbox" colspan="2">
+                    <meta>
+                        <title>sulu_news.show_date</title>
+                    </meta>
+                </property>
+                <property name="showAuthor" type="checkbox" colspan="2">
+                    <meta>
+                        <title>sulu_news.show_author</title>
+                    </meta>
+                </property>
             </properties>
         </section>
     </properties>

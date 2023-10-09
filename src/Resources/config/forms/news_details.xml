@@ -52,9 +52,9 @@
                         />
                     </params>
                 </property>
-                <property name="image" type="single_media_selection" mandatory="true" colspan="6">
+                <property name="image" type="single_media_selection" colspan="6">
                     <meta>
-                        <title>sulu_news.mainimage</title>
+                        <title>sulu_news.hero.image</title>
                     </meta>
                     <params>
                         <param name="types" value="image"/>
@@ -79,30 +79,6 @@
                 <title>sulu_news.header.additional</title>
             </meta>
             <properties>
-                <property name="link" type="link" colspan="6">
-                    <meta>
-                        <title>sulu_news.link</title>
-                    </meta>
-
-                    <params>
-                        <param name="enable_anchor" value="false"/>
-                        <param name="enable_attributes" value="true"/>
-                    </params>
-                </property>
-                <property name="pdf" type="single_media_selection" colspan="6">
-                    <meta>
-                        <title>sulu_news.pdf</title>
-                    </meta>
-                    <params>
-                        <param name="types" value="document"/>
-                    </params>
-                </property>
-
-                <property name="showAuthor" type="checkbox" colspan="6">
-                    <meta>
-                        <title>sulu_news.show_author</title>
-                    </meta>
-                </property>
 
                 <property name="images" type="media_selection">
                     <meta>
@@ -117,6 +93,25 @@
                         <title>sulu_news.footer</title>
                     </meta>
                 </property>
+
+                <property name="link" type="link" colspan="6">
+                    <meta>
+                        <title>sulu_news.link</title>
+                    </meta>
+                    <params>
+                        <param name="enable_anchor" value="false"/>
+                        <param name="enable_attributes" value="true"/>
+                    </params>
+                </property>
+                <property name="pdf" type="single_media_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.pdf</title>
+                    </meta>
+                    <params>
+                        <param name="types" value="document"/>
+                    </params>
+                </property>
+
             </properties>
         </section>
     </properties>

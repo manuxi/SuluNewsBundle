@@ -9,6 +9,8 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthorInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Component\Security\Authentication\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -18,13 +20,18 @@ class AuthorSubscriber implements EventSubscriber
 {
     const AUTHOR_PROPERTY_NAME = 'author';
 
-    private TokenStorageInterface $tokenStorage;
     private string $userClass;
+    private ContactRepository $contactRepository;
+    private TokenStorageInterface $tokenStorage;
 
-    public function __construct(string $userClass, ?TokenStorageInterface $tokenStorage)
+    public function __construct(
+        string $userClass,
+        ContactRepository $contactRepository,
+        ?TokenStorageInterface $tokenStorage)
     {
-        $this->tokenStorage = $tokenStorage;
         $this->userClass = $userClass;
+        $this->contactRepository = $contactRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function getSubscribedEvents()
@@ -82,11 +89,13 @@ class AuthorSubscriber implements EventSubscriber
             return;
         }
 
-        $this->handleAuthor($news, $user, true);
-        $this->handleAuthor($news, $user, false);
+        $contact = $user->getContact();
+
+        $this->handleAuthor($news, $contact, true);
+        $this->handleAuthor($news, $contact, false);
     }
 
-    private function handleAuthor(OnFlushEventArgs $event, UserInterface $user, bool $insertions)
+    private function handleAuthor(OnFlushEventArgs $event, ContactInterface $user, bool $insertions)
     {
         $manager = $event->getObjectManager();
         $unitOfWork = $manager->getUnitOfWork();

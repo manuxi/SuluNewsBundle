@@ -10,7 +10,6 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
-use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Component\Security\Authentication\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,16 +20,13 @@ class AuthorSubscriber implements EventSubscriber
     const AUTHOR_PROPERTY_NAME = 'author';
 
     private string $userClass;
-    private ContactRepository $contactRepository;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         string $userClass,
-        ContactRepository $contactRepository,
         ?TokenStorageInterface $tokenStorage)
     {
         $this->userClass = $userClass;
-        $this->contactRepository = $contactRepository;
         $this->tokenStorage = $tokenStorage;
     }
 

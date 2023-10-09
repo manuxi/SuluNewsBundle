@@ -136,7 +136,6 @@
 
         <service id="sulu_news.persistence.news_subscriber.orm.author" class="Manuxi\SuluNewsBundle\EventSubscriber\ORM\AuthorSubscriber">
             <argument>%sulu.model.contact.class%</argument>
-            <argument type="service" id="sulu.repository.contact"/>
             <argument type="service" id="security.token_storage" on-invalid="null"/>
             <tag name="doctrine.event_subscriber"/>
         </service>

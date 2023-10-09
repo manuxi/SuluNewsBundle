@@ -111,7 +111,16 @@
                         <param name="types" value="document"/>
                     </params>
                 </property>
-
+                <property name="showAuthor" type="checkbox" colspan="3">
+                    <meta>
+                        <title>sulu_news.show_author</title>
+                    </meta>
+                </property>
+                <property name="showDate" type="checkbox" colspan="3">
+                    <meta>
+                        <title>sulu_news.show_date</title>
+                    </meta>
+                </property>
             </properties>
         </section>
     </properties>

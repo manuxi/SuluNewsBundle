@@ -14,7 +14,7 @@ sulu_news:
     published_date: "Veröffentlichungsdatum"
     published_at: "Veröffentlicht am"
     show_author: "Autor anzeigen"
-    show_date: "Datum anzeigen"
+    show_date: "Veröffentlichungsdatum anzeigen"
     created_date: "Erstellt am"
     creator: "Erstellt von"
     changed_date: "Letzte Änderung am"
@@ -36,7 +36,7 @@ sulu_news:
         image: "Hero-Bild"
     header:
         content: "Inhalt"
-        additional: "Weitere Informationen"
+        additional: "Zusätzliche Optionen"
         mandatory: "Verpflichtende Felder"
         optional: "Optionale Felder"
         change_author: "Autor-Information anpassen"

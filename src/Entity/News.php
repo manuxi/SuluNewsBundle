@@ -361,7 +361,7 @@ class News implements AuditableTranslatableInterface
         return $this->images ?? [];
     }
 
-    public function setImages(array $images): self
+    public function setImages(?array $images): self
     {
         $this->images = $images;
         return $this;

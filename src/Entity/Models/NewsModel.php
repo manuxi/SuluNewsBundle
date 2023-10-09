@@ -206,44 +206,14 @@ class NewsModel implements NewsModelInterface
      */
     private function mapDataToNews(News $entity, array $data): News
     {
-        $published = $this->getProperty($data, 'published');
-        if ($published) {
-            $entity->setPublished($published);
-        }
-
-        $showAuthor = $this->getProperty($data, 'showAuthor');
-        if ($showAuthor) {
-            $entity->setShowAuthor($showAuthor);
-        }
-
-        $showDate = $this->getProperty($data, 'showDate');
-        if ($showDate) {
-            $entity->setShowDate($showDate);
-        }
-
         $title = $this->getProperty($data, 'title');
         if ($title) {
             $entity->setTitle($title);
         }
 
-        $subtitle = $this->getProperty($data, 'subtitle');
-        if ($subtitle) {
-            $entity->setSubtitle($subtitle);
-        }
-
-        $summary = $this->getProperty($data, 'summary');
-        if ($summary) {
-            $entity->setSummary($summary);
-        }
-
         $text = $this->getProperty($data, 'text');
         if ($text) {
             $entity->setText($text);
-        }
-
-        $footer = $this->getProperty($data, 'footer');
-        if ($footer) {
-            $entity->setFooter($footer);
         }
 
         $type = $this->getProperty($data, 'type');
@@ -256,6 +226,32 @@ class NewsModel implements NewsModelInterface
             $entity->setRoutePath($routePath);
         }
 
+        $published = $this->getProperty($data, 'published');
+        if ($published) {
+            $entity->setPublished($published);
+        }
+
+        $showAuthor = $this->getProperty($data, 'showAuthor');
+        $entity->setShowAuthor($showAuthor ? true : false);
+
+        $showDate = $this->getProperty($data, 'showDate');
+        $entity->setShowDate($showDate ? true : false);
+
+        $subtitle = $this->getProperty($data, 'subtitle');
+        $entity->setSubtitle($subtitle ?: null);
+
+        $summary = $this->getProperty($data, 'summary');
+        $entity->setSummary($summary ?: null);
+
+        $footer = $this->getProperty($data, 'footer');
+        $entity->setFooter($footer ?: null);
+
+        $link = $this->getProperty($data, 'link');
+        $entity->setLink($link ?: null);
+
+        $images = $this->getProperty($data, 'images');
+        $entity->setImages($images ?: null);
+
         $imageId = $this->getPropertyMulti($data, ['image', 'id']);
         if ($imageId) {
             $image = $this->mediaRepository->findMediaById((int) $imageId);
@@ -263,6 +259,8 @@ class NewsModel implements NewsModelInterface
                 throw new EntityNotFoundException($this->mediaRepository->getClassName(), $imageId);
             }
             $entity->setImage($image);
+        } else {
+            $entity->setImage(null);
         }
 
         $pdfId = $this->getPropertyMulti($data, ['pdf', 'id']);
@@ -272,16 +270,8 @@ class NewsModel implements NewsModelInterface
                 throw new EntityNotFoundException($this->mediaRepository->getClassName(), $pdfId);
             }
             $entity->setPdf($pdf);
-        }
-
-        $link = $this->getProperty($data, 'link');
-        if ($link) {
-            $entity->setLink($link);
-        }
-
-        $images = $this->getProperty($data, 'images');
-        if ($images) {
-            $entity->setImages($images);
+        } else {
+            $entity->setPdf(null);
         }
 
         return $entity;

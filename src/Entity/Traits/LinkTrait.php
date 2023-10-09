@@ -3,7 +3,6 @@
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
 trait LinkTrait
 {
@@ -18,7 +17,7 @@ trait LinkTrait
         return $this->link;
     }
 
-    public function setLink(array $link): self
+    public function setLink(?array $link): self
     {
         $this->link = $link;
         return $this;

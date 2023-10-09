@@ -10,6 +10,7 @@ use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsRestoredEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\RouteBundle\Entity\Route;
 use Sulu\Bundle\TrashBundle\Application\DoctrineRestoreHelper\DoctrineRestoreHelperInterface;
@@ -50,6 +51,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $image = $resource->getImage();
 
         $data = [
+            "locale" => $resource->getLocale(),
             "type" => $resource->getType(),
             "title" => $resource->getTitle(),
             "subtitle" => $resource->getSubtitle(),
@@ -63,7 +65,9 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt(),
             "showAuthor" => $resource->getShowAuthor(),
-            "showDate" => $resource->getShowDate()
+            "showDate" => $resource->getShowDate(),
+            "authored" => $resource->getAuthored(),
+            "author" => $resource->getAuthor(),
         ];
         return $this->trashItemRepository->create(
             News::RESOURCE_KEY,
@@ -83,8 +87,9 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $data = $trashItem->getRestoreData();
         $newsId = (int)$trashItem->getResourceId();
         $news = new News();
-        $news->setType($data['type']);
+        $news->setLocale($data['locale']);
 
+        $news->setType($data['type']);
         $news->setTitle($data['title']);
         $news->setSubtitle($data['subtitle']);
         $news->setSummary($data['summary']);
@@ -95,7 +100,16 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setShowDate($data['showDate']);
         $news->setRoutePath($data['slug']);
         $news->setExt($data['ext']);
-        $news->setLink($data['link']);
+
+        $news->setAuthored($data['authored'] ? new DateTime($data['authored']['date']) : new DateTime());
+
+        if ($data['author']) {
+            $news->setAuthor($this->entityManager->find(ContactInterface::class, $data['author']));
+        }
+
+        if($data['link']) {
+            $news->setLink($data['link']);
+        }
 
         if($data['imageId']) {
             $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
@@ -110,16 +124,16 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         );
 
         $this->doctrineRestoreHelper->persistAndFlushWithId($news, $newsId);
-        $this->createRoute($this->entityManager, $newsId, $news->getRoutePath(), News::class);
+        $this->createRoute($this->entityManager, $newsId, $data['locale'], $news->getRoutePath(), News::class);
         $this->entityManager->flush();
         return $news;
     }
 
-    private function createRoute(EntityManagerInterface $manager, int $id, string $slug, string $class)
+    private function createRoute(EntityManagerInterface $manager, int $id, string $locale, string $slug, string $class)
     {
         $route = new Route();
         $route->setPath($slug);
-        $route->setLocale('en');
+        $route->setLocale($locale);
         $route->setEntityClass($class);
         $route->setEntityId($id);
         $route->setHistory(0);

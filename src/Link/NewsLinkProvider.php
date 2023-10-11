@@ -51,6 +51,7 @@ class NewsLinkProvider implements LinkProviderInterface
         $result = [];
         $elements = $this->newsRepository->findBy(['id' => $hrefs]); // load items by id
         foreach ($elements as $element) {
+            $element->setLocale($locale);
             $result[] = new LinkItem($element->getId(), $element->getTitle(), $element->getRoutePath(), $element->isPublished()); // create link-item foreach item
         }
 

@@ -82,6 +82,10 @@ class News implements AuditableTranslatableInterface
         $this->initExt();
     }
 
+    public function __clone(){
+        $this->id = null;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -284,6 +288,12 @@ class News implements AuditableTranslatableInterface
         return $this->translations->toArray();
     }
 
+    public function setTranslation(NewsTranslation $translation, string $locale): self
+    {
+        $this->translations->set($locale, $translation);
+        return $this;
+    }
+
     protected function getTranslation(string $locale): ?NewsTranslation
     {
         if (!$this->translations->containsKey($locale)) {
@@ -330,13 +340,22 @@ class News implements AuditableTranslatableInterface
         return \array_values($this->translations->getKeys());
     }
 
-    /**
-     * @todo implement opject cloning/copy
-     * @return $this|null
-     */
-    public function copy(): ?static
+    public function copy(News $copy): News
     {
-        return null;
+
+        $copy->setType($this->getType());
+
+        if ($currentTranslation = $this->getTranslation($this->getLocale())) {
+            $newTranslation = clone $currentTranslation;
+            $copy->setTranslation($newTranslation);
+
+            //copy ext also...
+            foreach($this->ext as $key => $translatable) {
+                $copy->addExt($key, clone $translatable);
+            }
+        }
+        return $copy;
+
     }
 
     public function copyToLocale(string $locale): self

@@ -10,7 +10,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Sulu\Component\Security\Authentication\UserInterface;
 use Sulu\Component\SmartContent\Orm\DataProviderRepositoryInterface;
 use Sulu\Component\SmartContent\Orm\DataProviderRepositoryTrait;
 
@@ -58,6 +57,18 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
         return $entity;
+    }
+
+    public function publish(News $entity): News
+    {
+        $entity->setPublished(true);
+        return $this->save($entity);
+    }
+
+    public function unpublish(News $entity): News
+    {
+        $entity->setPublished(false);
+        return $this->save($entity);
     }
 
     public function findById(int $id, string $locale): ?News

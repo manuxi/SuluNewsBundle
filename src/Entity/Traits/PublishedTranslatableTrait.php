@@ -58,4 +58,26 @@ trait PublishedTranslatableTrait
         $translation->setPublishedAt($date);
         return $this;
     }
+
+    /**
+     * @Serializer\VirtualProperty("published_state")
+     */
+    public function getPublishedState(): ?int
+    {
+        $translation = $this->getTranslation($this->getLocale());
+        if (!$translation) {
+            return null;
+        }
+        return $translation->getPublishedState();
+    }
+
+    public function setPublishedState(int $publishedState): self
+    {
+        $translation = $this->getTranslation($this->getLocale());
+        if (!$translation) {
+            $translation = $this->createTranslation($this->getLocale());
+        }
+        $translation->setPublished($publishedState);
+        return $this;
+    }
 }

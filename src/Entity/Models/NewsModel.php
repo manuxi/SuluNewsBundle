@@ -109,13 +109,12 @@ class NewsModel implements NewsModelInterface
     public function publishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $entity->setPublished(true);
 
         $this->domainEventCollector->collect(
             new NewsPublishedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->save($entity);
+        return $this->newsRepository->publish($entity, $this->getLocaleFromRequest($request));
     }
 
     /**
@@ -133,14 +132,19 @@ class NewsModel implements NewsModelInterface
             new NewsUnpublishedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->save($entity);
+        return $this->newsRepository->unpublish($entity, $this->getLocaleFromRequest($request));
     }
 
     public function copy(int $id, Request $request): News
     {
-        $entity = $this->findNewsById($id);
-        $copy = $entity->copy();
+        $locale = $this->getLocaleFromRequest($request);
 
+        $entity = $this->findNewsById($id);
+        $entity->setLocale($locale);
+
+        $copy = $this->newsRepository->create($locale);
+
+        $copy = $entity->copy($copy);
         return $this->newsRepository->save($copy);
     }
 
@@ -226,10 +230,10 @@ class NewsModel implements NewsModelInterface
             $entity->setRoutePath($routePath);
         }
 
-        $published = $this->getProperty($data, 'published');
+/*        $published = $this->getProperty($data, 'published');
         if ($published) {
             $entity->setPublished($published);
-        }
+        }*/
 
         $showAuthor = $this->getProperty($data, 'showAuthor');
         $entity->setShowAuthor($showAuthor ? true : false);

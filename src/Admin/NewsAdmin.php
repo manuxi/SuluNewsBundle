@@ -82,15 +82,18 @@ class NewsAdmin extends Admin
 
         $formToolbarActions = [];
         $listToolbarActions = [];
+        $previewCondition = 'nodeType == 1';
 
         $locales = $this->webspaceManager->getAllLocales();
 
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
-            $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
+            $formToolbarActions[] = new ToolbarAction('sulu_admin.save_with_publishing');
+        } elseif ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+                $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
         }
 
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
-            $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
+            $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
         }
 
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::DELETE)) {
@@ -100,6 +103,40 @@ class NewsAdmin extends Admin
 
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
             $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
+        }
+
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
+            $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
+        }
+
+/*        //publish/unpublish toolbar actions
+        $formToolbarActions = [
+            new ToolbarAction('sulu_admin.save'),
+            new ToolbarAction('sulu_admin.delete'),
+            new TogglerToolbarAction(
+                'sulu_news.published',
+                'published',
+                'publish',
+                'unpublish'
+            ),
+        ];*/
+###
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
+
+            $editDropdownToolbarActions = [
+                new ToolbarAction('sulu_admin.set_unpublished'),
+/*                new ToolbarAction('sulu_admin.copy'),*/
+            ];
+
+            if (\count($locales) > 1) {
+                $editDropdownToolbarActions[] = new ToolbarAction('sulu_admin.copy_locale');
+            }
+
+            $formToolbarActions[] = new DropdownToolbarAction(
+                'sulu_admin.edit',
+                'su-cog',
+                $editDropdownToolbarActions
+            );
         }
 
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
@@ -144,37 +181,6 @@ class NewsAdmin extends Admin
                 ->addLocales($locales);
             $viewCollection->add($editFormView);
 
-            //publish/unpublish toolbar actions
-            $formToolbarActions = [
-                new ToolbarAction('sulu_admin.save'),
-                new ToolbarAction('sulu_admin.delete'),
-                new TogglerToolbarAction(
-                    'sulu_news.published',
-                    'published',
-                    'publish',
-                    'unpublish'
-                ),
-            ];
-/*
-            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
-                $editDropdownToolbarActions = [
-                    new ToolbarAction('sulu_admin.delete_draft'),
-                    new ToolbarAction('sulu_admin.set_unpublished'),
-                    new ToolbarAction('sulu_admin.copy'),
-                ];
-
-                if (\count($locales) > 1) {
-                    $editDropdownToolbarActions[] = new ToolbarAction('sulu_admin.copy_locale');
-                }
-
-                $formToolbarActions[] = new DropdownToolbarAction(
-                    'sulu_admin.edit',
-                    'su-cog',
-                    $editDropdownToolbarActions
-                );
-            }
-*/
-
             $editDetailsFormView = $this->viewBuilderFactory
                 ->createPreviewFormViewBuilder(static::EDIT_FORM_DETAILS_VIEW, '/details')
                 ->setPreviewCondition('id != null')
@@ -185,16 +191,6 @@ class NewsAdmin extends Admin
                 ->setParent(static::EDIT_FORM_VIEW);
             $viewCollection->add($editDetailsFormView);
 
-            //seo,excerpt, etc
-            $formToolbarActionsWithoutType = [];
-            $previewCondition              = 'nodeType == 1';
-
-            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
-                $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
-            }
-
-            $formToolbarActionsWithoutType[] = new ToolbarAction('sulu_admin.save');
-
             $viewCollection->add(
                 $this->viewBuilderFactory
                     ->createPreviewFormViewBuilder(static::EDIT_FORM_VIEW_SEO, '/seo')
@@ -203,7 +199,7 @@ class NewsAdmin extends Admin
                     ->setFormKey('page_seo')
                     ->setTabTitle('sulu_page.seo')
 //                    ->setTabCondition('nodeType == 1 && shadowOn == false')
-                    ->addToolbarActions($formToolbarActionsWithoutType)
+                    ->addToolbarActions($formToolbarActions)
 //                    ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
                     ->setPreviewCondition($previewCondition)
                     ->setTitleVisible(true)
@@ -218,7 +214,7 @@ class NewsAdmin extends Admin
                     ->setFormKey('page_excerpt')
                     ->setTabTitle('sulu_page.excerpt')
 //                    ->setTabCondition('(nodeType == 1 || nodeType == 4) && shadowOn == false')
-                    ->addToolbarActions($formToolbarActionsWithoutType)
+                    ->addToolbarActions($formToolbarActions)
 //                    ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
 //                    ->addRouterAttributesToFormMetadata($routerAttributesToFormMetadata)
                     ->setPreviewCondition($previewCondition)
@@ -233,13 +229,12 @@ class NewsAdmin extends Admin
                     ->setResourceKey(News::RESOURCE_KEY)
                     ->setFormKey('news_settings')
                     ->setTabTitle('sulu_page.settings')
-                    ->addToolbarActions($formToolbarActionsWithoutType)
+                    ->addToolbarActions($formToolbarActions)
                     ->setPreviewCondition($previewCondition)
                     ->setTitleVisible(true)
                     ->setTabOrder(4096)
                     ->setParent(static::EDIT_FORM_VIEW)
             );
-
 
             if ($this->automationViewBuilderFactory
                 && $this->securityChecker->hasPermission(AutomationAdmin::SECURITY_CONTEXT, PermissionTypes::EDIT)

@@ -47,6 +47,10 @@ class NewsSeo implements SeoInterface, SeoTranslatableInterface
         $this->translations = new ArrayCollection();
     }
 
+    public function __clone(){
+        $this->id = null;
+    }
+
     public function getNews(): ?News
     {
         return $this->news;

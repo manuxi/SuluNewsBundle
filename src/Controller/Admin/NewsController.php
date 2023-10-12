@@ -126,6 +126,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
                 case 'publish':
                     $entity = $this->newsModel->publishNews($id, $request);
                     break;
+                case 'draft':
                 case 'unpublish':
                     $entity = $this->newsModel->unpublishNews($id, $request);
                     break;
@@ -158,21 +159,29 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         return $this->handleView($this->view($entity));
     }
 
-    /**
-     * @param int $id
-     * @param Request $request
-     * @return Response
-     * @throws EntityNotFoundException
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function putAction(int $id, Request $request): Response
     {
-        $entity = $this->newsModel->updateNews($id, $request);
-        $this->updateRoutesForEntity($entity);
+        $action = $this->getRequestParameter($request, 'action', true);
+        if ($action) {
 
-        $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
-        $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
+            try {
+                $entity = match ($action) {
+                    'publish' => $this->newsModel->publishNews($id, $request),
+                    'draft', 'unpublish' => $this->newsModel->unpublishNews($id, $request),
+                    default => throw new BadRequestHttpException(sprintf('Unknown action "%s".', $action)),
+                };
+            } catch (RestException $exc) {
+                $view = $this->view($exc->toArray(), 400);
+                return $this->handleView($view);
+            }
+
+        } else {
+            $entity = $this->newsModel->updateNews($id, $request);
+            $this->updateRoutesForEntity($entity);
+
+            $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
+            $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
+        }
 
         return $this->handleView($this->view($entity));
     }
@@ -191,7 +200,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 
         $this->removeRoutesForEntity($entity);
 
-        $this->newsModel->deleteNews($id, $entity->getTitle());
+        $this->newsModel->deleteNews($id, $entity->getTitle() ?? '');
         return $this->handleView($this->view(null, 204));
     }
 

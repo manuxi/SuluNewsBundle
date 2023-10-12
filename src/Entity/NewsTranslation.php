@@ -81,6 +81,10 @@ class NewsTranslation implements AuditableInterface
         $this->locale = $locale;
     }
 
+    public function __clone(){
+        $this->id = null;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +93,12 @@ class NewsTranslation implements AuditableInterface
     public function getNews(): News
     {
         return $this->news;
+    }
+
+    public function setNews(News $news): self
+    {
+        $this->news = $news;
+        return $this;
     }
 
     public function getLocale(): string
@@ -156,5 +166,6 @@ class NewsTranslation implements AuditableInterface
         $this->footer = $footer;
         return $this;
     }
+
 
 }

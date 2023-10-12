@@ -31,6 +31,10 @@ class NewsExcerptTranslation implements ExcerptTranslationInterface
         $this->initExcerptTranslationTrait();
     }
 
+    public function __clone(){
+        $this->id = null;
+    }
+
     public function getNewsExcerpt(): NewsExcerpt
     {
         return $this->newsExcerpt;

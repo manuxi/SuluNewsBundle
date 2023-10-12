@@ -30,6 +30,10 @@ class NewsSeoTranslation implements SeoTranslationInterface
         $this->setLocale($locale);
     }
 
+    public function __clone(){
+        $this->id = null;
+    }
+
     public function getNewsSeo(): NewsSeo
     {
         return $this->newsSeo;

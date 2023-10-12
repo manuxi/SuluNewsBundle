@@ -19,7 +19,17 @@ trait PublishedTrait
      */
     private ?DateTime $publishedAt = null;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $publishedState = null;
+
     public function isPublished(): ?bool
+    {
+        return $this->published ?? false;
+    }
+
+    public function getPublished(): ?bool
     {
         return $this->published ?? false;
     }
@@ -27,6 +37,7 @@ trait PublishedTrait
     public function setPublished(bool $published): self
     {
         $this->published = $published;
+        $this->publishedState = $published;
         if($published === true){
             $this->setPublishedAt(new DateTime());
         } else {
@@ -43,6 +54,17 @@ trait PublishedTrait
     public function setPublishedAt(?DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+        return $this;
+    }
+
+    public function getPublishedState(): ?int
+    {
+        return $this->publishedState;
+    }
+
+    public function setPublishedState(?int $publishedState): self
+    {
+        $this->publishedState = $publishedState;
         return $this;
     }
 }

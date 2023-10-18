@@ -105,22 +105,6 @@ class NewsAdmin extends Admin
             $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
         }
 
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
-            $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
-        }
-
-/*        //publish/unpublish toolbar actions
-        $formToolbarActions = [
-            new ToolbarAction('sulu_admin.save'),
-            new ToolbarAction('sulu_admin.delete'),
-            new TogglerToolbarAction(
-                'sulu_news.published',
-                'published',
-                'publish',
-                'unpublish'
-            ),
-        ];*/
-###
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
 
             $editDropdownToolbarActions = [

@@ -161,12 +161,25 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 
     public function putAction(int $id, Request $request): Response
     {
+        try {
+            $action = $this->getRequestParameter($request, 'action', true);
+            try {
+                $entity = match ($action) {
+                    'publish' => $this->newsModel->publishNews($id, $request),
+                    'draft', 'unpublish' => $this->newsModel->unpublishNews($id, $request),
+                    default => throw new BadRequestHttpException(sprintf('Unknown action "%s".', $action)),
+                };
+            } catch (RestException $exc) {
+                $view = $this->view($exc->toArray(), 400);
+                return $this->handleView($view);
+            }
+        } catch(MissingParameterException $e) {
+            $entity = $this->newsModel->updateNews($id, $request);
+            $this->updateRoutesForEntity($entity);
 
-        $entity = $this->newsModel->updateNews($id, $request);
-        $this->updateRoutesForEntity($entity);
-
-        $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
-        $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
+            $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
+            $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
+        }
 
         return $this->handleView($this->view($entity));
     }

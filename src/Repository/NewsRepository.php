@@ -36,6 +36,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
     {
         $entity = new News();
         $entity->setLocale($locale);
+        $entity->setPublished(false);
 
         return $entity;
     }

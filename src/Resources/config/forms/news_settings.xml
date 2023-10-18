@@ -108,12 +108,12 @@
             <properties>
                 <property name="authored" type="datetime" colspan="6">
                     <meta>
-                        <title>sulu_page.authored_date</title>
+                        <title>sulu_news.displayed_authored</title>
                     </meta>
                 </property>
                 <property name="author" type="single_contact_selection" colspan="6">
                     <meta>
-                        <title>sulu_page.author</title>
+                        <title>sulu_news.displayed_author</title>
                     </meta>
                 </property>
             </properties>

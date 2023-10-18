@@ -32,6 +32,13 @@
         </join>
     </joins>
 
+    <joins name="author" ref="translation">
+        <join>
+            <entity-name>%sulu.model.contact.class%</entity-name>
+            <field-name>%sulu.model.news_translation.class%.author</field-name>
+        </join>
+    </joins>
+
     <properties>
         <property name="id" visibility="no" translation="sulu_admin.id">
             <field-name>id</field-name>
@@ -104,14 +111,36 @@
             <joins ref="translation"/>
         </property>
 
-        <property name="created" translation="sulu_admin.created" type="datetime" visibility="yes">
+        <property name="authored" translation="sulu_news.displayed_authored" type="datetime" visibility="yes">
+            <field-name>authored</field-name>
+            <entity-name>%sulu.model.news_translation.class%</entity-name>
+
+            <joins ref="translation"/>
+        </property>
+
+        <concatenation-property name="author" translation="sulu_news.displayed_author" visibility="yes" searchability="yes">
+            <field>
+                <field-name>firstName</field-name>
+                <entity-name>%sulu.model.contact.class%</entity-name>
+
+                <joins ref="author"/>
+            </field>
+            <field>
+                <field-name>lastName</field-name>
+                <entity-name>%sulu.model.contact.class%</entity-name>
+
+                <joins ref="author"/>
+            </field>
+        </concatenation-property>
+
+        <property name="created" translation="sulu_admin.created" type="datetime" visibility="no">
             <field-name>created</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 
             <joins ref="translation"/>
         </property>
 
-        <concatenation-property name="creator" translation="sulu_admin.creator" visibility="yes" searchability="yes">
+        <concatenation-property name="creator" translation="sulu_admin.creator" visibility="no" searchability="yes">
             <field>
                 <field-name>firstName</field-name>
                 <entity-name>%sulu.model.contact.class%_creator</entity-name>

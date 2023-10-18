@@ -41,6 +41,8 @@ sulu_news:
         optional: "Optional Fields"
         change_author: "Modify Author Information"
         created_changed: "Created and Modify Information"
+    displayed_author: "Displayed Author"
+    displayed_authored: "Displayed Publication Date"
     news_selection_label: "{count} {count, plural, =1 {news} other {news}} selected"
     select_news: "Select news"
     select_newslist: "Select news"

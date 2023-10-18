@@ -41,6 +41,8 @@ sulu_news:
         optional: "Optionale Felder"
         change_author: "Autor-Information anpassen"
         created_changed: "Erstellungs- und Änderungsinformationen"
+    displayed_author: "Angezeigter Autor"
+    displayed_authored: "Angezeigtes Verfassungsdatum"
     news_selection_label: "{count} {count, plural, =1 {News} other {News}} ausgewählt"
     select_news: "News auswählen"
     select_newslist: "News auswählen"

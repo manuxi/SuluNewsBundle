@@ -86,9 +86,10 @@ class NewsAdmin extends Admin
 
         $locales = $this->webspaceManager->getAllLocales();
 
-        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
+/*        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.save_with_publishing');
-        } elseif ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+        } else*/
+            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
                 $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
         }
 
@@ -108,6 +109,7 @@ class NewsAdmin extends Admin
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
 
             $editDropdownToolbarActions = [
+                new ToolbarAction('sulu_admin.publish'),
                 new ToolbarAction('sulu_admin.set_unpublished'),
 /*                new ToolbarAction('sulu_admin.copy'),*/
             ];

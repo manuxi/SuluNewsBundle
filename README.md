@@ -9,7 +9,23 @@
 </a>
 
 I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch. Sadly it's still not fixed in the SuluArticleBundle :( 
-The news and their meta information is translatable. Please feel comfortable submitting feature requests. 
+
+This bundle contains
+- Several filters for News Content Type
+- Link Provider
+- Sitemap Provider
+- Handler for Trash Items
+- Handler for Automation
+- Possibility to assign a contact as author
+- Twig Extension for resolving news / get a list of news
+- Events for displaying Activities
+and more...
+
+The news and their meta information is translatable. 
+
+It contains an example twig template. 
+
+Please feel comfortable submitting feature requests. 
 This bundle is still in development. Use at own risk 🤞🏻
 
 

@@ -65,7 +65,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                                     'locale' => 'locale',
                                 ],
                             ],
-                            'security_context' => NewsAdmin::SECURITY_CONTEXT,
+                            'security_context' => News::SECURITY_CONTEXT,
                         ],
 /*                        'website' => [
                             "name" => "news.search_name",

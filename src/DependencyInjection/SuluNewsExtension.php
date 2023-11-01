@@ -67,13 +67,6 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                             ],
                             'security_context' => News::SECURITY_CONTEXT,
                         ],
-/*                        'website' => [
-                            "name" => "news.search_name",
-                            'icon' => 'su-news',
-                            "contexts" => [
-                                "news",
-                            ],
-                        ],*/
                     ],
                 ]
             );
@@ -180,15 +173,9 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
             );
         }
 
-//        $container->prependExtensionConfig(
-//            'sulu_news',
-//            ['templates' => ['view' => 'news/index.html.twig']]
-//        );
-
         $container->loadFromExtension('framework', [
             'default_locale' => 'en',
             'translator' => ['paths' => [__DIR__ . '/../Resources/config/translations/']],
-            // ...
         ]);
     }
 }

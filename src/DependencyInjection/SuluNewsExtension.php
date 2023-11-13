@@ -112,6 +112,11 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                                 'detail' => 'sulu_news.get_news',
                             ],
                         ],
+                        'news-settings' => [
+                            'routes' => [
+                                'detail' => 'sulu_news.get_news-settings',
+                            ],
+                        ],
                     ],
                     'field_type_options' => [
                         'selection' => [

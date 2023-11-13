@@ -70,6 +70,13 @@ class NewsAdmin extends Admin
             $rootNavigationItem->setPosition(31);
             $rootNavigationItem->setView(static::LIST_VIEW);
 
+            // Configure a NavigationItem with a View
+            $newsNavigationItem = new NavigationItem(static::NAV_ITEM);
+            $newsNavigationItem->setPosition(10);
+            $newsNavigationItem->setView(static::LIST_VIEW);
+
+            $rootNavigationItem->addChild($newsNavigationItem);
+
             $navigationItemCollection->add($rootNavigationItem);
         }
     }
@@ -86,11 +93,8 @@ class NewsAdmin extends Admin
 
         $locales = $this->webspaceManager->getAllLocales();
 
-/*        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::LIVE)) {
-            $formToolbarActions[] = new ToolbarAction('sulu_admin.save_with_publishing');
-        } else*/
-            if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
-                $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
+        if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+            $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
         }
 
         if ($this->securityChecker->hasPermission(News::SECURITY_CONTEXT, PermissionTypes::ADD)) {
@@ -111,7 +115,6 @@ class NewsAdmin extends Admin
             $editDropdownToolbarActions = [
                 new ToolbarAction('sulu_admin.publish'),
                 new ToolbarAction('sulu_admin.set_unpublished'),
-/*                new ToolbarAction('sulu_admin.copy'),*/
             ];
 
             if (\count($locales) > 1) {

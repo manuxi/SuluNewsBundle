@@ -15,6 +15,14 @@
             <tag name="sulu.context" context="admin"/>
         </service>
 
+        <service id="sulu_news.admin.settings" class="Manuxi\SuluNewsBundle\Admin\SettingsAdmin">
+            <argument type="service" id="sulu_admin.view_builder_factory"/>
+            <argument type="service" id="sulu_security.security_checker"/>
+
+            <tag name="sulu.admin"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
         <service id="sulu_news.doctrine_list_representation_factory" class="Manuxi\SuluNewsBundle\Common\DoctrineListRepresentationFactory">
             <argument type="service" id="sulu_core.rest_helper"/>
             <argument type="service" id="sulu_core.list_rest_helper"/>
@@ -198,8 +206,12 @@
         </service>
 
         <!--Twig-->
-        <service id="sulu_news.twig_extension" class="Manuxi\SuluNewsBundle\Twig\NewsExtension">
+        <service id="sulu_news.twig_extension" class="Manuxi\SuluNewsBundle\Twig\NewsTwigExtension">
             <argument type="service" id="sulu_news.repository.news"/>
+            <tag name="twig.extension"/>
+        </service>
+        <service id="sulu_news.twig_extension" class="Manuxi\SuluNewsBundle\Twig\NewsSettingsTwigExtension">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <tag name="twig.extension"/>
         </service>
 

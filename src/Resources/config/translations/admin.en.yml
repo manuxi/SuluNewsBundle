@@ -59,6 +59,25 @@ sulu_news:
     empty_newslist: "No News chosen"
     news: "News"
 
+    config:
+        tab: "Settings"
+        title:
+            navi: "Settings"
+            general: "Settings for Single View"
+            breadcrumbs: "Target Pages for Breadcrumbs"
+        properties:
+            toggle_header: "Display Header"
+            toggle_hero: "Display Default Hero"
+            toggle_breadcrumbs: "Display Breadcrumbs"
+            page_news: "Overview All News"
+            page_news_default: "Overview Type Default"
+            page_news_article: "Overview Type Article"
+            page_news_blog: "Overview Type Blog"
+            page_news_faq: "Overview Type F.A.Q."
+            page_news_notice: "Overview Type Notice"
+            page_news_announcement: "Overview Type Announcement"
+            page_news_rating: "Overview Type Rating"
+
 sulu_activity:
     resource:
         news: "News"
@@ -70,3 +89,5 @@ sulu_activity:
             restored: "{userFullName} restored the news \"{resourceTitle}\"."
             published: "{userFullName} published the news \"{resourceTitle}\"."
             unpublished: "{userFullName} unpublished the news \"{resourceTitle}\"."
+        news_settings:
+            modified: "{userFullName} modified news settings."

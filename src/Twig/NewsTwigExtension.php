@@ -9,7 +9,7 @@ use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class NewsExtension extends AbstractExtension
+class NewsTwigExtension extends AbstractExtension
 {
     private NewsRepository $newsRepository;
 

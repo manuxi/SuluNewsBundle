@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://schemas.sulu.io/template/template"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd"
+>
+    <key>news_config</key>
+
+    <properties>
+        <section name="news-settings">
+            <meta>
+                <title>sulu_news.config.title.general</title>
+            </meta>
+            <properties>
+
+                <property name="toggleHeader" type="checkbox" colspan="3">
+                    <meta>
+                        <title>sulu_news.config.properties.toggle_header</title>
+                    </meta>
+                    <params>
+                        <param name="type" value="toggler"/>
+                        <param name="default_value" value="true"/>
+                    </params>
+                </property>
+
+                <property name="toggleHero" type="checkbox" colspan="3">
+                    <meta>
+                        <title>sulu_news.config.properties.toggle_hero</title>
+                    </meta>
+                    <params>
+                        <param name="type" value="toggler"/>
+                        <param name="default_value" value="true"/>
+                    </params>
+                </property>
+
+                <property name="toggleBreadcrumbs" type="checkbox" colspan="3">
+                    <meta>
+                        <title>sulu_news.config.properties.toggle_breadcrumbs</title>
+                    </meta>
+                    <params>
+                        <param name="type" value="toggler"/>
+                        <param name="default_value" value="true"/>
+                    </params>
+                </property>
+
+            </properties>
+        </section>
+
+        <section name="news-settings-breadcrumbs">
+            <meta>
+                <title>sulu_news.config.title.breadcrumbs</title>
+            </meta>
+            <properties>
+                <property name="pageNews" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news</title>
+                    </meta>
+                </property>
+                <property name="pageNewsDefault" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_default</title>
+                    </meta>
+                </property>
+                <property name="pageNewsArticle" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_article</title>
+                    </meta>
+                </property>
+                <property name="pageNewsBlog" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_blog</title>
+                    </meta>
+                </property>
+                <property name="pageNewsFaq" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_faq</title>
+                    </meta>
+                </property>
+                <property name="pageNewsNotice" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_notice</title>
+                    </meta>
+                </property>
+                <property name="pageNewsAnnouncement" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_announcement</title>
+                    </meta>
+                </property>
+                <property name="pageNewsRating" type="single_page_selection" colspan="6">
+                    <meta>
+                        <title>sulu_news.config.properties.page_news_rating</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+    </properties>
+</form>

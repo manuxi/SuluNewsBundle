@@ -30,8 +30,7 @@ class NewsSitemapProvider implements SitemapProviderInterface
         $locale = $this->getLocaleByHost($host);
 
         $result = [];
-        foreach ($this->findNews(self::PAGE_SIZE, ($page - 1) * self::PAGE_SIZE) as $entity) {
-            $entity->setLocale($locale);
+        foreach ($this->findNews($locale, self::PAGE_SIZE, ($page - 1) * self::PAGE_SIZE) as $entity) {
             $result[] = new SitemapUrl(
                 $scheme . '://' . $host . $entity->getRoutePath(),
                 $entity->getLocale(),
@@ -53,15 +52,10 @@ class NewsSitemapProvider implements SitemapProviderInterface
         return 'news';
     }
 
-    /**
-     * @TODO: count method in repo
-     * @param $scheme
-     * @param $host
-     * @return false|float
-     */
     public function getMaxPage($scheme, $host): ?float
     {
-        return ceil(count($this->findNews()) / self::PAGE_SIZE);
+        $locale = $this->getLocaleByHost($host);
+        return ceil($this->repository->countForSitemap($locale) / self::PAGE_SIZE);
     }
 
     private function getLocaleByHost($host) {
@@ -76,12 +70,8 @@ class NewsSitemapProvider implements SitemapProviderInterface
         return $this->locales[$host];
     }
 
-    private function findNews($limit = null, $offset = null): News
+    private function findNews(string $locale, int $limit = null, int $offset = null): array
     {
-        $criteria = [
-            'published' => true,
-        ];
-
-        return $this->repository->findBy($criteria, [], $limit, $offset);
+        return $this->repository->findAllForSitemap($locale, $limit, $offset);
     }
 }

@@ -85,27 +85,32 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         return $entity;
     }
 
-    public function findAllForSitemap(int $page, int $limit): array
+    public function findAllForSitemap(string $locale, int $limit = null, int $offset = null): array
     {
-        $offset = ($page * $limit) - $limit;
-        $criteria = [
-            'translation.published' => true,
-        ];
-        return $this->findBy($criteria, [], $limit, $offset);
+        $queryBuilder = $this->createQueryBuilder('news')
+            ->leftJoin('news.translations', 'translation')
+            ->where('translation.published = 1')
+            ->andWhere('translation.locale = :locale')->setParameter('locale', $locale)
+            ->orderBy('translation.publishedAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        $this->prepareFilter($queryBuilder, []);
+
+        $news = $queryBuilder->getQuery()->getResult();
+        if (!$news) {
+            return [];
+        }
+        return $news;
     }
 
-    public function countForSitemap()
+    public function countForSitemap(string $locale)
     {
-        $query = $this->createQueryBuilder('e')
-            ->select('count(e)');
+        $query = $this->createQueryBuilder('news')
+            ->select('count(news)')
+            ->leftJoin('news.translations', 'translation')
+            ->andWhere('translation.locale = :locale')->setParameter('locale', $locale);
         return $query->getQuery()->getSingleScalarResult();
-    }
-
-    public static function createEnabledCriteria(): Criteria
-    {
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('translation.published', true))
-            ;
     }
 
     protected function appendJoins(QueryBuilder $queryBuilder, $alias, $locale): void

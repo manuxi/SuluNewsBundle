@@ -37,7 +37,7 @@ class NewsTranslationRepository extends ServiceEntityRepository
             ->select('IDENTITY(et.news) as news, et.locale, count(et.news) as newsCount')
             ->getQuery()
         ;
-//        dump($query->getSQL());
+
         return $query->getResult();
     }
 

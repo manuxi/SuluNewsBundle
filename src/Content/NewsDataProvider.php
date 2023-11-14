@@ -48,12 +48,12 @@ class NewsDataProvider extends BaseDataProvider
     private function getSorting(): array
     {
         return [
+            ['column' => 'translation.authored', 'title' => 'sulu_news.authored'],
             ['column' => 'translation.title', 'title' => 'sulu_news.title'],
             ['column' => 'translation.published', 'title' => 'sulu_news.published'],
-            ['column' => 'translation.publishedAt', 'title' => 'sulu_news.published_at']
+            ['column' => 'translation.publishedAt', 'title' => 'sulu_news.published_at'],
         ];
     }
-
 
     public function getConfiguration(): ProviderConfigurationInterface
     {
@@ -73,9 +73,6 @@ class NewsDataProvider extends BaseDataProvider
         return parent::getConfiguration();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveResourceItems(
         array $filters,
         array $propertyParameter,
@@ -92,10 +89,6 @@ class NewsDataProvider extends BaseDataProvider
         return new DataProviderResult($news, $this->entityManager->getRepository(News::class)->hasNextPage($filters, $page, $pageSize, $limit, $locale, $options));
     }
 
-    /**
-     * @param mixed[] $data
-     * @return array
-     */
     protected function decorateDataItems(array $data): array
     {
         return \array_map(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -91,7 +90,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = 1')
             ->andWhere('translation.locale = :locale')->setParameter('locale', $locale)
-            ->orderBy('translation.publishedAt', 'DESC')
+            ->orderBy('translation.authored', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
@@ -147,7 +146,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public function findByFilters($filters, $page, $pageSize, $limit, $locale, $options = []): array
     {
-
         $entities = $this->getPublishedNews($filters, $locale, $page, $pageSize, $limit, $options);
 
         return \array_map(
@@ -185,7 +183,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = 1')
             ->andWhere('translation.locale = :locale')->setParameter('locale', $locale)
-            ->orderBy('translation.publishedAt', 'DESC')
+            ->orderBy('translation.authored', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($pageCurrent * $limit);
 

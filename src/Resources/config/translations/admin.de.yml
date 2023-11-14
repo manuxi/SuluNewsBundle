@@ -19,6 +19,8 @@ sulu_news:
     creator: "Erstellt von"
     changed_date: "Letzte Änderung am"
     changer: "Letzte Änderung von"
+    author: "Verfasser"
+    authored: "verfasst"
     pdf: "PDF"
     link: "Verlinkung"
     website: "Webseite"

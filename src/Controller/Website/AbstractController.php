@@ -41,7 +41,7 @@ abstract class AbstractController extends WebsiteController
         try {
             if ($partial) {
                 $response->setContent(
-                    $this->renderBlock(
+                    $this->renderBlockView(
                         $viewTemplate,
                         'content',
                         $parameters

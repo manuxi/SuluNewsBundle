@@ -61,8 +61,9 @@ class NewsSitemapProvider implements SitemapProviderInterface
     private function getLocaleByHost($host) {
         if(!\array_key_exists($host, $this->locales)) {
             $portalInformation = $this->webspaceManager->getPortalInformations();
+
             foreach ($portalInformation as $hostName => $portal) {
-                if($hostName === $host) {
+                if($hostName === $host || $portal->getHost() === $host) {
                     $this->locales[$host] = $portal->getLocale();
                 }
             }

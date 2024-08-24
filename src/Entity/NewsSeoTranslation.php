@@ -9,19 +9,14 @@ use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoTranslationInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslationTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news_seo_translation")
- * @ORM\Entity(repositoryClass=NewsSeoTranslationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsSeoTranslationRepository::class)]
+#[ORM\Table(name: 'app_news_seo_translation')]
 class NewsSeoTranslation implements SeoTranslationInterface
 {
     use SeoTranslationTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=NewsSeo::class, inversedBy="translations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: NewsSeo::class, inversedBy: 'translations')]
+    #[ORM\JoinColumn(nullable: false)]
     private NewsSeo $newsSeo;
 
     public function __construct(NewsSeo $newsSeo, string $locale)

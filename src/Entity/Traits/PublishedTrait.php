@@ -3,25 +3,18 @@
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
-use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 trait PublishedTrait
 {
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
     private ?bool $published = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $publishedAt = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $publishedState = null;
 
     public function isPublished(): ?bool

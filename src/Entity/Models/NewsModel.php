@@ -295,11 +295,15 @@ class NewsModel implements NewsModelInterface
                 throw new EntityNotFoundException($this->contactRepository->getClassName(), $authorId);
             }
             $entity->setAuthor($author);
+        } else {
+            $entity->setAuthor(null);
         }
 
         $authored = $this->getProperty($data, 'authored');
         if ($authored) {
             $entity->setAuthored(new DateTime($authored));
+        } else {
+            $entity->setAuthored(null);
         }
         return $entity;
     }

@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Entity\Traits\LinkTranslatableTrait;
@@ -20,11 +21,8 @@ use Manuxi\SuluNewsBundle\Entity\Traits\ShowDateTranslatableTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news")
- * @ORM\Entity(repositoryClass=NewsRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsRepository::class)]
+#[ORM\Table(name: 'app_news')]
 class News implements AuditableTranslatableInterface
 {
     public const RESOURCE_KEY = 'news';
@@ -42,34 +40,24 @@ class News implements AuditableTranslatableInterface
     use ImageTranslatableTrait;
     use TypeTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity=NewsSeo::class, mappedBy="news", cascade={"persist", "remove"})
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToOne(mappedBy: 'news', targetEntity: NewsSeo::class, cascade: ['persist', 'remove'])]
     private ?NewsSeo $newsSeo = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity=NewsExcerpt::class, mappedBy="news", cascade={"persist", "remove"})
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToOne(mappedBy: 'news', targetEntity: NewsExcerpt::class, cascade: ['persist', 'remove'])]
     private ?NewsExcerpt $newsExcerpt = null;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $images = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=NewsTranslation::class, mappedBy="news", cascade={"ALL"}, indexBy="locale", fetch="EXTRA_LAZY")
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToMany(mappedBy: 'news', targetEntity: NewsTranslation::class, cascade: ['all'], fetch: 'EXTRA_LAZY', indexBy: 'locale')]
     private Collection $translations;
 
     private string $locale = 'de';
@@ -91,9 +79,7 @@ class News implements AuditableTranslatableInterface
         return $this->id;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="title")
-     */
+    #[Serializer\VirtualProperty(name: "title")]
     public function getTitle(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -115,9 +101,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="subtitle")
-     */
+    #[Serializer\VirtualProperty(name: "subtitle")]
     public function getSubtitle(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -139,9 +123,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="summary")
-     */
+    #[Serializer\VirtualProperty(name: "summary")]
     public function getSummary(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -163,9 +145,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="text")
-     */
+    #[Serializer\VirtualProperty(name: "text")]
     public function getText(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -187,9 +167,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="footer")
-     */
+    #[Serializer\VirtualProperty(name: "footer")]
     public function getFooter(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -243,9 +221,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="ext")
-     */
+    #[Serializer\VirtualProperty(name: "ext")]
     public function getExt(): array
     {
         return $this->ext;
@@ -332,9 +308,7 @@ class News implements AuditableTranslatableInterface
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty("availableLocales")
-     */
+    #[Serializer\VirtualProperty(name: "availableLocales")]
     public function getAvailableLocales(): array
     {
         return \array_values($this->translations->getKeys());

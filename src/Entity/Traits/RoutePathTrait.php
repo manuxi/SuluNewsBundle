@@ -2,15 +2,13 @@
 
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
-use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
 trait RoutePathTrait
 {
-    /**
-     * @ORM\Column(type="string", length=4096)
-     */
+
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $routePath;
 
     public function getRoutePath(): string

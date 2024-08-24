@@ -6,13 +6,8 @@ namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
 trait ArrayPropertyTrait
 {
-    /**
-     * @param array $data
-     * @param string $key
-     * @param string|null $default
-     * @return mixed|string|null
-     */
-    protected function getProperty(array $data, string $key, string $default = null)
+
+    protected function getProperty(array $data, string $key, ?string $default = null): mixed
     {
         if (\array_key_exists($key, $data)) {
             return $data[$key];
@@ -21,13 +16,7 @@ trait ArrayPropertyTrait
         return $default;
     }
 
-    /**
-     * @param array $data
-     * @param array $keys
-     * @param string|null $default
-     * @return mixed|string|null
-     */
-    protected function getPropertyMulti(array $data, array $keys, string $default = null)
+    protected function getPropertyMulti(array $data, array $keys, ?string $default = null): mixed
     {
         $currentKey = array_shift($keys);
         if(0 === count($keys)){

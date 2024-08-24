@@ -9,19 +9,14 @@ use Manuxi\SuluNewsBundle\Entity\Interfaces\ExcerptTranslationInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\ExcerptTranslationTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsExcerptTranslationRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news_excerpt_translation")
- * @ORM\Entity(repositoryClass=NewsExcerptTranslationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsExcerptTranslationRepository::class)]
+#[ORM\Table(name: 'app_news_excerpt_translation')]
 class NewsExcerptTranslation implements ExcerptTranslationInterface
 {
     use ExcerptTranslationTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=NewsExcerpt::class, inversedBy="translations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: NewsExcerpt::class, inversedBy: 'translations')]
+    #[ORM\JoinColumn(nullable: false)]
     private NewsExcerpt $newsExcerpt;
 
     public function __construct(NewsExcerpt $newsExcerpt, string $locale)

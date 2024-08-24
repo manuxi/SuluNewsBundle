@@ -12,9 +12,7 @@ trait PdfTranslatableTrait
     abstract public function getLocale();
     abstract protected function getTranslation(string $locale);
 
-    /**
-     * @Serializer\VirtualProperty(name="pdf")
-     */
+    #[Serializer\Exclude]
     public function getPdf(): ?MediaInterface
     {
         $translation = $this->getTranslation($this->getLocale());
@@ -25,10 +23,8 @@ trait PdfTranslatableTrait
         return $translation->getPdf();
     }
 
-    /**
-     * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("pdf")
-     */
+    #[Serializer\VirtualProperty]
+    #[Serializer\SerializedName("pdf")]
     public function getPdfData(): ?array
     {
         $translation = $this->getTranslation($this->getLocale());

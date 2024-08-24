@@ -15,31 +15,20 @@ use Manuxi\SuluNewsBundle\Entity\Traits\SeoTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsSeoRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news_seo")
- * @ORM\Entity(repositoryClass=NewsSeoRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsSeoRepository::class)]
+#[ORM\Table(name: 'app_news_seo')]
 class NewsSeo implements SeoInterface, SeoTranslatableInterface
 {
     use SeoTrait;
     use SeoTranslatableTrait;
 
-    /**
-     * @ORM\OneToOne(targetEntity=News::class, inversedBy="newsSeo", cascade={"persist", "remove"})
-     * @JoinColumn(name="news_id", referencedColumnName="id", nullable=false)
-     *
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToOne(inversedBy: 'newsSeo', targetEntity: News::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'news_id', referencedColumnName: "id", nullable: false)]
     private ?News $news = null;
 
-    /**
-     * @var Collection<string, NewsTranslation>
-     *
-     * @ORM\OneToMany(targetEntity=NewsSeoTranslation::class, mappedBy="newsSeo", cascade={"ALL"}, indexBy="locale")
-     *
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToMany(mappedBy: 'newsSeo', targetEntity: NewsSeoTranslation::class, cascade: ['all'], indexBy: 'locale')]
     private Collection $translations;
 
     public function __construct()

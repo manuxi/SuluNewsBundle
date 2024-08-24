@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Manuxi\SuluNewsBundle\Entity\Traits\LinkTrait;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
@@ -16,11 +17,8 @@ use Manuxi\SuluNewsBundle\Entity\Traits\ShowAuthorTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ShowDateTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news_translation")
- * @ORM\Entity(repositoryClass=NewsTranslationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsTranslationRepository::class)]
+#[ORM\Table(name: 'app_news_translation')]
 class NewsTranslation implements AuditableInterface
 {
     use AuditableTrait;
@@ -32,47 +30,31 @@ class NewsTranslation implements AuditableInterface
     use PdfTrait;
     use ImageTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=News::class, inversedBy="translations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: News::class, inversedBy: 'translations')]
+    #[ORM\JoinColumn(nullable: false)]
     private News $news;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
+    #[ORM\Column(type: Types::STRING, length: 5)]
     private string $locale;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $subtitle = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $summary = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $text = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $footer = null;
 
     public function __construct(News $news, string $locale)

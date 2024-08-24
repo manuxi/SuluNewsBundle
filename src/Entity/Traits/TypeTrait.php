@@ -2,15 +2,14 @@
 
 namespace Manuxi\SuluNewsBundle\Entity\Traits;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 trait TypeTrait
 {
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $type = null;
 
     public function getType(): ?string

@@ -15,29 +15,20 @@ use Manuxi\SuluNewsBundle\Entity\Traits\ExcerptTrait;
 use Manuxi\SuluNewsBundle\Entity\Traits\ExcerptTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_news_excerpt")
- * @ORM\Entity(repositoryClass=NewsExcerptRepository::class)
- */
+#[ORM\Entity(repositoryClass: NewsExcerptRepository::class)]
+#[ORM\Table(name: 'app_news_excerpt')]
 class NewsExcerpt implements ExcerptInterface, ExcerptTranslatableInterface
 {
     use ExcerptTrait;
     use ExcerptTranslatableTrait;
 
-    /**
-     * @ORM\OneToOne(targetEntity=News::class, inversedBy="newsExcerpt", cascade={"persist", "remove"})
-     * @JoinColumn(name="news_id", referencedColumnName="id", nullable=false)
-     *
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToOne(inversedBy: 'newsExcerpt', targetEntity: News::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'news_id', referencedColumnName: "id", nullable: false)]
     private ?News $news = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=NewsExcerptTranslation::class, mappedBy="newsExcerpt", cascade={"ALL"}, indexBy="locale")
-     *
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToMany(mappedBy: 'newsExcerpt', targetEntity: NewsExcerptTranslation::class, cascade: ['all'], indexBy: 'locale')]
     private Collection $translations;
 
     public function __construct()

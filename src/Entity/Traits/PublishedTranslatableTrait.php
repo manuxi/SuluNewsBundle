@@ -10,9 +10,7 @@ trait PublishedTranslatableTrait
     abstract public function getLocale();
     abstract protected function getTranslation(string $locale);
 
-    /**
-     * @Serializer\VirtualProperty("published")
-     */
+    #[Serializer\VirtualProperty(name: "published")]
     public function getPublished(): ?bool
     {
         return $this->isPublished();
@@ -37,9 +35,7 @@ trait PublishedTranslatableTrait
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="published_at")
-     */
+    #[Serializer\VirtualProperty(name: "published_at")]
     public function getPublishedAt(): ?DateTime
     {
         $translation = $this->getTranslation($this->getLocale());
@@ -59,9 +55,7 @@ trait PublishedTranslatableTrait
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty("published_state")
-     */
+    #[Serializer\VirtualProperty(name: "published_state")]
     public function getPublishedState(): ?int
     {
         $translation = $this->getTranslation($this->getLocale());

@@ -11,9 +11,7 @@ trait RouteTranslatableTrait
     abstract public function getLocale();
     abstract protected function getTranslation(string $locale);
 
-    /**
-     * @Serializer\VirtualProperty(name="route")
-     */
+    #[Serializer\VirtualProperty(name: "route")]
     public function getRoute(): ?string
     {
         $translation = $this->getTranslation($this->getLocale());

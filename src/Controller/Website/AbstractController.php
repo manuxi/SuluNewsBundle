@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Controller\Website;
 
+use Exception;
 use Sulu\Bundle\HttpCacheBundle\Cache\SuluHttpCache;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\WebsiteBundle\Controller\WebsiteController;
@@ -32,7 +33,7 @@ abstract class AbstractController extends WebsiteController
      * @param bool $preview
      * @param bool $partial
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     protected function prepareResponse(string $viewTemplate, array $parameters, bool $preview, bool $partial): Response
     {

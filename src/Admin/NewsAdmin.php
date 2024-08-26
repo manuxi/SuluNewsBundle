@@ -306,7 +306,7 @@ class NewsAdmin extends Admin
         return $this->types;
     }
 
-    public function getSecurityContextsTmp()
+    public function getSecurityContextsTmp(): array
     {
         $securityContext = [];
 

@@ -42,10 +42,6 @@ class NewsSelection extends SimpleContentType
         return $news;
     }
 
-    /**
-     * @param PropertyInterface $property
-     * @return array
-     */
     public function getViewData(PropertyInterface $property): array
     {
         return [

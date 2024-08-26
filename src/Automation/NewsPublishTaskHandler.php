@@ -26,7 +26,7 @@ class NewsPublishTaskHandler implements AutomationTaskHandlerInterface
         $this->domainEventCollector = $domainEventCollector;
     }
 
-    public function handle($workload)
+    public function handle($workload): void
     {
         if (!\is_array($workload)) {
             return;

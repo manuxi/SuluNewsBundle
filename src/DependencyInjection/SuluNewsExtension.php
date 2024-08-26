@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\DependencyInjection;
 
+use Exception;
 use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Location;
@@ -21,7 +22,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
     /**
      * @param array $configs
      * @param ContainerBuilder $container
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -48,7 +49,7 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
         $this->configurePersistence($config['objects'], $container);
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         if ($container->hasExtension('sulu_search')) {
             $container->prependExtensionConfig(

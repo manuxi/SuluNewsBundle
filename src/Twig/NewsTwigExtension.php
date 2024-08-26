@@ -18,7 +18,7 @@ class NewsTwigExtension extends AbstractExtension
         $this->newsRepository = $newsRepository;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('sulu_resolve_news', [$this, 'resolveNews']),
@@ -33,7 +33,7 @@ class NewsTwigExtension extends AbstractExtension
         return $news ?? null;
     }
 
-    public function getNews(int $limit = 8, $locale = 'en')
+    public function getNews(int $limit = 8, $locale = 'en'): array
     {
         return $this->newsRepository->findByFilters([], 0, $limit, $limit, $locale);
     }

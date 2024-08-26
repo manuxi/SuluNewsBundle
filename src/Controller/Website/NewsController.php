@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Controller\Website;
 
+use Exception;
 use JMS\Serializer\SerializerBuilder;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
@@ -47,7 +48,7 @@ class NewsController extends AbstractController
      * @param bool $preview
      * @param bool $partial
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function indexAction(News $news, string $view = '@SuluNews/news', bool $preview = false, bool $partial = false): Response
     {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Sitemap;
 
-use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\WebsiteBundle\Sitemap\Sitemap;
 use Sulu\Bundle\WebsiteBundle\Sitemap\SitemapProviderInterface;
@@ -58,7 +57,8 @@ class NewsSitemapProvider implements SitemapProviderInterface
         return ceil($this->repository->countForSitemap($locale) / self::PAGE_SIZE);
     }
 
-    private function getLocaleByHost($host) {
+    private function getLocaleByHost($host): string
+    {
         if(!\array_key_exists($host, $this->locales)) {
             $portalInformation = $this->webspaceManager->getPortalInformations();
 

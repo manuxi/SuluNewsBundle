@@ -31,10 +31,6 @@ class SingleNewsSelection extends SimpleContentType
         return $this->entityManager->getRepository(News::class)->find($id);
     }
 
-    /**
-     * @param PropertyInterface $property
-     * @return array
-     */
     public function getViewData(PropertyInterface $property): array
     {
         return [

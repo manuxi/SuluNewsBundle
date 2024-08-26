@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Preview;
 
+use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\PageBundle\Admin\PageAdmin;
 use Sulu\Bundle\PreviewBundle\Preview\Object\PreviewObjectProviderInterface;
@@ -17,17 +18,17 @@ class NewsObjectProvider implements PreviewObjectProviderInterface
         $this->repository = $repository;
     }
 
-    public function getObject($id, $locale)
+    public function getObject($id, $locale): News
     {
         return $this->repository->findById((int)$id, $locale);
     }
 
-    public function getId($object)
+    public function getId($object): string
     {
         return $object->getId();
     }
 
-    public function setValues($object, $locale, array $data)
+    public function setValues($object, $locale, array $data): void
     {
         // TODO: Implement setValues() method.
     }
@@ -41,12 +42,12 @@ class NewsObjectProvider implements PreviewObjectProviderInterface
         return $object;
     }
 
-    public function serialize($object)
+    public function serialize($object): string
     {
         return serialize($object);
     }
 
-    public function deserialize($serializedObject, $objectClass)
+    public function deserialize($serializedObject, $objectClass): object
     {
         return unserialize($serializedObject);
     }

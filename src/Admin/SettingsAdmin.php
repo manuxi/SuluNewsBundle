@@ -64,9 +64,6 @@ class SettingsAdmin extends Admin
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getSecurityContexts(): array
     {
         return [

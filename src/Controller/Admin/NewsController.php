@@ -188,7 +188,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
      * @param int $id
      * @return Response
      * @throws EntityNotFoundException
-     * @throws ORMException
      */
     public function deleteAction(int $id): Response
     {

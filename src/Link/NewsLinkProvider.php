@@ -23,9 +23,6 @@ class NewsLinkProvider implements LinkProviderInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration(): LinkConfiguration
     {
         return LinkConfigurationBuilder::create()
@@ -39,9 +36,6 @@ class NewsLinkProvider implements LinkProviderInterface
             ->getLinkConfiguration();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preload(array $hrefs, $locale, $published = true): array
     {
         if (0 === count($hrefs)) {

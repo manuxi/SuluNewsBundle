@@ -104,7 +104,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setAuthored($data['authored'] ? new DateTime($data['authored']['date']) : new DateTime());
 
         if ($data['author']) {
-            $news->setAuthor($this->entityManager->find(ContactInterface::class, $data['author']));
+            $contact = $this->entityManager->find(ContactInterface::class, $data['author']);
+            $news->setAuthor($contact);
         }
 
         if($data['link']) {
@@ -112,7 +113,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         }
 
         if($data['imageId']) {
-            $news->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
+            $image = $this->entityManager->find(MediaInterface::class, $data['imageId']);
+            $news->setImage($image);
         }
 
         if(isset($data['publishedAt'])) {
@@ -129,7 +131,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         return $news;
     }
 
-    private function createRoute(EntityManagerInterface $manager, int $id, string $locale, string $slug, string $class)
+    private function createRoute(EntityManagerInterface $manager, int $id, string $locale, string $slug, string $class): void
     {
         $route = new Route();
         $route->setPath($slug);

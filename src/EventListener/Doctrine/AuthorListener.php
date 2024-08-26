@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Manuxi\SuluNewsBundle\EventSubscriber\ORM;
+namespace Manuxi\SuluNewsBundle\EventListener\Doctrine;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
@@ -15,12 +13,12 @@ use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class AuthorSubscriber implements EventSubscriber
+class AuthorListener
 {
     const AUTHOR_PROPERTY_NAME = 'author';
 
     private string $userClass;
-    private TokenStorageInterface $tokenStorage;
+    private ?TokenStorageInterface $tokenStorage;
 
     public function __construct(
         string $userClass,
@@ -30,24 +28,12 @@ class AuthorSubscriber implements EventSubscriber
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function getSubscribedEvents()
+    public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
     {
-        return [
-            Events::loadClassMetadata,
-            Events::onFlush,
-        ];
-    }
-
-    /**
-     * Map creator and changer fields to User objects.
-     * @param LoadClassMetadataEventArgs $news
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $news)
-    {
-        $metadata = $news->getClassMetadata();
+        $metadata = $args->getClassMetadata();
         $reflection = $metadata->getReflectionClass();
 
-        if (null !== $reflection && $reflection->implementsInterface('Manuxi\SuluNewsBundle\Entity\Interfaces\AuthorInterface')) {
+        if (null !== $reflection && $reflection->implementsInterface(AuthorInterface::class)) {
             if (!$metadata->hasAssociation(self::AUTHOR_PROPERTY_NAME)) {
                 $metadata->mapManyToOne([
                     'fieldName' => self::AUTHOR_PROPERTY_NAME,
@@ -65,7 +51,7 @@ class AuthorSubscriber implements EventSubscriber
         }
     }
 
-    public function onFlush(OnFlushEventArgs $news)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         if (null === $this->tokenStorage) {
             return;
@@ -87,11 +73,11 @@ class AuthorSubscriber implements EventSubscriber
 
         $contact = $user->getContact();
 
-        $this->handleAuthor($news, $contact, true);
-        $this->handleAuthor($news, $contact, false);
+        $this->handleAuthor($args, $contact, true);
+        $this->handleAuthor($args, $contact, false);
     }
 
-    private function handleAuthor(OnFlushEventArgs $event, ContactInterface $contact, bool $insertions)
+    private function handleAuthor(OnFlushEventArgs $event, ContactInterface $contact, bool $insertions): void
     {
         $manager = $event->getObjectManager();
         $unitOfWork = $manager->getUnitOfWork();
@@ -122,12 +108,6 @@ class AuthorSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * Return the user from the token.
-     *
-     * @param TokenInterface $token
-     * @return UserInterface|null
-     */
     private function getUser(TokenInterface $token): ?UserInterface
     {
         $user = $token->getUser();

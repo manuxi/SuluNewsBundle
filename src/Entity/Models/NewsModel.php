@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity\Models;
 
 use DateTime;
+use Exception;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCopiedLanguageEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsModifiedEvent;
@@ -114,7 +115,7 @@ class NewsModel implements NewsModelInterface
             new NewsPublishedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->publish($entity, $this->getLocaleFromRequest($request));
+        return $this->newsRepository->publish($entity);
     }
 
     /**
@@ -132,7 +133,7 @@ class NewsModel implements NewsModelInterface
             new NewsUnpublishedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->unpublish($entity, $this->getLocaleFromRequest($request));
+        return $this->newsRepository->unpublish($entity);
     }
 
     public function copy(int $id, Request $request): News
@@ -196,7 +197,7 @@ class NewsModel implements NewsModelInterface
         return $entity;
     }
 
-    private function getLocaleFromRequest(Request $request)
+    private function getLocaleFromRequest(Request $request): ?string
     {
         return $request->query->get('locale');
     }
@@ -206,7 +207,7 @@ class NewsModel implements NewsModelInterface
      * @param array $data
      * @return News
      * @throws EntityNotFoundException
-     * @throws \Exception
+     * @throws Exception
      */
     private function mapDataToNews(News $entity, array $data): News
     {
@@ -229,9 +230,6 @@ class NewsModel implements NewsModelInterface
         if ($routePath) {
             $entity->setRoutePath($routePath);
         }
-
-/*        $published = $this->getProperty($data, 'published');
-        $entity->setPublished($published ? true : false);*/
 
         $showAuthor = $this->getProperty($data, 'showAuthor');
         $entity->setShowAuthor($showAuthor ? true : false);
@@ -284,6 +282,7 @@ class NewsModel implements NewsModelInterface
      * @param array $data
      * @return News
      * @throws EntityNotFoundException
+     * @throws Exception
      */
     private function mapSettingsToNews(News $entity, array $data): News
     {

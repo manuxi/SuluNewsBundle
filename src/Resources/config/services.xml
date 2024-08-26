@@ -73,35 +73,6 @@
             <tag name="doctrine.repository_service"/>
         </service>
 
-        <!--
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsSeoRepository" public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository" public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository" public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Manuxi\SuluNewsBundle\Repository\NewsExcerptTranslationRepository" public="true" lazy="true">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-        -->
-
-
-
         <service id="sulu_news.single_news_selection" class="Manuxi\SuluNewsBundle\Content\Type\SingleNewsSelection">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
 
@@ -142,13 +113,16 @@
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
         </service>
 
-        <service id="sulu_news.persistence.news_subscriber.orm.author" class="Manuxi\SuluNewsBundle\EventSubscriber\ORM\AuthorSubscriber">
+        <service id="sulu_news.persistence.event_listener.doctrine.author" class="Manuxi\SuluNewsBundle\EventListener\Doctrine\AuthorListener">
             <argument>%sulu.model.contact.class%</argument>
             <argument type="service" id="security.token_storage" on-invalid="null"/>
-            <tag name="doctrine.event_subscriber"/>
+            <tag name="doctrine.event_listener" event="loadClassMetadata"/>
+            <tag name="doctrine.event_listener" event="onFlush"/>
         </service>
-        <service id="sulu_news.persistence.news_subscriber.orm.authored" class="Manuxi\SuluNewsBundle\EventSubscriber\ORM\AuthoredSubscriber">
-            <tag name="doctrine.event_subscriber"/>
+        <service id="sulu_news.persistence.event_listener.doctrine.authored" class="Manuxi\SuluNewsBundle\EventListener\Doctrine\AuthoredListener">
+            <tag name="doctrine.event_listener" event="loadClassMetadata"/>
+            <tag name="doctrine.event_listener" event="preUpdate"/>
+            <tag name="doctrine.event_listener" event="prePersist"/>
         </service>
 
         <service id="sulu_news.model.news" class="Manuxi\SuluNewsBundle\Entity\Models\NewsModel">

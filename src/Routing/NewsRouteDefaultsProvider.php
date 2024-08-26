@@ -25,7 +25,7 @@ class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
      * @param null $object
      * @return mixed[]
      */
-    public function getByEntity($entityClass, $id, $locale, $object = null)
+    public function getByEntity($entityClass, $id, $locale, $object = null): array
     {
         return [
             '_controller' => NewsController::class . '::indexAction',
@@ -44,7 +44,7 @@ class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
         return true;
     }
 
-    public function supports($entityClass)
+    public function supports($entityClass): bool
     {
         return News::class === $entityClass;
     }

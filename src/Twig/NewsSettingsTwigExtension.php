@@ -18,7 +18,7 @@ class NewsSettingsTwigExtension extends AbstractExtension
         $this->entityManager = $entityManager;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('load_news_settings', [$this, 'loadNewsSettings']),

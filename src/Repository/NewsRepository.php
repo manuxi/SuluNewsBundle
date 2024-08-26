@@ -132,7 +132,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         return [];
     }
 
-    public function appendCategoriesRelation(QueryBuilder $queryBuilder, $alias)
+    public function appendCategoriesRelation(QueryBuilder $queryBuilder, $alias): string
     {
         return $alias . '.category';
         //$queryBuilder->addSelect($alias.'.category');
@@ -211,7 +211,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $this->prepareCategoriesFilter($queryBuilder, $filters);
     }
 
-    private function prepareTagsFilter(QueryBuilder $queryBuilder, array $filters):void
+    private function prepareTagsFilter(QueryBuilder $queryBuilder, array $filters): void
     {
         if (!empty($filters['tags'])) {
 
@@ -246,7 +246,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         }
     }
 
-    private function prepareCategoriesFilter(QueryBuilder $queryBuilder, array $filters):void
+    private function prepareCategoriesFilter(QueryBuilder $queryBuilder, array $filters): void
     {
         if (!empty($filters['categories'])) {
 

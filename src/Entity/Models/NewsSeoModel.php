@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Entity\Models;
 
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Manuxi\SuluNewsBundle\Entity\NewsSeo;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsSeoModelInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
@@ -28,8 +26,6 @@ class NewsSeoModel implements NewsSeoModelInterface
      * @param NewsSeo $newsSeo
      * @param Request $request
      * @return NewsSeo
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function updateNewsSeo(NewsSeo $newsSeo, Request $request): NewsSeo
     {

@@ -7,7 +7,6 @@ namespace Manuxi\SuluNewsBundle\DependencyInjection;
 use Exception;
 use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Entity\News;
-use Manuxi\SuluNewsBundle\Entity\Location;
 use Sulu\Bundle\PersistenceBundle\DependencyInjection\PersistenceExtensionTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

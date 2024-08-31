@@ -292,7 +292,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
                     $orWhere .= " OR news.type = :type" . $i;
                 }
                 $queryBuilder->setParameter("type" . $i, $filters['types'][$i]);
-                $i++;
             }
             $queryBuilder->andWhere($orWhere);
         }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Service;
 
-use Sulu\Bundle\MediaBundle\Content\Types\CollectionSelection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewsTypeSelect

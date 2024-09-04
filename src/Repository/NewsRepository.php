@@ -88,13 +88,15 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
     {
         $queryBuilder = $this->createQueryBuilder('news')
             ->leftJoin('news.translations', 'translation')
-            ->where('translation.published = 1')
-            ->andWhere('translation.locale = :locale')->setParameter('locale', $locale)
+            ->where('translation.published = :published')
+            ->setParameter('published', 1)
+            ->andWhere('translation.locale = :locale')
+            ->setParameter('locale', $locale)
             ->orderBy('translation.authored', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
-        $this->prepareFilter($queryBuilder, []);
+        $this->prepareFilters($queryBuilder, []);
 
         $news = $queryBuilder->getQuery()->getResult();
         if (!$news) {
@@ -108,7 +110,10 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $query = $this->createQueryBuilder('news')
             ->select('count(news)')
             ->leftJoin('news.translations', 'translation')
-            ->andWhere('translation.locale = :locale')->setParameter('locale', $locale);
+            ->where('translation.published = :published')
+            ->setParameter('published', 1)
+            ->andWhere('translation.locale = :locale')
+            ->setParameter('locale', $locale);
         return $query->getQuery()->getSingleScalarResult();
     }
 
@@ -158,17 +163,24 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public function hasNextPage(array $filters, ?int $page, ?int $pageSize, ?int $limit, string $locale, array $options = []): bool
     {
-        $pageCurrent = (key_exists('page', $options)) ? (int)$options['page'] : 0;
-        $newsCount = $this->createQueryBuilder('news')
+        //$pageCurrent = (key_exists('page', $options)) ? (int)$options['page'] : 0;
+
+        $queryBuilder = $this->createQueryBuilder('news')
             ->select('count(news.id)')
             ->leftJoin('news.translations', 'translation')
-            ->where('translation.published = 1')
+            ->where('translation.published = :published')
+            ->setParameter('published', 1)
             ->andWhere('translation.locale = :locale')
-            ->setParameter('locale', $locale)
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->setParameter('locale', $locale);
 
-        if ((int)($limit * $pageCurrent) + $limit < (int)$newsCount) {
+        $this->prepareFilters($queryBuilder, $filters);
+
+        $newsCount = $queryBuilder->getQuery()->getSingleScalarResult();
+
+        $pos = (int)($pageSize * $page);
+        if (null !== $limit && $limit <= $pos) {
+            return false;
+        } elseif ($pos < (int)$newsCount) {
             return true;
         }
 
@@ -181,13 +193,17 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
         $queryBuilder = $this->createQueryBuilder('news')
             ->leftJoin('news.translations', 'translation')
-            ->where('translation.published = 1')
-            ->andWhere('translation.locale = :locale')->setParameter('locale', $locale)
-            ->orderBy('translation.authored', 'DESC')
-            ->setMaxResults($limit)
-            ->setFirstResult($pageCurrent * $limit);
+            ->where('translation.published = :published')
+            ->setParameter('published', 1)
+            ->andWhere('translation.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('translation.authored', 'DESC');
 
-        $this->prepareFilter($queryBuilder, $filters);
+        $this->prepareFilters($queryBuilder, $filters);
+
+        if (!$this->setOffsetResults($queryBuilder, $page, $pageSize, $limit)) {
+            return [];
+        }
 
         $news = $queryBuilder->getQuery()->getResult();
         if (!$news) {
@@ -196,7 +212,27 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         return $news;
     }
 
-    private function prepareFilter(QueryBuilder $queryBuilder, array $filters): void
+    private function setOffsetResults(QueryBuilder $queryBuilder, $page, $pageSize, $limit = null): bool {
+        if (null !== $page && $pageSize > 0) {
+
+            $pageOffset = ($page - 1) * $pageSize;
+            $restLimit = $limit - $pageOffset;
+
+            $maxResults = (null !== $limit && $pageSize > $restLimit ? $restLimit : $pageSize);
+
+            if ($maxResults <= 0) {
+                return false;
+            }
+
+            $queryBuilder->setMaxResults($maxResults);
+            $queryBuilder->setFirstResult($pageOffset);
+        } elseif (null !== $limit) {
+            $queryBuilder->setMaxResults($limit);
+        }
+        return true;
+    }
+
+    private function prepareFilters(QueryBuilder $queryBuilder, array $filters): void
     {
         if (isset($filters['sortBy'])) {
             $queryBuilder->orderBy($filters['sortBy'], $filters['sortMethod']);
@@ -284,7 +320,9 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
     private function prepareTypesFilter(QueryBuilder $queryBuilder, array $filters): void
     {
         if(!empty($filters['types'])) {
-            $orWhere = '';
+            $queryBuilder->andWhere("news.type IN (:typeList)");
+            $queryBuilder->setParameter("typeList", $filters['types']);
+/*            $orWhere = '';
             for ($i = 0; $i < count($filters['types']); $i++) {
                 if ($i === 0) {
                     $orWhere .= "news.type = :type" . $i;
@@ -293,7 +331,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
                 }
                 $queryBuilder->setParameter("type" . $i, $filters['types'][$i]);
             }
-            $queryBuilder->andWhere($orWhere);
+            $queryBuilder->andWhere($orWhere);*/
         }
     }
 

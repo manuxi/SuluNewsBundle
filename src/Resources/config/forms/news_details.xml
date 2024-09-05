@@ -85,7 +85,7 @@
                         <title>sulu_news.gallery</title>
                     </meta>
                     <params>
-                        <param name="types" value="image"/>
+                        <param name="types" value="image,video"/>
                     </params>
                 </property>
                 <property name="footer" type="text_editor">

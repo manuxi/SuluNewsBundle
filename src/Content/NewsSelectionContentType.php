@@ -39,11 +39,7 @@ class NewsSelectionContentType extends SimpleContentType
         return $newslist;
     }
 
-    /**
-     * @param PropertyInterface $property
-     * @return mixed[]
-     */
-    public function getViewData(PropertyInterface $property): array
+    public function getViewData(PropertyInterface $property): ?array
     {
         return $property->getValue();
     }

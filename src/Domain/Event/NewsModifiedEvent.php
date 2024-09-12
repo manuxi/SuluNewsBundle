@@ -9,13 +9,11 @@ use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 
 class NewsModifiedEvent extends DomainEvent
 {
-    private News $news;
-    private array $payload = [];
-
-    public function __construct(News $news)
-    {
+    public function __construct(
+        private News $news,
+        private array $payload = []
+    ) {
         parent::__construct();
-        $this->news = $news;
     }
 
     public function getNews(): News

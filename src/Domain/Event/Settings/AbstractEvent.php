@@ -9,13 +9,12 @@ use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 
 abstract class AbstractEvent extends DomainEvent
 {
-    private NewsSettings $entity;
     private array $payload = [];
 
-    public function __construct(NewsSettings $entity)
-    {
+    public function __construct(
+        private NewsSettings $entity
+    ){
         parent::__construct();
-        $this->entity = $entity;
     }
 
     public function getEvent(): NewsSettings

@@ -12,11 +12,8 @@ use Sulu\Bundle\RouteBundle\Routing\Defaults\RouteDefaultsProviderInterface;
 class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
 {
 
-    private NewsRepository $repository;
-
-    public function __construct(NewsRepository $repository) {
-        $this->repository = $repository;
-    }
+    public function __construct(private NewsRepository $repository)
+    {}
 
     /**
      * @param $entityClass

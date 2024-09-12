@@ -9,7 +9,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class NewsTypeSelect
 {
 
-    private TranslatorInterface $translator;
     private array $typesMap = [
         'default'       => 'sulu_news.types.default',
         'article'       => 'sulu_news.types.article',
@@ -21,10 +20,8 @@ class NewsTypeSelect
     ];
     private string $defaultValue = 'default';
 
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
+    public function __construct(private TranslatorInterface $translator)
+    {}
 
     public function getValues(): array
     {

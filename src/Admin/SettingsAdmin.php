@@ -20,16 +20,10 @@ class SettingsAdmin extends Admin
     public const FORM_VIEW = 'sulu_news.config.form';
     public const NAV_ITEM = 'sulu_news.config.title.navi';
 
-    private ViewBuilderFactoryInterface $viewBuilderFactory;
-    private SecurityCheckerInterface $securityChecker;
-
     public function __construct(
-        ViewBuilderFactoryInterface $viewBuilderFactory,
-        SecurityCheckerInterface $securityChecker
-    ) {
-        $this->viewBuilderFactory = $viewBuilderFactory;
-        $this->securityChecker = $securityChecker;
-    }
+        private ViewBuilderFactoryInterface $viewBuilderFactory,
+        private SecurityCheckerInterface $securityChecker
+    ) {}
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {

@@ -322,16 +322,6 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         if(!empty($filters['types'])) {
             $queryBuilder->andWhere("news.type IN (:typeList)");
             $queryBuilder->setParameter("typeList", $filters['types']);
-/*            $orWhere = '';
-            for ($i = 0; $i < count($filters['types']); $i++) {
-                if ($i === 0) {
-                    $orWhere .= "news.type = :type" . $i;
-                } else {
-                    $orWhere .= " OR news.type = :type" . $i;
-                }
-                $queryBuilder->setParameter("type" . $i, $filters['types'][$i]);
-            }
-            $queryBuilder->andWhere($orWhere);*/
         }
     }
 

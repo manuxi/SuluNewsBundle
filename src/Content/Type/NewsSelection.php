@@ -11,12 +11,9 @@ use Sulu\Component\Content\SimpleContentType;
 
 class NewsSelection extends SimpleContentType
 {
-    protected EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
-
         parent::__construct('news_selection', []);
     }
 

@@ -14,13 +14,9 @@ class NewsSeoModel implements NewsSeoModelInterface
 {
     use ArrayPropertyTrait;
 
-    private NewsSeoRepository $newsSeoRepository;
-
     public function __construct(
-        NewsSeoRepository $newsSeoRepository
-    ) {
-        $this->newsSeoRepository = $newsSeoRepository;
-    }
+        private NewsSeoRepository $newsSeoRepository
+    ) {}
 
     /**
      * @param NewsSeo $newsSeo

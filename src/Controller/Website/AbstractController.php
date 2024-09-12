@@ -17,14 +17,12 @@ abstract class AbstractController extends WebsiteController
 {
 
     protected ?Request $request;
-    protected MediaManagerInterface $mediaManager;
 
     public function __construct(
         RequestStack $requestStack,
-        MediaManagerInterface $mediaManager
+        protected MediaManagerInterface $mediaManager
     ) {
-        $this->request      = $requestStack->getCurrentRequest();
-        $this->mediaManager = $mediaManager;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**

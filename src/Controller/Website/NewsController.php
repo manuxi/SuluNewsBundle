@@ -18,28 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewsController extends AbstractController
 {
-    private TranslatorInterface $translator;
-    private NewsRepository $repository;
-    private WebspaceManagerInterface $webspaceManager;
-    private TemplateAttributeResolverInterface $templateAttributeResolver;
-    private RouteRepositoryInterface $routeRepository;
 
     public function __construct(
         RequestStack $requestStack,
         MediaManagerInterface $mediaManager,
-        NewsRepository $repository,
-        WebspaceManagerInterface $webspaceManager,
-        TranslatorInterface $translator,
-        TemplateAttributeResolverInterface $templateAttributeResolver,
-        RouteRepositoryInterface $routeRepository
+        private NewsRepository $repository,
+        private WebspaceManagerInterface $webspaceManager,
+        private TranslatorInterface $translator,
+        private TemplateAttributeResolverInterface $templateAttributeResolver,
+        private RouteRepositoryInterface $routeRepository
     ) {
         parent::__construct($requestStack, $mediaManager);
-
-        $this->repository                = $repository;
-        $this->webspaceManager           = $webspaceManager;
-        $this->translator                = $translator;
-        $this->templateAttributeResolver = $templateAttributeResolver;
-        $this->routeRepository           = $routeRepository;
     }
 
     /**

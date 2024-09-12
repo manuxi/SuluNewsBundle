@@ -11,13 +11,8 @@ use Sulu\Component\SmartContent\ItemInterface;
 #[Serializer\ExclusionPolicy("all")]
 class NewsDataItem implements ItemInterface
 {
-
-    private News $entity;
-
-    public function __construct(News $entity)
-    {
-        $this->entity = $entity;
-    }
+    public function __construct(private News $entity)
+    {}
 
     #[Serializer\VirtualProperty]
     public function getId(): string

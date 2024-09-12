@@ -20,22 +20,12 @@ class NewsExcerptModel implements NewsExcerptModelInterface
 {
     use ArrayPropertyTrait;
 
-    private NewsExcerptRepository $newsExcerptRepository;
-    private CategoryManagerInterface $categoryManager;
-    private TagManagerInterface $tagManager;
-    private MediaRepositoryInterface $mediaRepository;
-
     public function __construct(
-        NewsExcerptRepository $newsExcerptRepository,
-        CategoryManagerInterface $categoryManager,
-        TagManagerInterface $tagManager,
-        MediaRepositoryInterface $mediaRepository
-    ) {
-        $this->newsExcerptRepository = $newsExcerptRepository;
-        $this->categoryManager = $categoryManager;
-        $this->tagManager = $tagManager;
-        $this->mediaRepository = $mediaRepository;
-    }
+        private NewsExcerptRepository $newsExcerptRepository,
+        private CategoryManagerInterface $categoryManager,
+        private TagManagerInterface $tagManager,
+        private MediaRepositoryInterface $mediaRepository
+    ) {}
 
     /**
      * @param NewsExcerpt $newsExcerpt

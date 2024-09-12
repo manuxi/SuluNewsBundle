@@ -20,16 +20,14 @@ class NewsDataProvider extends BaseDataProvider
 {
     private int $defaultLimit = 12;
 
-    private RequestStack $requestStack;
-    private EntityManagerInterface $entityManager;
-    private NewsTypeSelect $newsTypeSelect;
-
-    public function __construct(DataProviderRepositoryInterface $repository, ArraySerializerInterface $serializer, RequestStack $requestStack, EntityManagerInterface $entityManager, NewsTypeSelect $newsTypeSelect)
-    {
+    public function __construct(
+        DataProviderRepositoryInterface $repository,
+        ArraySerializerInterface $serializer,
+        private RequestStack $requestStack,
+        private EntityManagerInterface $entityManager,
+        private NewsTypeSelect $newsTypeSelect
+    ) {
         parent::__construct($repository, $serializer);
-        $this->entityManager = $entityManager;
-        $this->requestStack = $requestStack;
-        $this->newsTypeSelect = $newsTypeSelect;
     }
 
     private function getTypes(): array

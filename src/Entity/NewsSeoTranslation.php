@@ -15,13 +15,12 @@ class NewsSeoTranslation implements SeoTranslationInterface
 {
     use SeoTranslationTrait;
 
-    #[ORM\ManyToOne(targetEntity: NewsSeo::class, inversedBy: 'translations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private NewsSeo $newsSeo;
-
-    public function __construct(NewsSeo $newsSeo, string $locale)
-    {
-        $this->newsSeo = $newsSeo;
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: NewsSeo::class, inversedBy: 'translations')]
+        #[ORM\JoinColumn(nullable: false)]
+        private NewsSeo $newsSeo,
+        string $locale
+    ) {
         $this->setLocale($locale);
     }
 

@@ -11,12 +11,9 @@ use Sulu\Bundle\PreviewBundle\Preview\Object\PreviewObjectProviderInterface;
 
 class NewsObjectProvider implements PreviewObjectProviderInterface
 {
-    private NewsRepository $repository;
 
-    public function __construct(NewsRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private NewsRepository $repository)
+    {}
 
     public function getObject($id, $locale): News
     {

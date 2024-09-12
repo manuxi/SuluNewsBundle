@@ -15,13 +15,12 @@ class NewsExcerptTranslation implements ExcerptTranslationInterface
 {
     use ExcerptTranslationTrait;
 
-    #[ORM\ManyToOne(targetEntity: NewsExcerpt::class, inversedBy: 'translations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private NewsExcerpt $newsExcerpt;
-
-    public function __construct(NewsExcerpt $newsExcerpt, string $locale)
-    {
-        $this->newsExcerpt = $newsExcerpt;
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: NewsExcerpt::class, inversedBy: 'translations')]
+        #[ORM\JoinColumn(nullable: false)]
+        private NewsExcerpt $newsExcerpt,
+        string $locale
+    ) {
         $this->setLocale($locale);
         $this->initExcerptTranslationTrait();
     }

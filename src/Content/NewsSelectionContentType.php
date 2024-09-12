@@ -11,13 +11,9 @@ use Sulu\Component\Content\SimpleContentType;
 
 class NewsSelectionContentType extends SimpleContentType
 {
-    private NewsRepository $newsRepository;
-
-    public function __construct(NewsRepository $newsRepository)
+    public function __construct(private NewsRepository $newsRepository)
     {
         parent::__construct('news_selection');
-
-        $this->newsRepository = $newsRepository;
     }
 
     /**
@@ -39,7 +35,7 @@ class NewsSelectionContentType extends SimpleContentType
         return $newslist;
     }
 
-    public function getViewData(PropertyInterface $property): ?array
+    public function getViewData(PropertyInterface $property): mixed
     {
         return $property->getValue();
     }

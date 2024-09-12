@@ -35,10 +35,6 @@ class NewsTranslation implements AuditableInterface
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: News::class, inversedBy: 'translations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private News $news;
-
     #[ORM\Column(type: Types::STRING, length: 5)]
     private string $locale;
 
@@ -57,9 +53,12 @@ class NewsTranslation implements AuditableInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $footer = null;
 
-    public function __construct(News $news, string $locale)
-    {
-        $this->news  = $news;
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: News::class, inversedBy: 'translations')]
+        #[ORM\JoinColumn(nullable: false)]
+        private News $news,
+        string $locale
+    ) {
         $this->locale = $locale;
     }
 

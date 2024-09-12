@@ -39,28 +39,15 @@ class NewsAdmin extends Admin
     public const EDIT_FORM_VIEW_AUTOMATION = 'sulu_news.news.edit_form.automation';
     public const EDIT_FORM_VIEW_ACTIVITY = 'sulu_news.news.edit_form.activity';
 
-    private ViewBuilderFactoryInterface $viewBuilderFactory;
-    private SecurityCheckerInterface $securityChecker;
-    private WebspaceManagerInterface $webspaceManager;
-    private NewsTypeSelect $newsTypeSelect;
-
-    private ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory;
-
     private ?array $types = null;
 
     public function __construct(
-        ViewBuilderFactoryInterface $viewBuilderFactory,
-        SecurityCheckerInterface $securityChecker,
-        WebspaceManagerInterface $webspaceManager,
-        NewsTypeSelect $newsTypeSelect,
-        ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory
-    ) {
-        $this->viewBuilderFactory = $viewBuilderFactory;
-        $this->securityChecker    = $securityChecker;
-        $this->webspaceManager    = $webspaceManager;
-        $this->newsTypeSelect = $newsTypeSelect;
-        $this->automationViewBuilderFactory = $automationViewBuilderFactory;
-    }
+        private ViewBuilderFactoryInterface $viewBuilderFactory,
+        private SecurityCheckerInterface $securityChecker,
+        private WebspaceManagerInterface $webspaceManager,
+        private NewsTypeSelect $newsTypeSelect,
+        private ?AutomationViewBuilderFactoryInterface $automationViewBuilderFactory
+    ) {}
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {

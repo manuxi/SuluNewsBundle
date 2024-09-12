@@ -14,14 +14,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewsLinkProvider implements LinkProviderInterface
 {
-    private NewsRepository $newsRepository;
-    private TranslatorInterface $translator;
 
-    public function __construct(NewsRepository $newsRepository, TranslatorInterface $translator)
-    {
-        $this->newsRepository = $newsRepository;
-        $this->translator = $translator;
-    }
+    public function __construct(
+        private NewsRepository $newsRepository,
+        private TranslatorInterface $translator
+    ) {}
 
     public function getConfiguration(): LinkConfiguration
     {

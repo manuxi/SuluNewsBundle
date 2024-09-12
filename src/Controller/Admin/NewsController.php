@@ -39,36 +39,19 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 {
     use RequestParametersTrait;
 
-    private NewsModel $newsModel;
-    private NewsSeoModel $newsSeoModel;
-    private NewsExcerptModel $newsExcerptModel;
-    private DoctrineListRepresentationFactory $doctrineListRepresentationFactory;
-    private RouteManagerInterface $routeManager;
-    private RouteRepositoryInterface $routeRepository;
-    private SecurityCheckerInterface $securityChecker;
-    private TrashManagerInterface $trashManager;
-
     public function __construct(
-        NewsModel $newsModel,
-        NewsSeoModel $newsSeoModel,
-        NewsExcerptModel $newsExcerptModel,
-        RouteManagerInterface $routeManager,
-        RouteRepositoryInterface $routeRepository,
-        DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
-        SecurityCheckerInterface $securityChecker,
+        private NewsModel $newsModel,
+        private NewsSeoModel $newsSeoModel,
+        private NewsExcerptModel $newsExcerptModel,
+        private RouteManagerInterface $routeManager,
+        private RouteRepositoryInterface $routeRepository,
+        private DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
+        private SecurityCheckerInterface $securityChecker,
+        private TrashManagerInterface $trashManager,
         ViewHandlerInterface $viewHandler,
-        TrashManagerInterface $trashManager,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         parent::__construct($viewHandler, $tokenStorage);
-        $this->newsModel                        = $newsModel;
-        $this->newsSeoModel                     = $newsSeoModel;
-        $this->newsExcerptModel                 = $newsExcerptModel;
-        $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
-        $this->routeManager                      = $routeManager;
-        $this->routeRepository                   = $routeRepository;
-        $this->securityChecker                   = $securityChecker;
-        $this->trashManager = $trashManager;
     }
 
     public function cgetAction(Request $request): Response

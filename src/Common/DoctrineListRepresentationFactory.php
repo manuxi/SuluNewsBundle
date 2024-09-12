@@ -16,31 +16,16 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 
 class DoctrineListRepresentationFactory
 {
-    private RestHelperInterface $restHelper;
-    private ListRestHelperInterface $listRestHelper;
-    private DoctrineListBuilderFactory $listBuilderFactory;
-    private FieldDescriptorFactoryInterface $fieldDescriptorFactory;
-    private WebspaceManagerInterface $webspaceManager;
-    private NewsTranslationRepository $newsTranslationRepository;
-    private MediaManagerInterface $mediaManager;
 
     public function __construct(
-        RestHelperInterface $restHelper,
-        ListRestHelperInterface $listRestHelper,
-        DoctrineListBuilderFactory $listBuilderFactory,
-        FieldDescriptorFactoryInterface $fieldDescriptorFactory,
-        WebspaceManagerInterface $webspaceManager,
-        NewsTranslationRepository $newsTranslationRepository,
-        MediaManagerInterface $mediaManager
-    ) {
-        $this->restHelper = $restHelper;
-        $this->listRestHelper = $listRestHelper;
-        $this->listBuilderFactory = $listBuilderFactory;
-        $this->fieldDescriptorFactory = $fieldDescriptorFactory;
-        $this->webspaceManager = $webspaceManager;
-        $this->newsTranslationRepository = $newsTranslationRepository;
-        $this->mediaManager = $mediaManager;
-    }
+        private RestHelperInterface $restHelper,
+        private ListRestHelperInterface $listRestHelper,
+        private DoctrineListBuilderFactory $listBuilderFactory,
+        private FieldDescriptorFactoryInterface $fieldDescriptorFactory,
+        private WebspaceManagerInterface $webspaceManager,
+        private NewsTranslationRepository $newsTranslationRepository,
+        private MediaManagerInterface $mediaManager
+    ) {}
 
     public function createDoctrineListRepresentation(
         string $resourceKey,

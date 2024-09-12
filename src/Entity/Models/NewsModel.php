@@ -26,22 +26,12 @@ class NewsModel implements NewsModelInterface
 {
     use ArrayPropertyTrait;
 
-    private NewsRepository $newsRepository;
-    private MediaRepositoryInterface $mediaRepository;
-    private ContactRepository $contactRepository;
-    private DomainEventCollectorInterface $domainEventCollector;
-
     public function __construct(
-        NewsRepository $newsRepository,
-        MediaRepositoryInterface $mediaRepository,
-        ContactRepository $contactRepository,
-        DomainEventCollectorInterface $domainEventCollector
-    ) {
-        $this->mediaRepository = $mediaRepository;
-        $this->newsRepository = $newsRepository;
-        $this->contactRepository = $contactRepository;
-        $this->domainEventCollector = $domainEventCollector;
-    }
+        private NewsRepository $newsRepository,
+        private MediaRepositoryInterface $mediaRepository,
+        private ContactRepository $contactRepository,
+        private DomainEventCollectorInterface $domainEventCollector
+    ) {}
 
     /**
      * @param int $id

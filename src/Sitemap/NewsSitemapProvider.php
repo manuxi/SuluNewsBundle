@@ -12,17 +12,13 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 
 class NewsSitemapProvider implements SitemapProviderInterface
 {
-    private NewsRepository $repository;
-    private WebspaceManagerInterface $webspaceManager;
+
     private array $locales = [];
 
     public function __construct(
-        NewsRepository $repository,
-        WebspaceManagerInterface $webspaceManager
-    ) {
-        $this->repository = $repository;
-        $this->webspaceManager = $webspaceManager;
-    }
+        private NewsRepository $repository,
+        private WebspaceManagerInterface $webspaceManager
+    ) {}
 
     public function build($page, $scheme, $host): array
     {

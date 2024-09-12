@@ -11,12 +11,9 @@ use Twig\TwigFunction;
 
 class NewsTwigExtension extends AbstractExtension
 {
-    private NewsRepository $newsRepository;
 
-    public function __construct(NewsRepository $newsRepository)
-    {
-        $this->newsRepository = $newsRepository;
-    }
+    public function __construct(private NewsRepository $newsRepository)
+    {}
 
     public function getFunctions(): array
     {

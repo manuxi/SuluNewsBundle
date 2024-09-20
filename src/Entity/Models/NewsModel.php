@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity\Models;
 
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCopiedLanguageEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsCreatedEvent;
@@ -19,6 +20,8 @@ use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Bundle\MediaBundle\Entity\MediaRepositoryInterface;
+use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
+use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,6 +33,9 @@ class NewsModel implements NewsModelInterface
         private NewsRepository $newsRepository,
         private MediaRepositoryInterface $mediaRepository,
         private ContactRepository $contactRepository,
+        private RouteManagerInterface $routeManager,
+        private RouteRepositoryInterface $routeRepository,
+        private EntityManagerInterface $entityManager,
         private DomainEventCollectorInterface $domainEventCollector
     ) {}
 
@@ -47,12 +53,13 @@ class NewsModel implements NewsModelInterface
         return $this->findNewsByIdAndLocale($id, $request);
     }
 
-    public function deleteNews(int $id, string $title): void
+    public function deleteNews(News $entity): void
     {
         $this->domainEventCollector->collect(
-            new NewsRemovedEvent($id, $title)
+            new NewsRemovedEvent($entity->getId(), $entity->getTitle() ?? '')
         );
-        $this->newsRepository->remove($id);
+        $this->removeRoutesForEntity($entity);
+        $this->newsRepository->remove($entity->getId());
     }
 
     /**
@@ -69,7 +76,15 @@ class NewsModel implements NewsModelInterface
             new NewsCreatedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->save($entity);
+        //need the id for updateRoutesForEntity(), so we have to persist and flush here
+        $entity =  $this->newsRepository->save($entity);
+
+        $this->updateRoutesForEntity($entity);
+
+        //explicit flush to save routes persisted by updateRoutesForEntity()
+        $this->entityManager->flush();
+
+        return $entity;
     }
 
     /**
@@ -83,6 +98,7 @@ class NewsModel implements NewsModelInterface
         $entity = $this->findNewsByIdAndLocale($id, $request);
         $entity = $this->mapDataToNews($entity, $request->request->all());
         $entity = $this->mapSettingsToNews($entity, $request->request->all());
+        $this->updateRoutesForEntity($entity);
 
         $this->domainEventCollector->collect(
             new NewsModifiedEvent($entity, $request->request->all())
@@ -295,5 +311,28 @@ class NewsModel implements NewsModelInterface
             $entity->setAuthored(null);
         }
         return $entity;
+    }
+
+    private function updateRoutesForEntity(News $entity): void
+    {
+        $this->routeManager->createOrUpdateByAttributes(
+            News::class,
+            (string) $entity->getId(),
+            $entity->getLocale(),
+            $entity->getRoutePath()
+        );
+    }
+
+    private function removeRoutesForEntity(News $entity): void
+    {
+        $routes = $this->routeRepository->findAllByEntity(
+            News::class,
+            (string) $entity->getId(),
+            $entity->getLocale()
+        );
+
+        foreach ($routes as $route) {
+            $this->routeRepository->remove($route);
+        }
     }
 }

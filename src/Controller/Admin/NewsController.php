@@ -9,14 +9,10 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsExcerptModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsSeoModel;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
-use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
-use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
@@ -43,8 +39,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         private NewsModel $newsModel,
         private NewsSeoModel $newsSeoModel,
         private NewsExcerptModel $newsExcerptModel,
-        private RouteManagerInterface $routeManager,
-        private RouteRepositoryInterface $routeRepository,
         private DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         private SecurityCheckerInterface $securityChecker,
         private TrashManagerInterface $trashManager,
@@ -87,8 +81,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     public function postAction(Request $request): Response
     {
         $entity = $this->newsModel->createNews($request);
-        $this->updateRoutesForEntity($entity);
-
         return $this->handleView($this->view($entity, 201));
     }
 
@@ -158,7 +150,6 @@ class NewsController extends AbstractRestController implements ClassResourceInte
             }
         } catch(MissingParameterException $e) {
             $entity = $this->newsModel->updateNews($id, $request);
-            $this->updateRoutesForEntity($entity);
 
             $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
             $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
@@ -178,9 +169,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 
         $this->trashManager->store(News::RESOURCE_KEY, $entity);
 
-        $this->removeRoutesForEntity($entity);
-
-        $this->newsModel->deleteNews($id, $entity->getTitle() ?? '');
+        $this->newsModel->deleteNews($entity);
         return $this->handleView($this->view(null, 204));
     }
 
@@ -189,26 +178,4 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         return News::SECURITY_CONTEXT;
     }
 
-    protected function updateRoutesForEntity(News $entity): void
-    {
-        $this->routeManager->createOrUpdateByAttributes(
-            News::class,
-            (string) $entity->getId(),
-            $entity->getLocale(),
-            $entity->getRoutePath()
-        );
-    }
-
-    protected function removeRoutesForEntity(News $entity): void
-    {
-        $routes = $this->routeRepository->findAllByEntity(
-            News::class,
-            (string) $entity->getId(),
-            $entity->getLocale()
-        );
-
-        foreach ($routes as $route) {
-            $this->routeRepository->remove($route);
-        }
-    }
 }

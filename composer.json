@@ -1,6 +1,5 @@
 {
     "name": "manuxi/sulu-news-bundle",
-    "version": "1.0.0",
     "description": "Say hello to Sulu news!",
     "type": "symfony-bundle",
     "keywords": [

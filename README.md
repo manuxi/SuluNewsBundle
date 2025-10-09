@@ -8,7 +8,7 @@
 <img src="https://img.shields.io/github/v/tag/manuxi/SuluNewsBundle" alt="GitHub license">
 </a>
 
-I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch. Sadly it's still not fixed in the SuluArticleBundle :( 
+I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch.
 
 This bundle contains
 - Several filters for News Content Type
@@ -28,6 +28,7 @@ It contains an example twig template.
 Please feel comfortable submitting feature requests. 
 This bundle is still in development. Use at own risk 🤞🏻
 
+![image](https://github.com/user-attachments/assets/eae6259e-01c8-4e80-9613-b186687701b9)
 
 ## 👩🏻‍🏭 Installation
 Install the package with:

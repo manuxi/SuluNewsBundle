@@ -52,6 +52,18 @@ Please add the following to your `routes_admin.yaml`:
 SuluNewsBundle:
     resource: '@SuluNewsBundle/Resources/config/routes_admin.yml'
 ```
+Don't forget fo add the index to your sulu_search.yaml:
+
+add "news"!
+
+"news" is the index of published, "news_draft" the index of unpublished elements.
+```yaml
+sulu_search:
+    website:
+        indexes:
+            - news
+            - ...
+``` 
 Last but not least the schema of the database needs to be updated.  
 
 Some tables will be created (prefixed with app_):  
@@ -114,9 +126,6 @@ Example of the corresponding twig template for the news list:
 
 Since the seo and excerpt tabs are available in the news editor, 
 meta information can be provided like it's done as usual when rendering your pages. 
-
-## 🧶 Configuration
-There exists no configuration yet. I'm on it :)
 
 ## 👩‍🍳 Contributing
 For the sake of simplicity this extension was kept small.

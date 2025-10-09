@@ -7,19 +7,22 @@ namespace Manuxi\SuluNewsBundle\Automation;
 use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsPublishedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
+use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent as NewsPublishedEventForSearch;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\AutomationBundle\TaskHandler\AutomationTaskHandlerInterface;
 use Sulu\Bundle\AutomationBundle\TaskHandler\TaskHandlerConfiguration;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewsPublishTaskHandler implements AutomationTaskHandlerInterface
 {
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private TranslatorInterface $translator,
-        private DomainEventCollectorInterface $domainEventCollector
+        private readonly EntityManagerInterface        $entityManager,
+        private readonly TranslatorInterface           $translator,
+        private readonly DomainEventCollectorInterface $domainEventCollector,
+        private readonly EventDispatcherInterface      $dispatcher
     ) {}
 
     public function handle($workload): void
@@ -41,6 +44,8 @@ class NewsPublishTaskHandler implements AutomationTaskHandlerInterface
         );
 
         $repository->save($entity);
+
+        $this->dispatcher->dispatch(new NewsPublishedEventForSearch($entity));
 
     }
 

@@ -13,6 +13,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsSavedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsUnpublishedEvent;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
@@ -27,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @RouteResource("news")
@@ -36,14 +41,15 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     use RequestParametersTrait;
 
     public function __construct(
-        private NewsModel $newsModel,
-        private NewsSeoModel $newsSeoModel,
-        private NewsExcerptModel $newsExcerptModel,
-        private DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
-        private SecurityCheckerInterface $securityChecker,
-        private TrashManagerInterface $trashManager,
-        ViewHandlerInterface $viewHandler,
-        ?TokenStorageInterface $tokenStorage = null
+        private readonly NewsModel                         $newsModel,
+        private readonly NewsSeoModel                      $newsSeoModel,
+        private readonly NewsExcerptModel                  $newsExcerptModel,
+        private readonly DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
+        private readonly SecurityCheckerInterface          $securityChecker,
+        private readonly TrashManagerInterface             $trashManager,
+        private readonly EventDispatcherInterface          $dispatcher,
+        ViewHandlerInterface                               $viewHandler,
+        ?TokenStorageInterface                             $tokenStorage = null
     ) {
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -81,6 +87,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
     public function postAction(Request $request): Response
     {
         $entity = $this->newsModel->createNews($request);
+        $this->dispatcher->dispatch(new NewsSavedEvent($entity));
         return $this->handleView($this->view($entity, 201));
     }
 
@@ -100,13 +107,16 @@ class NewsController extends AbstractRestController implements ClassResourceInte
             switch ($action) {
                 case 'publish':
                     $entity = $this->newsModel->publishNews($id, $request);
+                    $this->dispatcher->dispatch(new NewsPublishedEvent($entity));
                     break;
                 case 'draft':
                 case 'unpublish':
                     $entity = $this->newsModel->unpublishNews($id, $request);
+                    $this->dispatcher->dispatch(new NewsUnpublishedEvent($entity));
                     break;
                 case 'copy':
                     $entity = $this->newsModel->copy($id, $request);
+                    $this->dispatcher->dispatch(new NewsSavedEvent($entity));
                     break;
                 case 'copy-locale':
                     $locale = $this->getRequestParameter($request, 'locale', true);
@@ -122,6 +132,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
                     }
 
                     $entity = $this->newsModel->copyLanguage($id, $request, $srcLocale, $destLocales);
+                    $this->dispatcher->dispatch(new NewsSavedEvent($entity));
                     break;
                 default:
                     throw new BadRequestHttpException(sprintf('Unknown action "%s".', $action));
@@ -144,12 +155,22 @@ class NewsController extends AbstractRestController implements ClassResourceInte
                     'draft', 'unpublish' => $this->newsModel->unpublishNews($id, $request),
                     default => throw new BadRequestHttpException(sprintf('Unknown action "%s".', $action)),
                 };
+                if ($entity) {
+                    if ($action === 'publish') {
+                        $this->dispatcher->dispatch(new NewsPublishedEvent($entity));
+                    } else {
+                        $this->dispatcher->dispatch(new NewsUnpublishedEvent($entity));
+                    }
+                }
             } catch (RestException $exc) {
                 $view = $this->view($exc->toArray(), 400);
                 return $this->handleView($view);
             }
         } catch(MissingParameterException $e) {
             $entity = $this->newsModel->updateNews($id, $request);
+
+            //make changed content available
+            $this->dispatcher->dispatch(new NewsSavedEvent($entity));
 
             $this->newsSeoModel->updateNewsSeo($entity->getNewsSeo(), $request);
             $this->newsExcerptModel->updateNewsExcerpt($entity->getNewsExcerpt(), $request);
@@ -170,6 +191,7 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         $this->trashManager->store(News::RESOURCE_KEY, $entity);
 
         $this->newsModel->deleteNews($entity);
+        $this->dispatcher->dispatch(new NewsRemovedEvent($entity));
         return $this->handleView($this->view(null, 204));
     }
 

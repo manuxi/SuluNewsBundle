@@ -163,6 +163,12 @@
             <tag name="sulu.link.provider" alias="news"/>
         </service>
 
+        <!--SearchSubscriber-->
+        <service id="sulu_news.search_subscriber" class="Manuxi\SuluNewsBundle\Search\NewsSearchSubscriber">
+            <argument type="service" id="massive_search.search_manager"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <!--Sitemap-->
         <service id="sulu_news.sitemap_provider" public="true" class="Manuxi\SuluNewsBundle\Sitemap\NewsSitemapProvider">
             <argument type="service" id="sulu_news.repository.news"/>

@@ -19,6 +19,9 @@ This bundle contains
 - Possibility to assign a contact as author
 - Twig Extension for resolving news / get a list of news
 - Events for displaying Activities
+- Search indexes 
+  - refresh whenever entity is changed
+  - distinct between normal and draft
 and more...
 
 The news and their meta information is translatable. 

@@ -17,6 +17,10 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsModelInterface;
 use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
+use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent as SearchPublishedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent as SearchRemovedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsSavedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsUnpublishedEvent as SearchUnpublishedEvent;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Bundle\MediaBundle\Entity\MediaRepositoryInterface;
@@ -24,19 +28,21 @@ use Sulu\Bundle\RouteBundle\Entity\RouteRepositoryInterface;
 use Sulu\Bundle\RouteBundle\Manager\RouteManagerInterface;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NewsModel implements NewsModelInterface
 {
     use ArrayPropertyTrait;
 
     public function __construct(
-        private NewsRepository $newsRepository,
-        private MediaRepositoryInterface $mediaRepository,
-        private ContactRepository $contactRepository,
-        private RouteManagerInterface $routeManager,
-        private RouteRepositoryInterface $routeRepository,
-        private EntityManagerInterface $entityManager,
-        private DomainEventCollectorInterface $domainEventCollector
+        private readonly NewsRepository                $newsRepository,
+        private readonly MediaRepositoryInterface      $mediaRepository,
+        private readonly ContactRepository             $contactRepository,
+        private readonly RouteManagerInterface         $routeManager,
+        private readonly RouteRepositoryInterface      $routeRepository,
+        private readonly EntityManagerInterface        $entityManager,
+        private readonly DomainEventCollectorInterface $domainEventCollector,
+        private readonly EventDispatcherInterface      $dispatcher,
     ) {}
 
     /**
@@ -58,6 +64,7 @@ class NewsModel implements NewsModelInterface
         $this->domainEventCollector->collect(
             new NewsRemovedEvent($entity->getId(), $entity->getTitle() ?? '')
         );
+        $this->dispatcher->dispatch(new SearchRemovedEvent($entity));
         $this->removeRoutesForEntity($entity);
         $this->newsRepository->remove($entity->getId());
     }
@@ -84,6 +91,8 @@ class NewsModel implements NewsModelInterface
         //explicit flush to save routes persisted by updateRoutesForEntity()
         $this->entityManager->flush();
 
+        $this->dispatcher->dispatch(new NewsSavedEvent($entity));
+
         return $entity;
     }
 
@@ -96,15 +105,22 @@ class NewsModel implements NewsModelInterface
     public function updateNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
+        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+
         $entity = $this->mapDataToNews($entity, $request->request->all());
         $entity = $this->mapSettingsToNews($entity, $request->request->all());
-        $this->updateRoutesForEntity($entity);
-
         $this->domainEventCollector->collect(
             new NewsModifiedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->save($entity);
+        $entity = $this->newsRepository->save($entity);
+
+        $this->updateRoutesForEntity($entity);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new NewsSavedEvent($entity));
+
+        return $entity;
     }
 
     /**
@@ -116,12 +132,16 @@ class NewsModel implements NewsModelInterface
     public function publishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
+        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
 
         $this->domainEventCollector->collect(
             new NewsPublishedEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->publish($entity);
+        $entity = $this->newsRepository->publish($entity);
+        $this->dispatcher->dispatch(new SearchPublishedEvent($entity));
+
+        return $entity;
     }
 
     /**
@@ -133,13 +153,14 @@ class NewsModel implements NewsModelInterface
     public function unpublishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $entity->setPublished(false);
-
+        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+        $entity = $this->newsRepository->unpublish($entity);
         $this->domainEventCollector->collect(
             new NewsUnpublishedEvent($entity, $request->request->all())
         );
+        $this->dispatcher->dispatch(new SearchPublishedEvent($entity));
 
-        return $this->newsRepository->unpublish($entity);
+        return $entity;
     }
 
     public function copy(int $id, Request $request): News
@@ -152,7 +173,10 @@ class NewsModel implements NewsModelInterface
         $copy = $this->newsRepository->create($locale);
 
         $copy = $entity->copy($copy);
-        return $this->newsRepository->save($copy);
+        $copy = $this->newsRepository->save($copy);
+        $this->dispatcher->dispatch(new NewsSavedEvent($copy));
+
+        return $copy;
     }
 
     public function copyLanguage(int $id, Request $request, string $srcLocale, array $destLocales): News
@@ -171,7 +195,10 @@ class NewsModel implements NewsModelInterface
             new NewsCopiedLanguageEvent($entity, $request->request->all())
         );
 
-        return $this->newsRepository->save($entity);
+        $entity = $this->newsRepository->save($entity);
+        $this->dispatcher->dispatch(new NewsSavedEvent($entity));
+
+        return $entity;
     }
 
     /**

@@ -25,6 +25,24 @@ class NewsTest extends SuluTestCase
         $this->entity->setLocale('de');
     }
 
+    public function testPublished(): void
+    {
+        $this->assertNull($this->entity->isPublished());
+        $this->assertSame($this->entity, $this->entity->setPublished(true));
+        $this->assertTrue($this->entity->isPublished());
+        $this->assertSame($this->entity, $this->entity->setPublished(false));
+        $this->assertFalse($this->entity->isPublished());
+    }
+
+    public function testPublishedState(): void
+    {
+        $this->assertNull($this->entity->getPublishedState());
+        $this->assertSame($this->entity, $this->entity->setPublished(true));
+        $this->assertEquals(1, $this->entity->getPublishedState());
+        $this->assertSame($this->entity, $this->entity->setPublished(false));
+        $this->assertEquals(0, $this->entity->getPublishedState());
+    }
+
     public function testImage(): void
     {
         $image = $this->prophesize(MediaInterface::class);

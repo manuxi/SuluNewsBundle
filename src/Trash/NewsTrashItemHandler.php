@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsRestoredEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
+use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent;
+use Manuxi\SuluNewsBundle\Search\Event\NewsSavedEvent;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
@@ -20,14 +22,16 @@ use Sulu\Bundle\TrashBundle\Application\TrashItemHandler\RestoreTrashItemHandler
 use Sulu\Bundle\TrashBundle\Application\TrashItemHandler\StoreTrashItemHandlerInterface;
 use Sulu\Bundle\TrashBundle\Domain\Model\TrashItemInterface;
 use Sulu\Bundle\TrashBundle\Domain\Repository\TrashItemRepositoryInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTrashItemHandlerInterface, RestoreConfigurationProviderInterface
 {
     public function __construct(
-        private TrashItemRepositoryInterface   $trashItemRepository,
-        private EntityManagerInterface         $entityManager,
-        private DoctrineRestoreHelperInterface $doctrineRestoreHelper,
-        private DomainEventCollectorInterface  $domainEventCollector
+        private readonly TrashItemRepositoryInterface   $trashItemRepository,
+        private readonly EntityManagerInterface         $entityManager,
+        private readonly DoctrineRestoreHelperInterface $doctrineRestoreHelper,
+        private readonly DomainEventCollectorInterface $domainEventCollector,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {}
 
     public static function getResourceKey(): string
@@ -37,7 +41,9 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
 
     public function store(object $resource, array $options = []): TrashItemInterface
     {
+        /* @var News $resource */
         $image = $resource->getImage();
+        $pdf = $resource->getPdf();
 
         $data = [
             "locale" => $resource->getLocale(),
@@ -50,7 +56,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "slug" => $resource->getRoutePath(),
             "ext" => $resource->getExt(),
             "link" => $resource->getLink(),
-            "imageId" => $image ? $image->getId() : null,
+            "imageId" => $image?->getId(),
+            "pdfId" => $pdf?->getId(),
             "published" => $resource->isPublished(),
             "publishedAt" => $resource->getPublishedAt(),
             "showAuthor" => $resource->getShowAuthor(),
@@ -58,12 +65,17 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             "authored" => $resource->getAuthored(),
             "author" => $resource->getAuthor(),
         ];
+
+        $restoreType = isset($options['locale']) ? 'translation' : null;
+
+        $this->dispatcher->dispatch(new NewsRemovedEvent($resource));
+
         return $this->trashItemRepository->create(
             News::RESOURCE_KEY,
             (string)$resource->getId(),
             $resource->getTitle(),
             $data,
-            null,
+            $restoreType,
             $options,
             News::SECURITY_CONTEXT,
             null,
@@ -85,12 +97,13 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $news->setText($data['text']);
         $news->setFooter($data['footer']);
         $news->setPublished($data['published']);
+        $news->setPublishedAt($data['publishedAt'] ? new \DateTime($data['publishedAt']['date']) : null);
         $news->setShowAuthor($data['showAuthor']);
         $news->setShowDate($data['showDate']);
         $news->setRoutePath($data['slug']);
         $news->setExt($data['ext']);
 
-        $news->setAuthored($data['authored'] ? new DateTime($data['authored']['date']) : new DateTime());
+        $news->setAuthored($data['authored'] ? new \DateTime($data['authored']['date']) : new \DateTime());
 
         if ($data['author']) {
             $contact = $this->entityManager->find(ContactInterface::class, $data['author']);
@@ -106,8 +119,8 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
             $news->setImage($image);
         }
 
-        if(isset($data['publishedAt'])) {
-            $news->setPublishedAt(new DateTime($data['publishedAt']['date']));
+        if ($data['pdfId']) {
+            $news->setPdf($this->entityManager->find(MediaInterface::class, $data['pdfId']));
         }
 
         $this->domainEventCollector->collect(
@@ -117,6 +130,9 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $this->doctrineRestoreHelper->persistAndFlushWithId($news, $newsId);
         $this->createRoute($this->entityManager, $newsId, $data['locale'], $news->getRoutePath(), News::class);
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new NewsSavedEvent($news));
+
         return $news;
     }
 

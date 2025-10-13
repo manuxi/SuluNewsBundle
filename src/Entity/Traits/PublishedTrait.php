@@ -33,8 +33,10 @@ trait PublishedTrait
         $this->publishedState = $published;
         if($published === true){
             $this->setPublishedAt(new DateTime());
+            $this->setPublishedState(1);
         } else {
             $this->setPublishedAt(null);
+            $this->setPublishedState(0);
         }
         return $this;
     }

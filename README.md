@@ -50,18 +50,18 @@ return [
 Please add the following to your `routes_admin.yaml`:
 ```yaml
 SuluNewsBundle:
-    resource: '@SuluNewsBundle/Resources/config/routes_admin.yml'
+    resource: '@SuluNewsBundle/Resources/config/routes_admin.yaml'
 ```
 Don't forget fo add the index to your sulu_search.yaml:
 
-add "news"!
+add "news_published"!
 
-"news" is the index of published, "news_draft" the index of unpublished elements.
+"news" is the index of published, "news_draft" the index of unpublished elements. Both indexes are searchable in admin.
 ```yaml
 sulu_search:
     website:
         indexes:
-            - news
+            - news_published
             - ...
 ``` 
 Last but not least the schema of the database needs to be updated.  
@@ -126,6 +126,11 @@ Example of the corresponding twig template for the news list:
 
 Since the seo and excerpt tabs are available in the news editor, 
 meta information can be provided like it's done as usual when rendering your pages. 
+
+## 🧶 Configuration
+This bundle contains settings for controlling the following tasks:
+- Settings for single view - Toggle for header, default hero snippet and breadcrumbs
+- Landing pages for breadcrumbs: this can be used to configure the intermediate pages for the breadcrumbs
 
 ## 👩‍🍳 Contributing
 For the sake of simplicity this extension was kept small.

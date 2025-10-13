@@ -56,7 +56,19 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
                 [
                     'indexes' => [
                         'news' => [
-                            'name' => 'sulu_news.search_name',
+                            'name' => 'sulu_news.search.index.news',
+                            'icon' => 'su-news',
+                            'view' => [
+                                'name' => NewsAdmin::EDIT_FORM_VIEW,
+                                'result_to_view' => [
+                                    'id' => 'id',
+                                    'locale' => 'locale',
+                                ],
+                            ],
+                            'security_context' => News::SECURITY_CONTEXT,
+                        ],
+                        'news_published' => [
+                            'name' => 'sulu_news.search.index.news_published',
                             'icon' => 'su-news',
                             'view' => [
                                 'name' => NewsAdmin::EDIT_FORM_VIEW,

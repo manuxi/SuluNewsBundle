@@ -9,10 +9,10 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyEvent;
 
 abstract class AbstractEvent extends SymfonyEvent
 {
-    public function __construct(public News $news) {}
+    public function __construct(public News $entity) {}
 
-    public function getNews(): News
+    public function getEntity(): News
     {
-        return $this->news;
+        return $this->entity;
     }
 }

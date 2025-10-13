@@ -89,7 +89,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $queryBuilder = $this->createQueryBuilder('news')
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = :published')
-            ->setParameter('published', 1)
+            ->setParameter('published', true)
             ->andWhere('translation.locale = :locale')
             ->setParameter('locale', $locale)
             ->orderBy('translation.authored', 'DESC')
@@ -111,7 +111,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
             ->select('count(news)')
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = :published')
-            ->setParameter('published', 1)
+            ->setParameter('published', true)
             ->andWhere('translation.locale = :locale')
             ->setParameter('locale', $locale);
         return $query->getQuery()->getSingleScalarResult();
@@ -133,7 +133,10 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
     protected function append(QueryBuilder $queryBuilder, string $alias, string $locale, $options = []): array
     {
         //$queryBuilder->andWhere($alias . '.published = true');
-
+        $queryBuilder->innerJoin($alias . '.translations', 'translation', Join::WITH, 'translation.locale = :locale');
+        $queryBuilder->setParameter('locale', $locale);
+        $queryBuilder->andWhere('translation.published = :published');
+        $queryBuilder->setParameter('published', true);
         return [];
     }
 
@@ -169,7 +172,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
             ->select('count(news.id)')
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = :published')
-            ->setParameter('published', 1)
+            ->setParameter('published', true)
             ->andWhere('translation.locale = :locale')
             ->setParameter('locale', $locale);
 
@@ -194,7 +197,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $queryBuilder = $this->createQueryBuilder('news')
             ->leftJoin('news.translations', 'translation')
             ->where('translation.published = :published')
-            ->setParameter('published', 1)
+            ->setParameter('published', true)
             ->andWhere('translation.locale = :locale')
             ->setParameter('locale', $locale)
             ->orderBy('translation.authored', 'DESC');

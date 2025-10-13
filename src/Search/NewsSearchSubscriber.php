@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NewsSearchSubscriber implements EventSubscriberInterface
 {
 
-    public function __construct(private SearchManagerInterface $searchManager) {}
+    public function __construct(private readonly SearchManagerInterface $searchManager) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -28,29 +28,21 @@ class NewsSearchSubscriber implements EventSubscriberInterface
 
     public function onPublished(NewsPublishedEvent $event): void
     {
-        $news = $event->getNews();
-        if($news->isPublished()) {
-            $this->searchManager->index($news);
-        }
+        $this->searchManager->index($event->getEntity());
     }
 
     public function onUnpublished(NewsUnpublishedEvent $event): void
     {
-        $this->searchManager->deindex($event->getNews());
+        $this->searchManager->deindex($event->getEntity());
     }
 
     public function onSaved(NewsSavedEvent $event): void
     {
-        $news = $event->getNews();
-        if($news->isPublished()) {
-            $this->searchManager->index($news);
-        } else {
-            $this->searchManager->deindex($news);
-        }
+        $this->searchManager->index($event->getEntity());
     }
 
     public function onRemoved(NewsRemovedEvent $event): void
     {
-        $this->searchManager->deindex($event->getNews());
+        $this->searchManager->deindex($event->getEntity());
     }
 }

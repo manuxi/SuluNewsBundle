@@ -102,14 +102,14 @@
             <joins ref="translation"/>
         </property>
 
-        <property name="publishedState" visibility="yes" translation="sulu_news.published" type="bool">
+        <property name="published" visibility="yes" translation="sulu_news.published" type="bool">
             <field-name>published</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 
             <joins ref="translation"/>
         </property>
 
-        <property name="published" visibility="yes" translation="sulu_news.published_date" type="datetime">
+        <property name="publishedAt" visibility="yes" translation="sulu_news.published_date" type="datetime">
             <field-name>publishedAt</field-name>
             <entity-name>%sulu.model.news_translation.class%</entity-name>
 

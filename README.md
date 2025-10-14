@@ -9,6 +9,7 @@
 </a>
 
 I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch.
+Over time, more and more features have been added.
 
 This bundle contains
 - Several filters for News Content Type
@@ -21,7 +22,7 @@ This bundle contains
 - Events for displaying Activities
 - Search indexes 
   - refresh whenever entity is changed
-  - distinct between normal and draft
+  - distinct between published and draft
 and more...
 
 The news and their meta information is translatable. 

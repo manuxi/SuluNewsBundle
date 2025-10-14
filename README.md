@@ -56,7 +56,7 @@ Don't forget fo add the index to your sulu_search.yaml:
 
 add "news_published"!
 
-"news" is the index of published, "news_draft" the index of unpublished elements. Both indexes are searchable in admin.
+"news_published" is the index of published, "news" the index of unpublished elements. Both indexes are searchable in admin.
 ```yaml
 sulu_search:
     website:

@@ -12,7 +12,7 @@ class NewsSettingsTwigExtension extends AbstractExtension
 {
 
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     public function getFunctions(): array

@@ -250,81 +250,65 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         $this->prepareCategoriesFilter($queryBuilder, $filters);
     }
 
-    private function prepareTagsFilter(QueryBuilder $queryBuilder, array $filters): void
-    {
-        if (!empty($filters['tags'])) {
-
-            $queryBuilder->leftJoin('excerpt_translation.tags', 'tags');
-
-            $i = 0;
-            if ($filters['tagOperator'] === "and") {
-                $andWhere = "";
-                foreach ($filters['tags'] as $tag) {
-                    if ($i === 0) {
-                        $andWhere .= "tags = :tag" . $i;
-                    } else {
-                        $andWhere .= " AND tags = :tag" . $i;
-                    }
-                    $queryBuilder->setParameter("tag" . $i, $tag);
-                    $i++;
-                }
-                $queryBuilder->andWhere($andWhere);
-            } else if ($filters['tagOperator'] === "or") {
-                $orWhere = "";
-                foreach ($filters['tags'] as $tag) {
-                    if ($i === 0) {
-                        $orWhere .= "tags = :tag" . $i;
-                    } else {
-                        $orWhere .= " OR tags = :tag" . $i;
-                    }
-                    $queryBuilder->setParameter("tag" . $i, $tag);
-                    $i++;
-                }
-                $queryBuilder->andWhere($orWhere);
-            }
-        }
-    }
-
-    private function prepareCategoriesFilter(QueryBuilder $queryBuilder, array $filters): void
-    {
-        if (!empty($filters['categories'])) {
-
-            $queryBuilder->leftJoin('excerpt_translation.categories', 'categories');
-
-            $i = 0;
-            if ($filters['categoryOperator'] === "and") {
-                $andWhere = "";
-                foreach ($filters['categories'] as $category) {
-                    if ($i === 0) {
-                        $andWhere .= "categories = :category" . $i;
-                    } else {
-                        $andWhere .= " AND categories = :category" . $i;
-                    }
-                    $queryBuilder->setParameter("category" . $i, $category);
-                    $i++;
-                }
-                $queryBuilder->andWhere($andWhere);
-            } else if ($filters['categoryOperator'] === "or") {
-                $orWhere = "";
-                foreach ($filters['categories'] as $category) {
-                    if ($i === 0) {
-                        $orWhere .= "categories = :category" . $i;
-                    } else {
-                        $orWhere .= " OR categories = :category" . $i;
-                    }
-                    $queryBuilder->setParameter("category" . $i, $category);
-                    $i++;
-                }
-                $queryBuilder->andWhere($orWhere);
-            }
-        }
-    }
-
     private function prepareTypesFilter(QueryBuilder $queryBuilder, array $filters): void
     {
         if(!empty($filters['types'])) {
             $queryBuilder->andWhere("news.type IN (:typeList)");
             $queryBuilder->setParameter("typeList", $filters['types']);
+        }
+    }
+
+    private function prepareTagsFilter(QueryBuilder $queryBuilder, array $filters): void
+    {
+        if (empty($filters['tags'])) {
+            return;
+        }
+
+        $operator = $filters['tagOperator'] ?? 'or';
+
+        if ($operator === 'and') {
+            // AND: Entity must have ALL tags (multiple JOINs necessary)
+            foreach ($filters['tags'] as $i => $tag) {
+                $alias = 'tag' . $i;
+                $queryBuilder
+                    ->innerJoin('excerpt_translation.tags', $alias)
+                    ->andWhere($queryBuilder->expr()->eq($alias . '.id', ':tag' . $i))
+                    ->setParameter('tag' . $i, $tag);
+            }
+        } else {
+            // OR: Entity must at least have one of the tags
+            $queryBuilder
+                ->leftJoin('excerpt_translation.tags', 'tags')
+                ->andWhere($queryBuilder->expr()->in('tags.id', ':tags'))
+                ->setParameter('tags', $filters['tags']);
+        }
+    }
+
+    private function prepareCategoriesFilter(QueryBuilder $queryBuilder, array $filters): void
+    {
+        if (empty($filters['categories'])) {
+            return;
+        }
+
+        $operator = $filters['categoryOperator'] ?? 'or';
+
+        if ($operator === 'and') {
+            // AND: Entity must have ALL categories (multiple JOINs necessary)
+            $queryBuilder->leftJoin('excerpt_translation.categories', 'categories');
+
+            foreach ($filters['categories'] as $i => $category) {
+                $alias = 'category' . $i;
+                $queryBuilder
+                    ->innerJoin('excerpt_translation.categories', $alias)
+                    ->andWhere($queryBuilder->expr()->eq($alias . '.id', ':category' . $i))
+                    ->setParameter('category' . $i, $category);
+            }
+        } else {
+            // OR: Entity must at least have one of the categories
+            $queryBuilder
+                ->leftJoin('excerpt_translation.categories', 'categories')
+                ->andWhere($queryBuilder->expr()->in('categories.id', ':categories'))
+                ->setParameter('categories', $filters['categories']);
         }
     }
 

@@ -66,7 +66,7 @@ sulu_news:
         title:
             navi: "Settings"
             general: "Settings for Single View"
-            breadcrumbs: "Intermediate Pages for Breadcrumbs"
+            breadcrumbs: "Intermediate Pages (Breadcrumbs)"
         properties:
             toggle_header: "Display Header"
             toggle_hero: "Display Default Hero"

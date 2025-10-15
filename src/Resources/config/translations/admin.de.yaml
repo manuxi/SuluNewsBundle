@@ -64,7 +64,7 @@ sulu_news:
         title:
             navi: "Einstellungen"
             general: "Einstellungen für Einzelansicht"
-            breadcrumbs: "Zwischenseiten für Breadcrumbs"
+            breadcrumbs: "Zwischenseiten (Breadcrumbs)"
         properties:
             toggle_header: "Header anzeigen"
             toggle_hero: "Standard Hero anzeigen"

@@ -1,2 +1,9 @@
 sulu_news:
     news: News
+search:
+    index:
+        news: "News, Blog, FAQ"
+        news_published: "News, Blog, FAQ"
+    icon:
+        news: "newspaper-o"
+        news_published: "newspaper-o"

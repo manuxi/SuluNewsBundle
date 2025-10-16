@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use JMS\Serializer\Annotation as Serializer;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoInterface;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoTranslatableInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\SeoTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsSeoRepository;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\SeoInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\SeoTranslatableInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\SeoTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\SeoTranslatableTrait;
 
 #[ORM\Entity(repositoryClass: NewsSeoRepository::class)]
 #[ORM\Table(name: 'app_news_seo')]

@@ -6,15 +6,15 @@ namespace Manuxi\SuluNewsBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Manuxi\SuluNewsBundle\Entity\Traits\LinkTrait;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ImageTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\PdfTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\RoutePathTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ShowAuthorTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ShowDateTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\LinkTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\AuditableInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\AuditableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ImageTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\PdfTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\PublishedTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\RoutePathTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ShowAuthorTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ShowDateTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsTranslationRepository;
 
 #[ORM\Entity(repositoryClass: NewsTranslationRepository::class)]

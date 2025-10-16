@@ -9,17 +9,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Manuxi\SuluNewsBundle\Entity\Traits\LinkTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\AuditableTranslatableInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\AuditableTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ImageTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\PdfTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\PublishedTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\RoutePathTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ShowAuthorTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ShowDateTranslatableTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\TypeTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\AuditableTranslatableInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\AuditableTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ImageTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\LinkTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\PdfTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\PublishedTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\RoutePathTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ShowAuthorTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ShowDateTranslatableTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\TypeTrait;
+use function array_key_exists;
+use function array_values;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 #[ORM\Table(name: 'app_news')]
@@ -70,7 +72,8 @@ class News implements AuditableTranslatableInterface
         $this->initExt();
     }
 
-    public function __clone(){
+    public function __clone()
+    {
         $this->id = null;
     }
 
@@ -241,7 +244,7 @@ class News implements AuditableTranslatableInterface
 
     public function hasExt(string $key): bool
     {
-        return \array_key_exists($key, $this->ext);
+        return array_key_exists($key, $this->ext);
     }
 
     public function getLocale(): string
@@ -267,6 +270,58 @@ class News implements AuditableTranslatableInterface
     public function setTranslation(NewsTranslation $translation, string $locale): self
     {
         $this->translations->set($locale, $translation);
+        return $this;
+    }
+
+    #[Serializer\VirtualProperty(name: "availableLocales")]
+    public function getAvailableLocales(): array
+    {
+        return array_values($this->translations->getKeys());
+    }
+
+    public function copy(News $copy): News
+    {
+
+        $copy->setType($this->getType());
+
+        if ($currentTranslation = $this->getTranslation($this->getLocale())) {
+            $newTranslation = clone $currentTranslation;
+            $copy->setTranslation($newTranslation);
+
+            //copy ext also...
+            foreach ($this->ext as $key => $translatable) {
+                $copy->addExt($key, clone $translatable);
+            }
+        }
+        return $copy;
+
+    }
+
+    public function copyToLocale(string $locale): self
+    {
+        if ($currentTranslation = $this->getTranslation($this->getLocale())) {
+            $newTranslation = clone $currentTranslation;
+            $newTranslation->setLocale($locale);
+            $this->translations->set($locale, $newTranslation);
+
+            //copy ext also...
+            foreach ($this->ext as $translatable) {
+                $translatable->copyToLocale($locale);
+            }
+
+            $this->setLocale($locale);
+        }
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return $this->images ?? [];
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
         return $this;
     }
 
@@ -305,58 +360,6 @@ class News implements AuditableTranslatableInterface
             $this->addExt('excerpt', $this->getNewsExcerpt());
         }
 
-        return $this;
-    }
-
-    #[Serializer\VirtualProperty(name: "availableLocales")]
-    public function getAvailableLocales(): array
-    {
-        return \array_values($this->translations->getKeys());
-    }
-
-    public function copy(News $copy): News
-    {
-
-        $copy->setType($this->getType());
-
-        if ($currentTranslation = $this->getTranslation($this->getLocale())) {
-            $newTranslation = clone $currentTranslation;
-            $copy->setTranslation($newTranslation);
-
-            //copy ext also...
-            foreach($this->ext as $key => $translatable) {
-                $copy->addExt($key, clone $translatable);
-            }
-        }
-        return $copy;
-
-    }
-
-    public function copyToLocale(string $locale): self
-    {
-        if ($currentTranslation = $this->getTranslation($this->getLocale())) {
-           $newTranslation = clone $currentTranslation;
-           $newTranslation->setLocale($locale);
-           $this->translations->set($locale, $newTranslation);
-
-           //copy ext also...
-           foreach($this->ext as $translatable) {
-               $translatable->copyToLocale($locale);
-           }
-
-           $this->setLocale($locale);
-        }
-        return $this;
-    }
-
-    public function getImages(): array
-    {
-        return $this->images ?? [];
-    }
-
-    public function setImages(?array $images): self
-    {
-        $this->images = $images;
         return $this;
     }
 

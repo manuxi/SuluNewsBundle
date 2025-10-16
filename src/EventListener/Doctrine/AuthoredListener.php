@@ -7,7 +7,7 @@ namespace Manuxi\SuluNewsBundle\EventListener\Doctrine;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\AuthoredInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\AuthoredInterface;
 
 class AuthoredListener
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Manuxi\SuluNewsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\SeoTranslationInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\SeoTranslationTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsSeoTranslationRepository;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\SeoTranslationInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\SeoTranslationTrait;
 
 #[ORM\Entity(repositoryClass: NewsSeoTranslationRepository::class)]
 #[ORM\Table(name: 'app_news_seo_translation')]

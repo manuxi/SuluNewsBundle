@@ -7,13 +7,12 @@ namespace Manuxi\SuluNewsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
 use JMS\Serializer\Annotation as Serializer;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\ExcerptInterface;
-use Manuxi\SuluNewsBundle\Entity\Interfaces\ExcerptTranslatableInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\ExcerptTrait;
-use Manuxi\SuluNewsBundle\Entity\Traits\ExcerptTranslatableTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsExcerptRepository;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\ExcerptInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\ExcerptTranslatableInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ExcerptTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ExcerptTranslatableTrait;
 
 #[ORM\Entity(repositoryClass: NewsExcerptRepository::class)]
 #[ORM\Table(name: 'app_news_excerpt')]
@@ -36,7 +35,8 @@ class NewsExcerpt implements ExcerptInterface, ExcerptTranslatableInterface
         $this->translations = new ArrayCollection();
     }
 
-    public function __clone(){
+    public function __clone()
+    {
         $this->id = null;
     }
 

@@ -15,7 +15,7 @@ use Manuxi\SuluNewsBundle\Domain\Event\NewsRemovedEvent;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsUnpublishedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsModelInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent as SearchPublishedEvent;
 use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent as SearchRemovedEvent;

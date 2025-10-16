@@ -6,8 +6,8 @@ namespace Manuxi\SuluNewsBundle\Entity\Models;
 
 use Manuxi\SuluNewsBundle\Entity\NewsSeo;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsSeoModelInterface;
-use Manuxi\SuluNewsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsSeoRepository;
+use Manuxi\SuluSharedToolsBundle\Entity\Traits\ArrayPropertyTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsSeoModel implements NewsSeoModelInterface

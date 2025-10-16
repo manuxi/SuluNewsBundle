@@ -8,7 +8,6 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\NewsExcerpt;
 use Manuxi\SuluNewsBundle\Entity\NewsSeo;
 use Manuxi\SuluNewsBundle\Entity\NewsTranslation;
-use Manuxi\SuluNewsBundle\Entity\Location;
 use DateTimeImmutable;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;

@@ -1,12 +1,9 @@
 # SuluNewsBundle!
 ![php workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/php.yml/badge.svg)
 ![symfony workflow](https://github.com/manuxi/SuluNewsBundle/actions/workflows/symfony.yml/badge.svg)
-<a href="https://github.com/manuxi/SuluNewsBundle/blob/main/LICENSE" target="_blank">
-<img src="https://img.shields.io/github/license/manuxi/SuluNewsBundle" alt="GitHub license">
-</a>
-<a href="https://github.com/manuxi/SuluNewsBundle/tags" target="_blank">
-<img src="https://img.shields.io/github/v/tag/manuxi/SuluNewsBundle" alt="GitHub license">
-</a>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/manuxi/SuluNewsBundle/LICENSE)
+![GitHub Tag](https://img.shields.io/github/v/tag/manuxi/SuluNewsBundle)
+![Supports Sulu 2.6 or later](https://img.shields.io/badge/%20Sulu->=2.6-0088cc?color=00b2df)
 
 I made this bundle to have the possibility to manage news in my projects without the dependency to elasticsearch.
 Over time, more and more features have been added.

@@ -7,8 +7,8 @@ namespace Manuxi\SuluNewsBundle\Automation;
 use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsUnpublishedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
-use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent as SearchPublishedEvent;
-use Manuxi\SuluNewsBundle\Search\Event\NewsUnpublishedEvent as SearchUnpublishedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\PreUpdatedEvent as SearchPreUpdatedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\UpdatedEvent as SearchUpdatedEvent;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\AutomationBundle\TaskHandler\AutomationTaskHandlerInterface;
 use Sulu\Bundle\AutomationBundle\TaskHandler\TaskHandlerConfiguration;
@@ -36,14 +36,14 @@ class NewsUnpublishTaskHandler implements AutomationTaskHandlerInterface
         if ($entity === null) {
             return;
         }
-        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPreUpdatedEvent($entity));
 
         $entity->setPublished(false);
         $repository->save($entity);
 
         $this->domainEventCollector->collect(new NewsUnpublishedEvent($entity, $workload));
 
-        $this->dispatcher->dispatch(new SearchPublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchUpdatedEvent($entity));
     }
 
     public function configureOptionsResolver(OptionsResolver $optionsResolver): OptionsResolver

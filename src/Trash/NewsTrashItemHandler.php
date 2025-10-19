@@ -9,8 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Admin\NewsAdmin;
 use Manuxi\SuluNewsBundle\Domain\Event\NewsRestoredEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
-use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent;
-use Manuxi\SuluNewsBundle\Search\Event\NewsSavedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\PersistedEvent as SearchPersistedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\RemovedEvent as SearchRemovedEvent;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
@@ -68,7 +68,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
 
         $restoreType = isset($options['locale']) ? 'translation' : null;
 
-        $this->dispatcher->dispatch(new NewsRemovedEvent($resource));
+        $this->dispatcher->dispatch(new SearchRemovedEvent($resource));
 
         return $this->trashItemRepository->create(
             News::RESOURCE_KEY,
@@ -131,7 +131,7 @@ class NewsTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTra
         $this->createRoute($this->entityManager, $newsId, $data['locale'], $news->getRoutePath(), News::class);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new NewsSavedEvent($news));
+        $this->dispatcher->dispatch(new SearchPersistedEvent($news));
 
         return $news;
     }

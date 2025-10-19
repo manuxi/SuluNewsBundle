@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\AuditableTranslatableInterface;
+use Manuxi\SuluSharedToolsBundle\Entity\Interfaces\SearchableInterface;
 use Manuxi\SuluSharedToolsBundle\Entity\Traits\AuditableTranslatableTrait;
 use Manuxi\SuluSharedToolsBundle\Entity\Traits\ImageTranslatableTrait;
 use Manuxi\SuluSharedToolsBundle\Entity\Traits\LinkTranslatableTrait;
@@ -25,7 +26,7 @@ use function array_values;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 #[ORM\Table(name: 'app_news')]
-class News implements AuditableTranslatableInterface
+class News implements AuditableTranslatableInterface, SearchableInterface
 {
     public const RESOURCE_KEY = 'news';
     public const FORM_KEY = 'news_details';

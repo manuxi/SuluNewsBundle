@@ -17,10 +17,10 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Interfaces\NewsModelInterface;
 use Manuxi\SuluSharedToolsBundle\Entity\Traits\ArrayPropertyTrait;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
-use Manuxi\SuluNewsBundle\Search\Event\NewsPublishedEvent as SearchPublishedEvent;
-use Manuxi\SuluNewsBundle\Search\Event\NewsRemovedEvent as SearchRemovedEvent;
-use Manuxi\SuluNewsBundle\Search\Event\NewsSavedEvent as SearchSavedEvent;
-use Manuxi\SuluNewsBundle\Search\Event\NewsUnpublishedEvent as SearchUnpublishedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\PersistedEvent as SearchPersistedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\PreUpdatedEvent as SearchPreUpdatedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\RemovedEvent as SearchRemovedEvent;
+use Manuxi\SuluSharedToolsBundle\Search\Event\UpdatedEvent as SearchUpdatedEvent;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
 use Sulu\Bundle\MediaBundle\Entity\MediaRepositoryInterface;
@@ -91,7 +91,7 @@ class NewsModel implements NewsModelInterface
         //explicit flush to save routes persisted by updateRoutesForEntity()
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new SearchSavedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPersistedEvent($entity));
 
         return $entity;
     }
@@ -105,7 +105,7 @@ class NewsModel implements NewsModelInterface
     public function updateNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPreUpdatedEvent($entity));
 
         $entity = $this->mapDataToNews($entity, $request->request->all());
         $entity = $this->mapSettingsToNews($entity, $request->request->all());
@@ -118,7 +118,7 @@ class NewsModel implements NewsModelInterface
         $this->updateRoutesForEntity($entity);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new SearchSavedEvent($entity));
+        $this->dispatcher->dispatch(new SearchUpdatedEvent($entity));
 
         return $entity;
     }
@@ -132,14 +132,14 @@ class NewsModel implements NewsModelInterface
     public function publishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPreUpdatedEvent($entity));
 
         $this->domainEventCollector->collect(
             new NewsPublishedEvent($entity, $request->request->all())
         );
 
         $entity = $this->newsRepository->publish($entity);
-        $this->dispatcher->dispatch(new SearchPublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchUpdatedEvent($entity));
 
         return $entity;
     }
@@ -153,13 +153,13 @@ class NewsModel implements NewsModelInterface
     public function unpublishNews(int $id, Request $request): News
     {
         $entity = $this->findNewsByIdAndLocale($id, $request);
-        $this->dispatcher->dispatch(new SearchUnpublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPreUpdatedEvent($entity));
 
         $entity = $this->newsRepository->unpublish($entity);
         $this->domainEventCollector->collect(
             new NewsUnpublishedEvent($entity, $request->request->all())
         );
-        $this->dispatcher->dispatch(new SearchPublishedEvent($entity));
+        $this->dispatcher->dispatch(new SearchUpdatedEvent($entity));
 
         return $entity;
     }
@@ -175,7 +175,7 @@ class NewsModel implements NewsModelInterface
 
         $copy = $entity->copy($copy);
         $copy = $this->newsRepository->save($copy);
-        $this->dispatcher->dispatch(new SearchSavedEvent($copy));
+        $this->dispatcher->dispatch(new SearchPersistedEvent($copy));
 
         return $copy;
     }
@@ -197,7 +197,7 @@ class NewsModel implements NewsModelInterface
         );
 
         $entity = $this->newsRepository->save($entity);
-        $this->dispatcher->dispatch(new SearchSavedEvent($entity));
+        $this->dispatcher->dispatch(new SearchPersistedEvent($entity));
 
         return $entity;
     }

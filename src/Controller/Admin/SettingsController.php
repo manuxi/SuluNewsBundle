@@ -6,7 +6,6 @@ namespace Manuxi\SuluNewsBundle\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
-use HandcraftedInTheAlps\RestRoutingBundle\Controller\Annotations\RouteResource;
 use HandcraftedInTheAlps\RestRoutingBundle\Routing\ClassResourceInterface;
 use Manuxi\SuluNewsBundle\Domain\Event\Settings\ModifiedEvent;
 use Manuxi\SuluNewsBundle\Entity\NewsSettings;
@@ -15,12 +14,10 @@ use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Security\SecuredControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-
-/**
- * @RouteResource("news-settings")
- */
+#[Route('/admin/api')]
 class SettingsController extends AbstractRestController implements ClassResourceInterface, SecuredControllerInterface
 {
 
@@ -33,6 +30,18 @@ class SettingsController extends AbstractRestController implements ClassResource
         parent::__construct($viewHandler, $tokenStorage);
     }
 
+    #[Route(
+        '/news-settings.{_format}',
+        name: 'sulu_news.get_news-settings',
+        requirements: [
+            '_format' => 'json|csv'
+        ],
+        options: ['expose' => true],
+        defaults: [
+            '_format' => 'json'
+        ],
+        methods: ['GET']
+    )]
     public function getAction(): Response
     {
         $entity = $this->entityManager->getRepository(NewsSettings::class)->findOneBy([]);
@@ -40,6 +49,18 @@ class SettingsController extends AbstractRestController implements ClassResource
         return $this->handleView($this->view($this->getDataForEntity($entity ?: new NewsSettings())));
     }
 
+    #[Route(
+        '/news-settings.{_format}',
+        name: 'sulu_news.put_news-settings',
+        requirements: [
+            '_format' => 'json|csv'
+        ],
+        options: ['expose' => true],
+        defaults: [
+            '_format' => 'json'
+        ],
+        methods: ['PUT']
+    )]
     public function putAction(Request $request): Response
     {
         $entity = $this->entityManager->getRepository(NewsSettings::class)->findOneBy([]);

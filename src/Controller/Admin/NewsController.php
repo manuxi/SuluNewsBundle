@@ -9,13 +9,10 @@ use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsExcerptModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsModel;
 use Manuxi\SuluNewsBundle\Entity\Models\NewsSeoModel;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
-use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Sulu\Component\Rest\Exception\MissingParameterException;
 use Sulu\Component\Rest\Exception\RestException;
 use Sulu\Component\Rest\RequestParametersTrait;
@@ -27,27 +24,39 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @RouteResource("news")
- */
+#[Route('/admin/api')]
 class NewsController extends AbstractRestController implements ClassResourceInterface, SecuredControllerInterface
 {
     use RequestParametersTrait;
 
     public function __construct(
-        private readonly NewsModel                         $newsModel,
-        private readonly NewsSeoModel                      $newsSeoModel,
-        private readonly NewsExcerptModel                  $newsExcerptModel,
+        private readonly NewsModel $newsModel,
+        private readonly NewsSeoModel $newsSeoModel,
+        private readonly NewsExcerptModel $newsExcerptModel,
         private readonly DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
-        private readonly SecurityCheckerInterface          $securityChecker,
-        private readonly TrashManagerInterface             $trashManager,
-        ViewHandlerInterface                               $viewHandler,
-        ?TokenStorageInterface                             $tokenStorage = null
+        private readonly SecurityCheckerInterface  $securityChecker,
+        private readonly TrashManagerInterface $trashManager,
+        ViewHandlerInterface $viewHandler,
+        ?TokenStorageInterface $tokenStorage = null
     ) {
         parent::__construct($viewHandler, $tokenStorage);
     }
 
+    #[Route(
+        '/news.{_format}',
+        name: 'sulu_news.cget_news',
+        requirements: [
+            'id' => '\d+',
+            '_format' => 'json|csv'
+        ],
+        options: ['expose' => true],
+        defaults: [
+            '_format' => 'json'
+        ],
+        methods: ['GET']
+    )]
     public function cgetAction(Request $request): Response
     {
         $locale             = $request->query->get('locale');
@@ -61,37 +70,52 @@ class NewsController extends AbstractRestController implements ClassResourceInte
 
     }
 
-    /**
-     * @param int $id
-     * @param Request $request
-     * @return Response
-     * @throws EntityNotFoundException
-     */
+    #[Route(
+        '/news/{id}.{_format}',
+        name: 'sulu_news.get_news',
+        requirements: [
+            'id' => '\d+',
+            '_format' => 'json|csv'
+        ],
+        options: ['expose' => true],
+        defaults: [
+            '_format' => 'json'
+        ],
+        methods: ['GET']
+    )]
     public function getAction(int $id, Request $request): Response
     {
         $entity = $this->newsModel->getNews($id, $request);
         return $this->handleView($this->view($entity));
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     * @throws EntityNotFoundException
-     */
+    #[Route(
+        '/news.{_format}',
+        name: 'sulu_news.post_news',
+        requirements: ['_format' => 'json'],
+        options: ['expose' => true],
+        defaults: ['_format' => 'json'],
+        methods: ['POST']
+    )]
     public function postAction(Request $request): Response
     {
         $entity = $this->newsModel->createNews($request);
         return $this->handleView($this->view($entity, 201));
     }
 
-    /**
-     * @Rest\Post("/news/{id}")
-     *
-     * @param int $id
-     * @param Request $request
-     * @return Response
-     * @throws MissingParameterException
-     */
+    #[Route(
+        '/news/{id}.{_format}',
+        name: 'sulu_news.post_news_trigger',
+        requirements: [
+            'id' => '\d+',
+            '_format' => 'json|csv'
+        ],
+        options: ['expose' => true],
+        defaults: [
+            '_format' => 'json'
+        ],
+        methods: ['POST']
+    )]
     public function postTriggerAction(int $id, Request $request): Response
     {
         $action = $this->getRequestParameter($request, 'action', true);
@@ -134,6 +158,17 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         return $this->handleView($this->view($entity));
     }
 
+    #[Route(
+        '/news/{id}.{_format}',
+        name: 'sulu_news.put_news',
+        requirements: [
+            'id' => '\d+',
+            '_format' => 'json'
+        ],
+        options: ['expose' => true],
+        defaults: ['_format' => 'json'],
+        methods: ['PUT']
+    )]
     public function putAction(int $id, Request $request): Response
     {
         try {
@@ -158,11 +193,17 @@ class NewsController extends AbstractRestController implements ClassResourceInte
         return $this->handleView($this->view($entity));
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     * @throws EntityNotFoundException
-     */
+    #[Route(
+        '/news/{id}.{_format}',
+        name: 'sulu_news.delete_news',
+        requirements: [
+            'id' => '\d+',
+            '_format' => 'json'
+        ],
+        options: ['expose' => true],
+        defaults: ['_format' => 'json'],
+        methods: ['DELETE']
+    )]
     public function deleteAction(int $id): Response
     {
         $entity = $this->newsModel->getNews($id);

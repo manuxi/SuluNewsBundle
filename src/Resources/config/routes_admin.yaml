@@ -1,8 +1,6 @@
 app_news_api:
-    type: rest
-    prefix: /admin/api
+    type: attribute
     resource: Manuxi\SuluNewsBundle\Controller\Admin\NewsController
-    name_prefix: sulu_news.
     options:
         expose: true
 sulu_news_settings_api:

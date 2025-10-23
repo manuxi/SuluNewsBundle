@@ -38,7 +38,7 @@ class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
             return false;
         }
         return $news->isPublished();
-        
+
     }
 
     public function supports($entityClass): bool

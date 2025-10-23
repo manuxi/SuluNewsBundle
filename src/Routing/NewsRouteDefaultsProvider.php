@@ -33,12 +33,12 @@ class NewsRouteDefaultsProvider implements RouteDefaultsProviderInterface
 
     public function isPublished($entityClass, $id, $locale): bool
     {
-        /*$news = $this->repository->findById((int)$id, $locale);
+        $news = $this->repository->findById((int)$id, $locale);
         if (!$this->supports($entityClass) || !$news instanceof News) {
             return false;
         }
-        return $news->isPublished();*/
-        return true;
+        return $news->isPublished();
+        
     }
 
     public function supports($entityClass): bool

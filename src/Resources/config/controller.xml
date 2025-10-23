@@ -32,7 +32,6 @@
         <service id="Manuxi\SuluNewsBundle\Controller\Website\NewsController" public="true">
             <argument type="service" id="request_stack"/>
             <argument type="service" id="sulu_media.media_manager"/>
-            <argument type="service" id="sulu_news.repository.news"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="sulu_website.resolver.template_attribute"/>

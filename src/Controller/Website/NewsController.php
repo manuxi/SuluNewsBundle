@@ -22,7 +22,6 @@ class NewsController extends AbstractController
     public function __construct(
         RequestStack $requestStack,
         MediaManagerInterface $mediaManager,
-        private NewsRepository $repository,
         private WebspaceManagerInterface $webspaceManager,
         private TranslatorInterface $translator,
         private TemplateAttributeResolverInterface $templateAttributeResolver,

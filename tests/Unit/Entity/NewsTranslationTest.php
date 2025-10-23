@@ -7,11 +7,14 @@ namespace Manuxi\SuluNewsBundle\Tests\Unit\Entity;
 use DateTime;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Entity\NewsTranslation;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class NewsTranslationTest extends SuluTestCase
 {
+    use ProphecyTrait;
+
     private ObjectProphecy $news;
     private NewsTranslation $translation;
     private string $testString = "Lorem ipsum dolor sit amet, ...";

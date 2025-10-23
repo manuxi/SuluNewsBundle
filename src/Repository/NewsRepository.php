@@ -154,7 +154,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
 
     public function findByFilters($filters, $page, $pageSize, $limit, $locale, $options = []): array
     {
-        $entities = $this->getPublishedNews($filters, $locale, $page, $pageSize, $limit, $options);
+        $entities = $this->getPublishedNews($filters, $locale, $page, $pageSize, $options, $limit);
 
         return \array_map(
             function (News $entity) use ($locale) {
@@ -190,7 +190,7 @@ class NewsRepository extends ServiceEntityRepository implements DataProviderRepo
         return false;
     }
 
-    public function getPublishedNews(array $filters, string $locale, ?int $page, $pageSize, $limit = null, array $options): array
+    public function getPublishedNews(array $filters, string $locale, ?int $page, $pageSize, array $options, $limit = null): array
     {
         $pageCurrent = (key_exists('page', $options)) ? (int)$options['page'] : 0;
 

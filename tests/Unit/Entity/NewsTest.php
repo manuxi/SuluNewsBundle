@@ -9,12 +9,15 @@ use Manuxi\SuluNewsBundle\Entity\NewsExcerpt;
 use Manuxi\SuluNewsBundle\Entity\NewsSeo;
 use Manuxi\SuluNewsBundle\Entity\NewsTranslation;
 use DateTimeImmutable;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class NewsTest extends SuluTestCase
 {
+    use ProphecyTrait;
+
     private News $entity;
     private string $testString = "Lorem ipsum dolor sit amet, ...";
 

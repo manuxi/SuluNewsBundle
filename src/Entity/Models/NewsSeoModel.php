@@ -31,38 +31,40 @@ class NewsSeoModel implements NewsSeoModelInterface
 
     private function mapDataToNewsSeo(NewsSeo $newsSeo, array $data): NewsSeo
     {
-        $locale = $this->getProperty($data, 'locale');
-        if ($locale) {
-            $newsSeo->setLocale($locale);
+        // Strings - allow empty string to clear
+        if (array_key_exists('locale', $data)) {
+            $newsSeo->setLocale($data['locale']);
         }
-        $title = $this->getProperty($data, 'title');
-        if ($title) {
-            $newsSeo->setTitle($title);
+
+        if (array_key_exists('title', $data)) {
+            $newsSeo->setTitle($data['title'] ?: null);
         }
-        $description = $this->getProperty($data, 'description');
-        if ($description) {
-            $newsSeo->setDescription($description);
+
+        if (array_key_exists('description', $data)) {
+            $newsSeo->setDescription($data['description'] ?: null);
         }
-        $keywords = $this->getProperty($data, 'keywords');
-        if ($keywords) {
-            $newsSeo->setKeywords($keywords);
+
+        if (array_key_exists('keywords', $data)) {
+            $newsSeo->setKeywords($data['keywords'] ?: null);
         }
-        $canonicalUrl = $this->getProperty($data, 'canonicalUrl');
-        if ($canonicalUrl) {
-            $newsSeo->setCanonicalUrl($canonicalUrl);
+
+        if (array_key_exists('canonicalUrl', $data)) {
+            $newsSeo->setCanonicalUrl($data['canonicalUrl'] ?: null);
         }
-        $noIndex = $this->getProperty($data, 'noIndex');
-        if ($noIndex) {
-            $newsSeo->setNoIndex($noIndex);
+
+        // Booleans - explicit true/false
+        if (array_key_exists('noIndex', $data)) {
+            $newsSeo->setNoIndex((bool) $data['noIndex']);
         }
-        $noFollow = $this->getProperty($data, 'noFollow');
-        if ($noFollow) {
-            $newsSeo->setNoFollow($noFollow);
+
+        if (array_key_exists('noFollow', $data)) {
+            $newsSeo->setNoFollow((bool) $data['noFollow']);
         }
-        $hideInSitemap = $this->getProperty($data, 'hideInSitemap');
-        if ($hideInSitemap) {
-            $newsSeo->setHideInSitemap($hideInSitemap);
+
+        if (array_key_exists('hideInSitemap', $data)) {
+            $newsSeo->setHideInSitemap((bool) $data['hideInSitemap']);
         }
+
         return $newsSeo;
     }
 }

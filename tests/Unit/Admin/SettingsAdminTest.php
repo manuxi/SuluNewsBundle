@@ -349,7 +349,6 @@ class SettingsAdminTest extends TestCase
         $this->settingsAdmin->configureViews($viewCollection);
     }
 
-    /*
     public function testConfigureViewsAddsToolbarActionToFormView(): void
     {
         // Arrange
@@ -366,7 +365,7 @@ class SettingsAdminTest extends TestCase
         $formViewBuilder
             ->expects($this->once())
             ->method('addToolbarActions')
-            ->willReturnCallback(function($actions) {
+            ->willReturnCallback(function($actions) use ($formViewBuilder) { // ← FIX: add use()!
                 $this->assertIsArray($actions);
                 $this->assertCount(1, $actions);
                 return $formViewBuilder;
@@ -390,7 +389,6 @@ class SettingsAdminTest extends TestCase
         // Act
         $this->settingsAdmin->configureViews($viewCollection);
     }
-    */
 
     public function testConfigureViewsSetsCorrectTabTitle(): void
     {

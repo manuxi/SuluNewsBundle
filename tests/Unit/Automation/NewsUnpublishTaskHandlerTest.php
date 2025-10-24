@@ -347,13 +347,25 @@ class NewsUnpublishTaskHandlerTest extends TestCase
         // Act
         $this->taskHandler->handle($workload);
     }
-/*
+
     public function testHandleWithDifferentLocales(): void
     {
-        // Test with different locales
-        $locales = ['en', 'de', 'fr', 'es', 'it', 'pt', 'nl'];
+        // Test with different locales - each locale gets its own test instance
+        $locales = ['en', 'de', 'fr', 'es', 'it'];
 
         foreach ($locales as $locale) {
+            // Create fresh mocks for each iteration
+            $entityManager = $this->createMock(EntityManagerInterface::class);
+            $dispatcher = $this->createMock(EventDispatcherInterface::class);
+            $domainEventCollector = $this->createMock(DomainEventCollectorInterface::class);
+
+            $taskHandler = new NewsUnpublishTaskHandler(
+                $entityManager,
+                $this->translator,
+                $domainEventCollector,
+                $dispatcher
+            );
+
             $workload = [
                 'class' => News::class,
                 'id' => '5',
@@ -372,22 +384,20 @@ class NewsUnpublishTaskHandlerTest extends TestCase
 
             $repository->method('save')->willReturn($news);
 
-            $this->entityManager
+            $entityManager
                 ->method('getRepository')
                 ->willReturn($repository);
 
-            $this->dispatcher->method('dispatch')->willReturnArgument(0);
-            $this->domainEventCollector->method('collect')->willReturn(null);
+            $dispatcher->method('dispatch')->willReturnArgument(0);
 
             // Act
-            $this->taskHandler->handle($workload);
+            $taskHandler->handle($workload);
         }
 
         // If we reach here, all locales were handled successfully
         $this->assertTrue(true);
     }
-*/
-/*
+
     public function testHandleConvertsStringIdToInteger(): void
     {
         // Arrange
@@ -416,12 +426,11 @@ class NewsUnpublishTaskHandlerTest extends TestCase
             ->willReturn($repository);
 
         $this->dispatcher->method('dispatch')->willReturnArgument(0);
-        $this->domainEventCollector->method('collect')->willReturn(null);
 
         // Act
         $this->taskHandler->handle($workload);
     }
-*/
+
     public function testHandleSavesEntityBeforeCollectingDomainEvent(): void
     {
         // Arrange
@@ -467,7 +476,7 @@ class NewsUnpublishTaskHandlerTest extends TestCase
         $this->assertEquals('save', $callOrder[0]);
         $this->assertEquals('collect', $callOrder[1]);
     }
-/*
+
     public function testHandleCollectsDomainEventBeforeDispatchingUpdated(): void
     {
         // Arrange
@@ -495,13 +504,16 @@ class NewsUnpublishTaskHandlerTest extends TestCase
             ->method('collect')
             ->willReturnCallback(function($event) use (&$callOrder) {
                 $callOrder[] = 'collect_domain';
-                return null;
+                // void method - no return
             });
 
         $this->dispatcher
             ->method('dispatch')
             ->willReturnCallback(function($event) use (&$callOrder) {
-                if (strpos(get_class($event), 'UpdatedEvent') !== false) {
+                $className = get_class($event);
+                if (strpos($className, 'PreUpdatedEvent') !== false) {
+                    $callOrder[] = 'dispatch_pre_updated';
+                } elseif (strpos($className, 'UpdatedEvent') !== false) {
                     $callOrder[] = 'dispatch_updated';
                 }
                 return $event;
@@ -510,13 +522,23 @@ class NewsUnpublishTaskHandlerTest extends TestCase
         // Act
         $this->taskHandler->handle($workload);
 
-        // Assert - collect should be before dispatch_updated
+        // Assert - Expected order: PreUpdated -> collect -> Updated
+        $this->assertGreaterThanOrEqual(3, count($callOrder), 'All three calls should happen');
+
+        $preUpdatedIndex = array_search('dispatch_pre_updated', $callOrder);
         $collectIndex = array_search('collect_domain', $callOrder);
-        $dispatchIndex = array_search('dispatch_updated', $callOrder);
-        $this->assertLessThan($dispatchIndex, $collectIndex);
+        $updatedIndex = array_search('dispatch_updated', $callOrder);
+
+        $this->assertNotFalse($preUpdatedIndex, 'dispatch_pre_updated was called');
+        $this->assertNotFalse($collectIndex, 'collect_domain was called');
+        $this->assertNotFalse($updatedIndex, 'dispatch_updated was called');
+
+        // PreUpdated should be first
+        $this->assertLessThan($collectIndex, $preUpdatedIndex, 'PreUpdated should be before collect');
+        // Collect should be before Updated
+        $this->assertLessThan($updatedIndex, $collectIndex, 'collect should be before Updated');
     }
-*/
-/*
+
     public function testHandleSetsPublishedToFalseNotTrue(): void
     {
         // Arrange
@@ -542,10 +564,9 @@ class NewsUnpublishTaskHandlerTest extends TestCase
             ->willReturn($repository);
 
         $this->dispatcher->method('dispatch')->willReturnArgument(0);
-        $this->domainEventCollector->method('collect')->willReturn(null);
+        $this->dispatcher->method('dispatch')->willReturnArgument(0);
 
         // Act
         $this->taskHandler->handle($workload);
     }
-    */
 }

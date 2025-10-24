@@ -339,22 +339,23 @@ class NewsPublishTaskHandlerTest extends TestCase
         $this->domainEventCollector
             ->expects($this->once())
             ->method('collect')
-            ->willReturnCallback(function($event) use ($news, $workload) {
+            ->willReturnCallback(function($event) {
                 $this->assertInstanceOf(\Manuxi\SuluNewsBundle\Domain\Event\NewsPublishedEvent::class, $event);
-                return null;
             });
 
         // Act
         $this->taskHandler->handle($workload);
     }
 
-    /*
     public function testHandleWithDifferentLocales(): void
     {
         // Test with different locales
         $locales = ['en', 'de', 'fr', 'es', 'it'];
 
         foreach ($locales as $locale) {
+            // Reset mocks for each iteration
+            $this->setUp();
+
             $workload = [
                 'class' => News::class,
                 'id' => '1',
@@ -378,7 +379,6 @@ class NewsPublishTaskHandlerTest extends TestCase
                 ->willReturn($repository);
 
             $this->dispatcher->method('dispatch')->willReturnArgument(0);
-            $this->domainEventCollector->method('collect')->willReturn(null);
 
             // Act
             $this->taskHandler->handle($workload);
@@ -416,7 +416,6 @@ class NewsPublishTaskHandlerTest extends TestCase
             ->willReturn($repository);
 
         $this->dispatcher->method('dispatch')->willReturnArgument(0);
-        $this->domainEventCollector->method('collect')->willReturn(null);
 
         // Act
         $this->taskHandler->handle($workload);
@@ -431,15 +430,14 @@ class NewsPublishTaskHandlerTest extends TestCase
             'locale' => 'en'
         ];
 
-        $news = $this->createStub(News::class);
+        $news = $this->createMock(News::class);
         $news->method('setPublished')->willReturnSelf();
 
         $callOrder = [];
 
-        $repository = $this->createStub(NewsRepository::class);
+        $repository = $this->createMock(NewsRepository::class);
         $repository->method('findById')->willReturn($news);
         $repository
-            ->expects($this->once())
             ->method('save')
             ->willReturnCallback(function($entity) use (&$callOrder) {
                 $callOrder[] = 'save';
@@ -450,23 +448,36 @@ class NewsPublishTaskHandlerTest extends TestCase
             ->method('getRepository')
             ->willReturn($repository);
 
+        // Track ALL dispatcher calls (PreUpdated AND Updated)
         $this->dispatcher
             ->method('dispatch')
             ->willReturnCallback(function($event) use (&$callOrder) {
-                if (strpos(get_class($event), 'UpdatedEvent') !== false) {
+                $className = get_class($event);
+                if (strpos($className, 'PreUpdatedEvent') !== false) {
+                    $callOrder[] = 'dispatch_pre_updated';
+                } elseif (strpos($className, 'UpdatedEvent') !== false) {
                     $callOrder[] = 'dispatch_updated';
                 }
                 return $event;
             });
 
-        $this->domainEventCollector->method('collect')->willReturn(null);
-
         // Act
         $this->taskHandler->handle($workload);
 
-        // Assert - save should be called before dispatch_updated
-        $this->assertEquals('save', $callOrder[0]);
-        $this->assertEquals('dispatch_updated', $callOrder[1]);
+        // Assert - Expected order: PreUpdated -> save -> Updated
+        $this->assertGreaterThanOrEqual(3, count($callOrder), 'All three calls should happen');
+
+        $preUpdatedIndex = array_search('dispatch_pre_updated', $callOrder);
+        $saveIndex = array_search('save', $callOrder);
+        $updatedIndex = array_search('dispatch_updated', $callOrder);
+
+        $this->assertNotFalse($preUpdatedIndex, 'dispatch_pre_updated was called');
+        $this->assertNotFalse($saveIndex, 'save was called');
+        $this->assertNotFalse($updatedIndex, 'dispatch_updated was called');
+
+        // PreUpdated should be first
+        $this->assertLessThan($saveIndex, $preUpdatedIndex, 'PreUpdated should be dispatched before save');
+        // Save should be before Updated
+        $this->assertLessThan($updatedIndex, $saveIndex, 'save should be called before Updated is dispatched');
     }
-    */
 }

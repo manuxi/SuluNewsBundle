@@ -128,7 +128,7 @@
                         <title>sulu_news.created_date</title>
                     </meta>
                 </property>
-                <property name="creator" type="single_contact_selection" disabledCondition="true" colspan="6">
+                <property name="creatorName" type="text_line" disabledCondition="true" colspan="6">
                     <meta>
                         <title>sulu_news.creator</title>
                     </meta>
@@ -139,7 +139,7 @@
                         <title>sulu_news.changed_date</title>
                     </meta>
                 </property>
-                <property name="changer" type="single_contact_selection" disabledCondition="true" colspan="6">
+                <property name="changerName" type="text_line" disabledCondition="true" colspan="6">
                     <meta>
                         <title>sulu_news.changer</title>
                     </meta>

@@ -35,6 +35,8 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
+    - name: Clear composer cache
+      run: composer clear-cache
     - name: Validate composer.json
       run: composer validate --strict
     - name: Install Dependencies

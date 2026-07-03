@@ -75,6 +75,19 @@ class NewsTranslationTest extends SuluTestCase
         $this->assertSame($this->testString, $this->translation->getFooter());
     }
 
+    public function testBlocks(): void
+    {
+        $blocks = [
+            ['type' => 'title_text', 'title' => 'Foo', 'text' => 'Bar'],
+        ];
+
+        $this->assertSame([], $this->translation->getBlocks());
+        $this->assertSame($this->translation, $this->translation->setBlocks($blocks));
+        $this->assertSame($blocks, $this->translation->getBlocks());
+        $this->assertSame($this->translation, $this->translation->setBlocks(null));
+        $this->assertSame([], $this->translation->getBlocks());
+    }
+
     public function testRoutePath(): void
     {
         $testRoutePath = 'news/news-100';

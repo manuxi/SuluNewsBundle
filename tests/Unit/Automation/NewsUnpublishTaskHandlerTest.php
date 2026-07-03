@@ -6,6 +6,7 @@ namespace Manuxi\SuluNewsBundle\Tests\Unit\Automation;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Manuxi\SuluNewsBundle\Automation\NewsUnpublishTaskHandler;
+use Manuxi\SuluNewsBundle\Domain\Event\NewsUnpublishedEvent;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -340,7 +341,7 @@ class NewsUnpublishTaskHandlerTest extends TestCase
             ->expects($this->once())
             ->method('collect')
             ->willReturnCallback(function($event) use ($news, $workload) {
-                $this->assertInstanceOf(\Manuxi\SuluNewsBundle\Domain\Event\NewsUnpublishedEvent::class, $event);
+                $this->assertInstanceOf(NewsUnpublishedEvent::class, $event);
                 return null;
             });
 

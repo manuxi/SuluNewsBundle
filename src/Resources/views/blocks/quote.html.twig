@@ -1,0 +1,10 @@
+<div class="block block-quote py-3">
+    {% if content.quote is defined and content.quote is not empty %}
+        <blockquote class="blockquote">
+            <p class="mb-0">{{ content.quote }}</p>
+            {% if content.source is defined and content.source is not empty %}
+                <footer class="blockquote-footer mt-2">{{ content.source }}</footer>
+            {% endif %}
+        </blockquote>
+    {% endif %}
+</div>

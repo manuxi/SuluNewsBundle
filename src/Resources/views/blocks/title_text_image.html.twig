@@ -1,0 +1,22 @@
+<div class="block block-title-text-image py-3">
+    {% if content.title is defined and content.title is not empty %}
+        <h3 class="mb-3">{{ content.title }}</h3>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-4">
+            {% if content.image.id is defined and content.image.id %}
+                {% set image = sulu_resolve_media(content.image.id, app.request.locale) %}
+                {% if image %}
+                    <img src="{{ image.url }}" class="img-fluid rounded mb-3" alt="{{ image.title|default(content.title) }}">
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            {% if content.text is defined and content.text is not empty %}
+                <div class="text">
+                    {{ content.text|raw }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

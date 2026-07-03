@@ -36,6 +36,14 @@ sulu_news:
         rating: "Bewertung"
     hero:
         image: "Hero-Bild"
+    content_blocks: "Inhaltsblöcke"
+    block:
+        title_text: "Titel & Text"
+        title_text_image: "Titel, Text & Bild"
+        title_text_images: "Titel, Text & Galerie"
+        quote: "Zitat"
+        quote_text: "Zitat"
+        quote_source: "Quelle"
     header:
         content: "Inhalt"
         additional: "Zusätzliche Optionen"

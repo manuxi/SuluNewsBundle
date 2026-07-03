@@ -1,42 +1,68 @@
 <?xml version="1.0" ?>
 <form xmlns="http://schemas.sulu.io/template/template"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
     xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd"
 >
     <key>news_details</key>
 
     <properties>
-        <section name="mandatory">
+        <section name="header_container" colspan="12">
             <meta>
                 <title>sulu_news.header.content</title>
             </meta>
             <properties>
-                <property name="title" type="text_line" mandatory="true">
-                    <meta>
-                        <title>sulu_news.title</title>
-                    </meta>
-                    <params>
-                        <param name="headline" value="true"/>
-                    </params>
-                    <tag name="sulu.rlp.part"/>
-                </property>
+                <section name="image_section" colspan="4">
+                    <properties>
+                        <property name="image" type="single_media_upload" colspan="12">
+                            <params>
+                                <!--<param name="skin" value="round"/>-->
+                                <param name="empty_icon" value="su-image"/>
+                                <param name="image_size" value="sulu-400x400"/>
+                                <param
+                                        name="collection_id"
+                                        type="expression"
+                                        value="service('sulu_media.system_collections.manager').getSystemCollection('sulu_news.news')"
+                                />
+                            </params>
+                        </property>
+                    </properties>
+                </section>
 
-                <property name="subtitle" type="text_line">
-                    <meta>
-                        <title>sulu_news.subtitle</title>
-                    </meta>
-                </property>
+                <section name="content_section" colspan="8">
+                    <properties>
+                        <property name="title" type="text_line" mandatory="true">
+                            <meta>
+                                <title>sulu_news.title</title>
+                            </meta>
+                            <params>
+                                <param name="headline" value="true"/>
+                            </params>
+                            <tag name="sulu.rlp.part"/>
+                        </property>
 
-                <property name="routePath" type="route" mandatory="true">
-                    <meta>
-                        <title>sulu_admin.url</title>
-                    </meta>
-                    <!--https://github.com/sulu/sulu/pull/5933-->
-                    <params>
-                        <param name="mode" value="leaf"/>
-                    </params>
-                </property>
+                        <property name="subtitle" type="text_line">
+                            <meta>
+                                <title>sulu_news.subtitle</title>
+                            </meta>
+                        </property>
 
+                        <property name="routePath" type="route" mandatory="true">
+                            <meta>
+                                <title>sulu_admin.url</title>
+                            </meta>
+                            <!--https://github.com/sulu/sulu/pull/5933-->
+                            <params>
+                                <param name="mode" value="leaf"/>
+                            </params>
+                        </property>
+                    </properties>
+                </section>
+            </properties>
+        </section>
+
+        <section name="content_main">
+            <properties>
                 <property name="type" type="single_select" mandatory="true" colspan="6">
                     <meta>
                         <title>sulu_news.news_type</title>
@@ -52,25 +78,41 @@
                         />
                     </params>
                 </property>
-                <property name="image" type="single_media_selection" colspan="6">
-                    <meta>
-                        <title>sulu_news.hero.image</title>
-                    </meta>
-                    <params>
-                        <param name="types" value="image"/>
-                    </params>
-                </property>
 
                 <property name="summary" type="text_area" mandatory="true">
                     <meta>
                         <title>sulu_news.summary</title>
                     </meta>
                 </property>
+
                 <property name="text" type="text_editor" mandatory="true">
                     <meta>
                         <title>sulu_news.text</title>
                     </meta>
                 </property>
+            </properties>
+        </section>
+
+        <section name="content_blocks">
+            <meta>
+                <title>sulu_news.content_blocks</title>
+            </meta>
+            <properties>
+                <block name="blocks" default-type="title_text" minOccurs="0">
+                    <meta>
+                        <title>sulu_news.content_blocks</title>
+                    </meta>
+                    <types>
+                        <xi:include href="../form-includes/blocks/title_text.xml"
+                                    xpointer="xmlns(sulu=http://schemas.sulu.io/template/template)xpointer(/sulu:properties/sulu:block/sulu:types/*)"/>
+                        <xi:include href="../form-includes/blocks/title_text_image.xml"
+                                    xpointer="xmlns(sulu=http://schemas.sulu.io/template/template)xpointer(/sulu:properties/sulu:block/sulu:types/*)"/>
+                        <xi:include href="../form-includes/blocks/title_text_images.xml"
+                                    xpointer="xmlns(sulu=http://schemas.sulu.io/template/template)xpointer(/sulu:properties/sulu:block/sulu:types/*)"/>
+                        <xi:include href="../form-includes/blocks/quote.xml"
+                                    xpointer="xmlns(sulu=http://schemas.sulu.io/template/template)xpointer(/sulu:properties/sulu:block/sulu:types/*)"/>
+                    </types>
+                </block>
             </properties>
         </section>
 

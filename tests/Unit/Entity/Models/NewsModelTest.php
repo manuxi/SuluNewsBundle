@@ -220,6 +220,43 @@ class NewsModelTest extends TestCase
         $this->assertSame($news, $result);
     }
 
+    public function testCreateNewsMapsBlocks(): void
+    {
+        // Arrange
+        $blocks = [
+            ['type' => 'title_text', 'title' => 'A', 'text' => 'B'],
+        ];
+        $request = new Request(
+            ['locale' => 'en'],
+            ['title' => 'Test News', 'routePath' => '/test-news', 'blocks' => $blocks]
+        );
+
+        $news = $this->createMock(News::class);
+        $news->method('getId')->willReturn(1);
+        $news->method('getLocale')->willReturn('en');
+        $news->method('getRoutePath')->willReturn('/test-news');
+
+        $this->newsRepository
+            ->method('create')
+            ->with('en')
+            ->willReturn($news);
+
+        $news->expects($this->once())
+            ->method('setBlocks')
+            ->with($blocks);
+
+        $this->newsRepository
+            ->method('save')
+            ->with($news)
+            ->willReturn($news);
+
+        // Act
+        $result = $this->newsModel->createNews($request);
+
+        // Assert
+        $this->assertSame($news, $result);
+    }
+
     public function testUpdateNewsUpdatesEntity(): void
     {
         // Arrange

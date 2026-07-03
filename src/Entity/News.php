@@ -193,6 +193,28 @@ class News implements AuditableTranslatableInterface, SearchableInterface
         return $this;
     }
 
+    #[Serializer\VirtualProperty(name: "blocks")]
+    public function getBlocks(): array
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            return [];
+        }
+
+        return $translation->getBlocks();
+    }
+
+    public function setBlocks(?array $blocks): self
+    {
+        $translation = $this->getTranslation($this->locale);
+        if (!$translation) {
+            $translation = $this->createTranslation($this->locale);
+        }
+
+        $translation->setBlocks($blocks);
+        return $this;
+    }
+
     public function getNewsSeo(): NewsSeo
     {
         if (!$this->newsSeo instanceof NewsSeo) {

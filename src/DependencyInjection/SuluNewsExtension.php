@@ -190,6 +190,24 @@ class SuluNewsExtension extends Extension implements PrependExtensionInterface
             );
         }
 
+        if ($container->hasExtension('sulu_media')) {
+            $container->prependExtensionConfig(
+                'sulu_media',
+                [
+                    'system_collections' => [
+                        'sulu_news' => [
+                            'meta_title' => ['en' => 'News', 'de' => 'News'],
+                            'collections' => [
+                                'news' => [
+                                    'meta_title' => ['en' => 'News', 'de' => 'News'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+        }
+
         $container->loadFromExtension('framework', [
             'default_locale' => 'en',
             'translator' => ['paths' => [__DIR__ . '/../Resources/config/translations/']],

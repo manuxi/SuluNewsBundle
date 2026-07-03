@@ -1,0 +1,10 @@
+<div class="block block-title-text py-3">
+    {% if content.title is defined and content.title is not empty %}
+        <h3 class="mb-3">{{ content.title }}</h3>
+    {% endif %}
+    {% if content.text is defined and content.text is not empty %}
+        <div class="text">
+            {{ content.text|raw }}
+        </div>
+    {% endif %}
+</div>

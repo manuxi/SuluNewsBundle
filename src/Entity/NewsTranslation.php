@@ -53,6 +53,9 @@ class NewsTranslation implements AuditableInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $footer = null;
 
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $blocks = null;
+
     public function __construct(
         #[ORM\ManyToOne(targetEntity: News::class, inversedBy: 'translations')]
         #[ORM\JoinColumn(nullable: false)]
@@ -145,6 +148,17 @@ class NewsTranslation implements AuditableInterface
     public function setFooter(?string $footer): self
     {
         $this->footer = $footer;
+        return $this;
+    }
+
+    public function getBlocks(): array
+    {
+        return $this->blocks ?? [];
+    }
+
+    public function setBlocks(?array $blocks): self
+    {
+        $this->blocks = $blocks;
         return $this;
     }
 

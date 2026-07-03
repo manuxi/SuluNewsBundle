@@ -286,6 +286,9 @@ class NewsModel implements NewsModelInterface
         $images = $this->getProperty($data, 'images');
         $entity->setImages($images ?: null);
 
+        $blocks = $this->getProperty($data, 'blocks');
+        $entity->setBlocks($blocks ?: null);
+
         $imageId = $this->getPropertyMulti($data, ['image', 'id']);
         if ($imageId) {
             $image = $this->mediaRepository->findMediaById((int) $imageId);

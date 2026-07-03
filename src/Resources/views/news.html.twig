@@ -4,6 +4,15 @@
     <div class="container">
         <div class="row news-{{ news.type }}">
             <div class="col-12 pb-3">
+                {% if news.image %}
+                    {% set heroImage = sulu_resolve_media(news.image.id, app.request.locale) %}
+                    {% if heroImage %}
+                        <div class="hero mb-4">
+                            <img src="{{ heroImage.url }}" class="img-fluid" alt="{{ heroImage.title|default(news.title) }}">
+                        </div>
+                    {% endif %}
+                {% endif %}
+
                 <div class="title">
                     {% if news.showDate %}
                         <div class="overline mb-1">
@@ -26,6 +35,14 @@
                 <div class="content pb-3">
                     {{ news.text|raw }}
                 </div>
+
+                {% if news.blocks|default([]) is not empty %}
+                    <div class="content-blocks pb-3">
+                        {% for block in news.blocks %}
+                            {% include '@SuluNews/blocks/' ~ block.type ~ '.html.twig' with { 'content': block } only %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             {% if news.footer %}
                 <div class="col-12 py-3 bg-light text-dark">

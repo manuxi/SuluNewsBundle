@@ -137,6 +137,7 @@
 
         <service id="sulu_news.object_provider" public="true" class="Manuxi\SuluNewsBundle\Preview\NewsObjectProvider">
             <argument type="service" id="sulu_news.repository.news"/>
+            <argument type="service" id="sulu_news.model.news"/>
             <tag name="sulu_preview.object_provider" provider-key="news"/>
         </service>
 

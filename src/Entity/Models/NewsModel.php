@@ -237,6 +237,20 @@ class NewsModel implements NewsModelInterface
     }
 
     /**
+     * Applies form data to the entity in-memory for the live preview, without persisting.
+     * Mirrors the content mapping used on save so the preview reflects unsaved changes.
+     *
+     * @throws EntityNotFoundException
+     * @throws Exception
+     */
+    public function applyPreviewData(News $entity, string $locale, array $data): News
+    {
+        $entity->setLocale($locale);
+
+        return $this->mapDataToNews($entity, $data);
+    }
+
+    /**
      * @param News $entity
      * @param array $data
      * @return News

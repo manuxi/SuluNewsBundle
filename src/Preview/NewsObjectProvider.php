@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Manuxi\SuluNewsBundle\Preview;
 
+use Manuxi\SuluNewsBundle\Entity\Models\NewsModel;
 use Manuxi\SuluNewsBundle\Entity\News;
 use Manuxi\SuluNewsBundle\Repository\NewsRepository;
 use Sulu\Bundle\PageBundle\Admin\PageAdmin;
@@ -12,8 +13,10 @@ use Sulu\Bundle\PreviewBundle\Preview\Object\PreviewObjectProviderInterface;
 class NewsObjectProvider implements PreviewObjectProviderInterface
 {
 
-    public function __construct(private NewsRepository $repository)
-    {}
+    public function __construct(
+        private NewsRepository $repository,
+        private NewsModel $newsModel
+    ) {}
 
     public function getObject($id, $locale): News
     {
@@ -27,7 +30,7 @@ class NewsObjectProvider implements PreviewObjectProviderInterface
 
     public function setValues($object, $locale, array $data): void
     {
-        // TODO: Implement setValues() method.
+        $this->newsModel->applyPreviewData($object, $locale, $data);
     }
 
     public function setContext($object, $locale, array $context)
@@ -41,12 +44,16 @@ class NewsObjectProvider implements PreviewObjectProviderInterface
 
     public function serialize($object): string
     {
-        return serialize($object);
+        // Store only id + locale; re-loading a managed entity in deserialize() keeps the
+        // Doctrine collections (translations) intact so setValues() can mutate them.
+        return $object->getId() . '|' . $object->getLocale();
     }
 
     public function deserialize($serializedObject, $objectClass): object
     {
-        return unserialize($serializedObject);
+        [$id, $locale] = \explode('|', $serializedObject);
+
+        return $this->getObject((int) $id, $locale);
     }
     
     public function getSecurityContext($id, $locale): ?string

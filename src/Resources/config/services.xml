@@ -178,6 +178,13 @@
             <tag name="sulu_trash.restore_configuration_provider"/>
         </service>
 
+        <!--Serializer-->
+        <service id="sulu_news.news_serialize_event_subscriber" class="Manuxi\SuluNewsBundle\Serializer\NewsSerializeEventSubscriber">
+            <argument type="service" id="sulu_media.media_manager"/>
+
+            <tag name="jms_serializer.event_subscriber"/>
+        </service>
+
         <!--Twig-->
         <service id="sulu_news.default.twig_extension" class="Manuxi\SuluNewsBundle\Twig\NewsTwigExtension">
             <argument type="service" id="sulu_news.repository.news"/>

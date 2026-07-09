@@ -64,6 +64,13 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true
+        },
+        "policy": {
+            "advisories": {
+                "ignore-id": {
+                    "PKSA-z3gr-8qht-p93v": "phpunit is a dev/test-only dependency; advisory does not affect this bundle's runtime"
+                }
+            }
         }
     }
 }

@@ -45,6 +45,8 @@ sulu_news:
         quote_text: "Zitat"
         quote_source: "Quelle"
     header:
+        header: "Header"
+        intro: "Einleitung"
         content: "Inhalt"
         additional: "Zusätzliche Optionen"
         mandatory: "Verpflichtende Felder"

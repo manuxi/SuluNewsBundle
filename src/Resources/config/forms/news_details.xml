@@ -56,29 +56,32 @@
                                 <param name="mode" value="leaf"/>
                             </params>
                         </property>
+
+                        <property name="type" type="single_select" mandatory="true">
+                            <meta>
+                                <title>sulu_news.news_type</title>
+                            </meta>
+                            <params>
+                                <param name="default_value"
+                                       type="expression"
+                                       value="service('sulu_news.type_selection').getDefaultValue()"
+                                />
+                                <param name="values"
+                                       type="expression"
+                                       value="service('sulu_news.type_selection').getValues()"
+                                />
+                            </params>
+                        </property>
                     </properties>
                 </section>
             </properties>
         </section>
 
         <section name="content_main">
+            <meta>
+                <title>sulu_news.header.intro</title>
+            </meta>
             <properties>
-                <property name="type" type="single_select" mandatory="true" colspan="6">
-                    <meta>
-                        <title>sulu_news.news_type</title>
-                    </meta>
-                    <params>
-                        <param name="default_value"
-                               type="expression"
-                               value="service('sulu_news.type_selection').getDefaultValue()"
-                        />
-                        <param name="values"
-                               type="expression"
-                               value="service('sulu_news.type_selection').getValues()"
-                        />
-                    </params>
-                </property>
-
                 <property name="summary" type="text_area" mandatory="true">
                     <meta>
                         <title>sulu_news.summary</title>
